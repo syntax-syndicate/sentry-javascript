@@ -11,11 +11,18 @@ import {
 } from '@sentry/utils';
 
 import { EdgeClient } from './edgeclient';
+import { FetchTracing } from './integrations/fetchtracing';
 import { makeEdgeTransport } from './transport';
 
 const nodeStackParser = createStackParser(nodeStackLineParser());
 
-export const defaultIntegrations = [new CoreIntegrations.InboundFilters(), new CoreIntegrations.FunctionToString()];
+export * as Integrations from './integrations';
+
+export const defaultIntegrations = [
+  new CoreIntegrations.InboundFilters(),
+  new CoreIntegrations.FunctionToString(),
+  new FetchTracing(),
+];
 
 export type EdgeOptions = Options;
 

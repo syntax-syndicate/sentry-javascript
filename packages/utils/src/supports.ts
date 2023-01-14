@@ -80,6 +80,8 @@ export function isNativeFetch(func: Function): boolean {
   return func && /^function fetch\(\)\s+\{\s+\[native code\]\s+\}$/.test(func.toString());
 }
 
+declare const EdgeRuntime: string | undefined;
+
 /**
  * Tells whether current environment supports Fetch API natively
  * {@link supportsNativeFetch}.
@@ -87,6 +89,10 @@ export function isNativeFetch(func: Function): boolean {
  * @returns true if `window.fetch` is natively implemented, false otherwise
  */
 export function supportsNativeFetch(): boolean {
+  if (typeof EdgeRuntime === 'string') {
+    return true;
+  }
+
   if (!supportsFetch()) {
     return false;
   }
