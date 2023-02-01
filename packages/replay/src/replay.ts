@@ -112,6 +112,9 @@ export class ReplayContainer implements ReplayContainerInterface {
     initialUrl: '',
   };
 
+  private _startRecordingBreadcrumb: Breadcrumb | undefined;
+  private _startRecordingBreadcrumbSent: boolean = false;
+
   public constructor({
     options,
     recordingOptions,
@@ -541,10 +544,11 @@ export class ReplayContainer implements ReplayContainerInterface {
         return false;
       }
 
-      // We only do this for session mode, as error mode will be changed into session mode
-      // (which is when startRecording() is called again) once the error occurs.
-      if (this.recordingMode === 'session') {
-        this._addStartRecordingBreadcrumb();
+      if (this.recordingMode === 'error' || (this.recordingMode === 'session' && !this._startRecordingBreadcrumb)) {
+        this._startRecordingBreadcrumb = createBreadcrumb({
+          category: 'replay.recording.start',
+          data: { url: getFullURL() },
+        });
       }
 
       // If there is a previousSessionId after a full snapshot occurs, then
@@ -812,6 +816,11 @@ export class ReplayContainer implements ReplayContainerInterface {
         options: this.getOptions(),
         timestamp: new Date().getTime(),
       });
+
+      if (!this._startRecordingBreadcrumbSent && this._startRecordingBreadcrumb) {
+        this._startRecordingBreadcrumbSent = true;
+        this._createCustomBreadcrumb(this._startRecordingBreadcrumb);
+      }
     } catch (err) {
       this._handleException(err);
 
@@ -903,17 +912,5 @@ export class ReplayContainer implements ReplayContainerInterface {
         this.resume();
       }, rateLimitDuration);
     }
-  }
-
-  /**
-   * Creates a breadcrumb indicating the start of a replay recording
-   * and adds the current, full URL to the breadcrumb data.
-   */
-  private _addStartRecordingBreadcrumb(): void {
-    const breadcrumb = createBreadcrumb({
-      category: 'replay.recording.start',
-      data: { url: getFullURL() },
-    });
-    this._createCustomBreadcrumb(breadcrumb);
   }
 }
