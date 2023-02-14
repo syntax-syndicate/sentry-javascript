@@ -65,60 +65,6 @@ describe('Integration | events', () => {
     expect(replay).not.toHaveLastSentReplay();
   });
 
-  it('has correct timestamps when there are events earlier than initial timestamp', async function () {
-    clearSession(replay);
-    replay['_loadAndCheckSession'](0);
-    mockTransportSend.mockClear();
-    Object.defineProperty(document, 'visibilityState', {
-      configurable: true,
-      get: function () {
-        return 'hidden';
-      },
-    });
-
-    document.dispatchEvent(new Event('visibilitychange'));
-    await new Promise(process.nextTick);
-    expect(replay).not.toHaveLastSentReplay();
-
-    // Pretend 5 seconds have passed
-    const ELAPSED = 5000;
-    await advanceTimers(ELAPSED);
-
-    const TEST_EVENT = {
-      data: {},
-      timestamp: BASE_TIMESTAMP + ELAPSED,
-      type: 2,
-    };
-
-    addEvent(replay, TEST_EVENT, true);
-
-    // Add a fake event that started 10s BEFORE
-    addEvent(
-      replay,
-      {
-        data: {},
-        timestamp: (BASE_TIMESTAMP - 10000) / 1000,
-        type: 5,
-      },
-      true,
-    );
-
-    WINDOW.dispatchEvent(new Event('blur'));
-    await new Promise(process.nextTick);
-    expect(replay).toHaveLastSentReplay({
-      replayEventPayload: expect.objectContaining({
-        replay_start_timestamp: (BASE_TIMESTAMP - 10000) / 1000,
-        contexts: {
-          replay: {
-            error_sample_rate: 0,
-            session_sample_rate: 1,
-          },
-        },
-        urls: ['http://localhost/'], // this doesn't truly test if we are capturing the right URL as we don't change URLs, but good enough
-      }),
-    });
-  });
-
   it('does not have stale `replay_start_timestamp` due to an old time origin', async function () {
     const ELAPSED = 86400000 * 2; // 2 days
     // Add a mock performance event that happens 2 days ago. This can happen in the browser

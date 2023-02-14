@@ -35,13 +35,8 @@ export async function addEvent(
     return null;
   }
 
-  // In error mode, any checkout will always be the first recording
-  // In session mode, we check if the timestamp is actually the first
-  if (
-    isCheckout &&
-    (replay.recordingMode === 'error' ||
-      (replay.session.segmentId === 0 && timestampInMs < replay.getContext().initialTimestamp))
-  ) {
+  // In error mode, any checkout will always be the first timestamp, as we clear everything before
+  if (isCheckout && replay.recordingMode === 'error') {
     replay.getContext().initialTimestamp = timestampInMs;
   }
 
