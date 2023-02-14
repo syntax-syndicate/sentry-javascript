@@ -12,7 +12,7 @@ export async function addEvent(
   event: RecordingEvent,
   isCheckout?: boolean,
 ): Promise<AddEventResult | null> {
-  if (!replay.eventBuffer) {
+  if (!replay.eventBuffer || !replay.session) {
     // This implies that `_isEnabled` is false
     return null;
   }
@@ -35,11 +35,14 @@ export async function addEvent(
     return null;
   }
 
-  // Only record earliest event if a new session was created, otherwise it
-  // shouldn't be relevant
-  const earliestEvent = replay.getContext().earliestEvent;
-  if (replay.session && replay.session.segmentId === 0 && (!earliestEvent || timestampInMs < earliestEvent)) {
-    replay.getContext().earliestEvent = timestampInMs;
+  // In error mode, any checkout will always be the first recording
+  // In session mode, we check if the timestamp is actually the first
+  if (
+    isCheckout &&
+    (replay.recordingMode === 'error' ||
+      (replay.session.segmentId === 0 && timestampInMs < replay.getContext().initialTimestamp))
+  ) {
+    replay.getContext().initialTimestamp = timestampInMs;
   }
 
   try {

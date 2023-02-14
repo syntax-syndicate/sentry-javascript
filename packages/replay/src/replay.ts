@@ -104,7 +104,6 @@ export class ReplayContainer implements ReplayContainerInterface {
     errorIds: new Set(),
     traceIds: new Set(),
     urls: [],
-    earliestEvent: null,
     initialTimestamp: new Date().getTime(),
     initialUrl: '',
   };
@@ -551,8 +550,8 @@ export class ReplayContainer implements ReplayContainerInterface {
 
       // See note above re: session start needs to reflect the most recent
       // checkout.
-      if (this.recordingMode === 'error' && this.session && this._context.earliestEvent) {
-        this.session.started = this._context.earliestEvent;
+      if (this.recordingMode === 'error' && this.session && this._context.initialTimestamp !== this.session.started) {
+        this.session.started = this._context.initialTimestamp;
         this._maybeSaveSession();
       }
 
@@ -707,7 +706,7 @@ export class ReplayContainer implements ReplayContainerInterface {
     const entries = [...this.performanceEvents];
     this.performanceEvents = [];
 
-    return Promise.all(createPerformanceSpans(this, createPerformanceEntries(entries)));
+    return Promise.all(createPerformanceSpans(this, createPerformanceEntries(entries, this._context.initialTimestamp)));
   }
 
   /**
@@ -729,17 +728,12 @@ export class ReplayContainer implements ReplayContainerInterface {
     this._context.errorIds.clear();
     this._context.traceIds.clear();
     this._context.urls = [];
-    this._context.earliestEvent = null;
   }
 
   /**
    * Return and clear _context
    */
   private _popEventContext(): PopEventContext {
-    if (this._context.earliestEvent && this._context.earliestEvent < this._context.initialTimestamp) {
-      this._context.initialTimestamp = this._context.earliestEvent;
-    }
-
     const _context = {
       initialTimestamp: this._context.initialTimestamp,
       initialUrl: this._context.initialUrl,

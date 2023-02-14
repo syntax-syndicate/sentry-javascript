@@ -58,37 +58,11 @@ describe('Integration | events', () => {
   });
 
   it('does not create replay event when there are no events to send', async () => {
-    Object.defineProperty(document, 'visibilityState', {
-      configurable: true,
-      get: function () {
-        return 'hidden';
-      },
-    });
+    // Manually flush any buffered events, to pretend nothing happened
+    await replay.eventBuffer?.finish();
+    await replay.flushImmediate();
 
-    document.dispatchEvent(new Event('visibilitychange'));
-    await new Promise(process.nextTick);
     expect(replay).not.toHaveLastSentReplay();
-
-    // Pretend 5 seconds have passed
-    const ELAPSED = 5000;
-    await advanceTimers(ELAPSED);
-
-    const TEST_EVENT = {
-      data: {},
-      timestamp: BASE_TIMESTAMP + ELAPSED,
-      type: 2,
-    };
-
-    addEvent(replay, TEST_EVENT);
-    WINDOW.dispatchEvent(new Event('blur'));
-    await new Promise(process.nextTick);
-
-    expect(replay).toHaveLastSentReplay({
-      replayEventPayload: expect.objectContaining({
-        replay_start_timestamp: BASE_TIMESTAMP / 1000,
-        urls: ['http://localhost/'], // this doesn't truly test if we are capturing the right URL as we don't change URLs, but good enough
-      }),
-    });
   });
 
   it('has correct timestamps when there are events earlier than initial timestamp', async function () {
@@ -116,14 +90,18 @@ describe('Integration | events', () => {
       type: 2,
     };
 
-    addEvent(replay, TEST_EVENT);
+    addEvent(replay, TEST_EVENT, true);
 
-    // Add a fake event that started BEFORE
-    addEvent(replay, {
-      data: {},
-      timestamp: (BASE_TIMESTAMP - 10000) / 1000,
-      type: 5,
-    });
+    // Add a fake event that started 10s BEFORE
+    addEvent(
+      replay,
+      {
+        data: {},
+        timestamp: (BASE_TIMESTAMP - 10000) / 1000,
+        type: 5,
+      },
+      true,
+    );
 
     WINDOW.dispatchEvent(new Event('blur'));
     await new Promise(process.nextTick);
@@ -155,8 +133,7 @@ describe('Integration | events', () => {
       }),
     );
 
-    // This should be null because `addEvent` has not been called yet
-    expect(replay.getContext().earliestEvent).toBe(null);
+    expect(replay.getContext().initialTimestamp).toBe(BASE_TIMESTAMP);
     expect(mockTransportSend).toHaveBeenCalledTimes(0);
 
     // A new checkout occurs (i.e. a new session was started)
@@ -196,6 +173,6 @@ describe('Integration | events', () => {
     });
 
     // This gets reset after sending replay
-    expect(replay.getContext().earliestEvent).toBe(null);
+    expect(replay.getContext().initialTimestamp).toBe(BASE_TIMESTAMP);
   });
 });

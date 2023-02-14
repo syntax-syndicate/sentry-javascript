@@ -219,11 +219,6 @@ export interface InternalEventContext extends CommonEventContext {
    * Set of Sentry trace ids that have occurred during a replay segment
    */
   traceIds: Set<string>;
-
-  /**
-   * The timestamp of the earliest event that has been added to event buffer. This can happen due to the Performance Observer which buffers events.
-   */
-  earliestEvent: number | null;
 }
 
 export type Sampled = false | 'session' | 'error';
