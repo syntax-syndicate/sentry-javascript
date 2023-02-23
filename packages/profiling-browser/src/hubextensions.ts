@@ -105,7 +105,6 @@ export function wrapTransactionWithProfiling(
       return;
     }
 
-    const span = transaction.startChild({ op: 'profiler.stop' });
     profiler
       .stop()
       .then((p: JSSelfProfile): void => {
@@ -138,8 +137,6 @@ export function wrapTransactionWithProfiling(
         }
         return null;
       });
-
-    span.finish();
   }
 
   // Enqueue a timeout to prevent profiles from running over max duration.
