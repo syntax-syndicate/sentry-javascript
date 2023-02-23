@@ -53,6 +53,7 @@
     "packages/remix",
     "packages/replay",
     "packages/replay-worker",
+    "packages/profiling-browser",
     "packages/serverless",
     "packages/svelte",
     "packages/tracing",
