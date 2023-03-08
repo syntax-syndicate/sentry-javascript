@@ -42,6 +42,32 @@ export function normalize(input: unknown, depth: number = +Infinity, maxProperti
   }
 }
 
+/**
+ * A lazy version of `normalize()`, that only normalizes only when an object is accessed.
+ *
+ * @param input The object to be normalized.
+ * @param depth The max depth to which to normalize the object. (Anything deeper stringified whole.)
+ * @param maxProperties The max number of elements or properties to be included in any single array or
+ * object in the normallized output.
+ * @returns A normalized version of the object, or `"**non-serializable**"` if any errors are thrown during normalization.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function normalizeLazy(input: unknown, depth: number = +Infinity, maxProperties: number = +Infinity): any {
+  if (isPrimitive(input)) {
+    return input;
+  }
+
+  try {
+    return new Proxy(input as object, {
+      get(target, prop, receiver) {
+        return normalize(Reflect.get(target, prop, receiver), depth - 1, maxProperties);
+      },
+    });
+  } catch (err) {
+    return normalize(input, depth, maxProperties);
+  }
+}
+
 /** JSDoc */
 export function normalizeToSize<T>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,6 +84,10 @@ export function normalizeToSize<T>(
   }
 
   return normalized as T;
+}
+
+function isPrimitive(value: unknown): value is Primitive {
+  return value === null || (['number', 'boolean', 'string'].includes(typeof value) && !isNaN(value));
 }
 
 /**
@@ -79,8 +109,8 @@ function visit(
   const [memoize, unmemoize] = memo;
 
   // Get the simple cases out of the way first
-  if (value === null || (['number', 'boolean', 'string'].includes(typeof value) && !isNaN(value))) {
-    return value as Primitive;
+  if (isPrimitive(value)) {
+    return value;
   }
 
   const stringified = stringifyValue(key, value);
