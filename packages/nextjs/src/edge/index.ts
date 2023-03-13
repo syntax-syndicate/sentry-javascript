@@ -1,6 +1,12 @@
 import '@sentry/tracing'; // Allow people to call tracing API methods without explicitly importing the tracing package.
 
-import { getCurrentHub, getIntegrationsToSetup, initAndBind, Integrations as CoreIntegrations } from '@sentry/core';
+import {
+  configureScope,
+  getCurrentHub,
+  getIntegrationsToSetup,
+  initAndBind,
+  Integrations as CoreIntegrations,
+} from '@sentry/core';
 import type { Options } from '@sentry/types';
 import {
   createStackParser,
@@ -64,6 +70,13 @@ export function init(options: EdgeOptions = {}): void {
     integrations: getIntegrationsToSetup(options),
     transport: options.transport || makeEdgeTransport,
   };
+
+  configureScope(scope => {
+    scope.setTag('runtime', 'edge');
+    if (process.env.VERCEL) {
+      scope.setTag('vercel', true);
+    }
+  });
 
   initAndBind(EdgeClient, clientOptions);
 
