@@ -295,6 +295,17 @@ export function constructWebpackConfigFunction(
       );
     }
 
+    // Only automatically set release value in non-dev mode to avoid releases spam and use `DefinePlugin` instead of the
+    // value injection laoder so we don't fall victim to caching.
+    if (buildContext.webpack.DefinePlugin && !buildContext.dev) {
+      newConfig.plugins = newConfig.plugins || [];
+      newConfig.plugins.push(
+        new buildContext.webpack.DefinePlugin({
+          __SENTRY_RELEASE__: JSON.stringify(getSentryRelease(buildContext.buildId)),
+        }),
+      );
+    }
+
     return newConfig;
   };
 }
