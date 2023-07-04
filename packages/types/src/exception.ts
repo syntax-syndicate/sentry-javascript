@@ -9,4 +9,5 @@ export interface Exception {
   module?: string;
   thread_id?: number;
   stacktrace?: Stacktrace;
+  error?: Error;
 }

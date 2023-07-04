@@ -6,7 +6,7 @@ import type { BrowserClient } from '../client';
 import { exceptionFromError } from '../eventbuilder';
 
 const DEFAULT_KEY = 'cause';
-const DEFAULT_LIMIT = 5;
+const DEFAULT_LIMIT = 16;
 
 interface LinkedErrorsOptions {
   key: string;
@@ -71,8 +71,22 @@ export function _handler(
   if (!event.exception || !event.exception.values || !hint || !isInstanceOf(hint.originalException, Error)) {
     return event;
   }
-  const linkedErrors = _walkErrorTree(parser, limit, hint.originalException as ExtendedError, key);
-  event.exception.values = [...linkedErrors, ...event.exception.values];
+
+  const originalException: Exception | undefined = event.exception.values.slice().reverse()[0];
+
+  // We only create exception grouping if there is an exception in the event.
+  if (originalException) {
+    event.exception.values = _walkErrorTree(
+      parser,
+      limit,
+      hint.originalException as ExtendedError,
+      key,
+      event.exception.values,
+      originalException,
+      0,
+    );
+  }
+
   return event;
 }
 
@@ -84,11 +98,83 @@ export function _walkErrorTree(
   limit: number,
   error: ExtendedError,
   key: string,
-  stack: Exception[] = [],
+  prevExceptions: Exception[],
+  exception: Exception,
+  exceptionId: number,
 ): Exception[] {
-  if (!isInstanceOf(error[key], Error) || stack.length + 1 >= limit) {
-    return stack;
+  if (prevExceptions.length + 1 >= limit) {
+    return prevExceptions;
   }
-  const exception = exceptionFromError(parser, error[key]);
-  return _walkErrorTree(parser, limit, error[key], key, [exception, ...stack]);
+
+  let newExceptions = [...prevExceptions];
+
+  if (isInstanceOf(error[key], Error)) {
+    applyExceptionGroupFieldsForParentException(exception, exceptionId);
+    const newException = exceptionFromError(parser, error[key]);
+    const newExceptionId = newExceptions.length;
+    applyExceptionGroupFieldsForChildException(newException, key, newExceptionId, exceptionId);
+    newExceptions = _walkErrorTree(
+      parser,
+      limit,
+      error[key],
+      key,
+      [newException, ...newExceptions],
+      newException,
+      newExceptionId,
+    );
+  }
+
+  // This will create exception grouping for AggregateErrors
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AggregateError
+  if (Array.isArray(error.errors)) {
+    error.errors.forEach((childError, i) => {
+      if (isInstanceOf(childError, Error)) {
+        applyExceptionGroupFieldsForParentException(exception, exceptionId);
+        const newException = exceptionFromError(parser, childError);
+        const newExceptionId = newExceptions.length;
+        applyExceptionGroupFieldsForChildException(newException, `errors[${i}]`, newExceptionId, exceptionId);
+        newExceptions = _walkErrorTree(
+          parser,
+          limit,
+          childError,
+          key,
+          [newException, ...newExceptions],
+          newException,
+          newExceptionId,
+        );
+      }
+    });
+  }
+
+  return newExceptions;
+}
+
+function applyExceptionGroupFieldsForParentException(exception: Exception, exceptionId: number): void {
+  // Don't know if this default makes sense. The protocol requires us to set these values so we pick *some* default.
+  exception.mechanism = exception.mechanism || { type: 'generic', handled: true };
+
+  exception.mechanism = {
+    ...exception.mechanism,
+    type: 'chained',
+    is_exception_group: true,
+    exception_id: exceptionId,
+  };
+}
+
+function applyExceptionGroupFieldsForChildException(
+  exception: Exception,
+  source: string,
+  exceptionId: number,
+  parentId: number | undefined,
+): void {
+  // Don't know if this default makes sense. The protocol requires us to set these values so we pick *some* default.
+  exception.mechanism = exception.mechanism || { type: 'generic', handled: true };
+
+  exception.mechanism = {
+    ...exception.mechanism,
+    type: 'chained',
+    source,
+    exception_id: exceptionId,
+    parent_id: parentId,
+  };
 }
