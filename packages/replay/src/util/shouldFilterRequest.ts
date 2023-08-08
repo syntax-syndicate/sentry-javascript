@@ -1,6 +1,6 @@
 import { getCurrentHub } from '@sentry/core';
 
-import type { ReplayContainer } from '../types';
+import type { ReplayContainer } from '../types.ts';
 
 /**
  * Check whether a given request URL should be filtered out. This is so we
@@ -8,7 +8,7 @@ import type { ReplayContainer } from '../types';
  */
 export function shouldFilterRequest(replay: ReplayContainer, url: string): boolean {
   // If we enabled the `traceInternals` experiment, we want to trace everything
-  if (__DEBUG_BUILD__ && replay.getOptions()._experiments.traceInternals) {
+  if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && replay.getOptions()._experiments.traceInternals) {
     return false;
   }
 

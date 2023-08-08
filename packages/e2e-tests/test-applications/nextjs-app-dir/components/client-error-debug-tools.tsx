@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext, useState } from 'react';
-import { TransactionContext } from './transaction-context';
+import { TransactionContext } from './transaction-context.ts';
 import { captureException } from '@sentry/nextjs';
 
 export function ClientErrorDebugTools() {

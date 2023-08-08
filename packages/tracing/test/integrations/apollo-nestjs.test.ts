@@ -3,8 +3,8 @@
 import { Hub, Scope } from '@sentry/core';
 import { logger } from '@sentry/utils';
 
-import { Integrations, Span } from '../../src';
-import { getTestClient } from '../testutils';
+import { Integrations, Span } from '../../src.ts';
+import { getTestClient } from '../testutils.ts';
 
 type ApolloResolverGroup = {
   [key: string]: () => unknown;

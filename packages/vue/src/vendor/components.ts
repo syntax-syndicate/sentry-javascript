@@ -1,4 +1,4 @@
-import type { ViewModel } from '../types';
+import type { ViewModel } from '../types.ts';
 
 // Vendored from https://github.com/vuejs/vue/blob/612fb89547711cacb030a3893a0065b785802860/src/core/util/debug.js
 // with types only changes.

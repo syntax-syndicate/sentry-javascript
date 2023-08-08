@@ -1,6 +1,6 @@
 import type { Integration, Options } from '@sentry/types';
 
-import { getIntegrationsToSetup } from '../../src/integration';
+import { getIntegrationsToSetup } from '../../src/integration.ts';
 
 /** JSDoc */
 class MockIntegration implements Integration {

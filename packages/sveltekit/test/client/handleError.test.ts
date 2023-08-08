@@ -2,7 +2,7 @@ import { Scope } from '@sentry/svelte';
 import type { HandleClientError, NavigationEvent } from '@sveltejs/kit';
 import { vi } from 'vitest';
 
-import { handleErrorWithSentry } from '../../src/client/handleError';
+import { handleErrorWithSentry } from '../../src/client/handleError.ts';
 
 const mockCaptureException = vi.fn();
 let mockScope = new Scope();

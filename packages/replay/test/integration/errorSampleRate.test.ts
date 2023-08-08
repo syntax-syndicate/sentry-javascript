@@ -7,17 +7,17 @@ import {
   REPLAY_SESSION_KEY,
   SESSION_IDLE_EXPIRE_DURATION,
   WINDOW,
-} from '../../src/constants';
-import type { ReplayContainer } from '../../src/replay';
-import { clearSession } from '../../src/session/clearSession';
-import { addEvent } from '../../src/util/addEvent';
-import { createOptionsEvent } from '../../src/util/handleRecordingEmit';
-import { PerformanceEntryResource } from '../fixtures/performanceEntry/resource';
-import type { RecordMock } from '../index';
-import { BASE_TIMESTAMP } from '../index';
-import { resetSdkMock } from '../mocks/resetSdkMock';
-import type { DomHandler } from '../types';
-import { useFakeTimers } from '../utils/use-fake-timers';
+} from '../../src/constants.ts';
+import type { ReplayContainer } from '../../src/replay.ts';
+import { clearSession } from '../../src/session/clearSession.ts';
+import { addEvent } from '../../src/util/addEvent.ts';
+import { createOptionsEvent } from '../../src/util/handleRecordingEmit.ts';
+import { PerformanceEntryResource } from '../fixtures/performanceEntry/resource.ts';
+import type { RecordMock } from '../index.ts';
+import { BASE_TIMESTAMP } from '../index.ts';
+import { resetSdkMock } from '../mocks/resetSdkMock.ts';
+import type { DomHandler } from '../types.ts';
+import { useFakeTimers } from '../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

@@ -4,7 +4,7 @@ import type { Load, ServerLoad } from '@sveltejs/kit';
 import { error, redirect } from '@sveltejs/kit';
 import { vi } from 'vitest';
 
-import { wrapLoadWithSentry, wrapServerLoadWithSentry } from '../../src/server/load';
+import { wrapLoadWithSentry, wrapServerLoadWithSentry } from '../../src/server/load.ts';
 
 const mockCaptureException = vi.fn();
 let mockScope = new Scope();

@@ -1,4 +1,4 @@
-import { User } from '../interfaces';
+import { User } from '../interfaces.ts';
 
 /** Dummy user data. */
 export const sampleUserData: User[] = [

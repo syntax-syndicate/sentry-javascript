@@ -1,6 +1,6 @@
 import { Hub } from '@sentry/core';
 
-import { OnUncaughtException } from '../src/integrations/onuncaughtexception';
+import { OnUncaughtException } from '../src/integrations/onuncaughtexception.ts';
 
 jest.mock('@sentry/core', () => {
   // we just want to short-circuit it, so dont worry about types

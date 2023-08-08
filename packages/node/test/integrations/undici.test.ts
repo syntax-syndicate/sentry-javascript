@@ -3,11 +3,11 @@ import { Hub, makeMain, runWithAsyncContext } from '@sentry/core';
 import * as http from 'http';
 import type { fetch as FetchType } from 'undici';
 
-import { NodeClient } from '../../src/client';
-import type { UndiciOptions } from '../../src/integrations/undici';
-import { Undici } from '../../src/integrations/undici';
-import { getDefaultNodeClientOptions } from '../helper/node-client-options';
-import { conditionalTest } from '../utils';
+import { NodeClient } from '../../src/client.ts';
+import type { UndiciOptions } from '../../src/integrations/undici.ts';
+import { Undici } from '../../src/integrations/undici.ts';
+import { getDefaultNodeClientOptions } from '../helper/node-client-options.ts';
+import { conditionalTest } from '../utils.ts';
 
 const SENTRY_DSN = 'https://0@0.ingest.sentry.io/0';
 

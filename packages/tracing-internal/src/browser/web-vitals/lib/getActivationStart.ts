@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { getNavigationEntry } from './getNavigationEntry';
+import { getNavigationEntry } from './getNavigationEntry.ts';
 
 export const getActivationStart = (): number => {
   const navEntry = getNavigationEntry();

@@ -1,5 +1,5 @@
-import type { Session, Timeouts } from '../types';
-import { isExpired } from './isExpired';
+import type { Session, Timeouts } from '../types.ts';
+import { isExpired } from './isExpired.ts';
 
 /**
  * Checks to see if session is expired

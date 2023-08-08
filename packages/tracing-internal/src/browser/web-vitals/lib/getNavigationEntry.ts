@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { WINDOW } from '../../types';
-import type { NavigationTimingPolyfillEntry } from '../types';
+import { WINDOW } from '../../types.ts';
+import type { NavigationTimingPolyfillEntry } from '../types.ts';
 
 const getNavigationEntryFromPerformanceTiming = (): NavigationTimingPolyfillEntry => {
   // eslint-disable-next-line deprecation/deprecation

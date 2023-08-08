@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/browser';
 import type { Event, Scope } from '@sentry/types';
 import { addExceptionMechanism, isString } from '@sentry/utils';
 
-import { runOutsideAngular } from './zone';
+import { runOutsideAngular } from './zone.ts';
 
 /**
  * Options used to configure the behavior of the Angular ErrorHandler.

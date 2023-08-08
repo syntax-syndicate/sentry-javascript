@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { shouldSkipTracingTest } from '../../../../utils/helpers';
-import { shouldSkipReplayTest } from '../../../../utils/replayHelpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { shouldSkipTracingTest } from '../../../../utils/helpers.ts';
+import { shouldSkipReplayTest } from '../../../../utils/replayHelpers.ts';
 
 sentryTest('should handle custom added integrations & default integrations', async ({ getLocalTestUrl, page }) => {
   const shouldHaveReplay = !shouldSkipReplayTest();

@@ -5,7 +5,7 @@ import { next } from '@ember/runloop';
 import { assert, warn } from '@ember/debug';
 import Ember from 'ember';
 import { timestampInSeconds, GLOBAL_OBJ } from '@sentry/utils';
-import { GlobalConfig, OwnConfig } from './types';
+import { GlobalConfig, OwnConfig } from './types.ts';
 
 function _getSentryInitConfig() {
   const _global = GLOBAL_OBJ as typeof GLOBAL_OBJ & GlobalConfig;

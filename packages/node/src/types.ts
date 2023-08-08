@@ -1,7 +1,7 @@
 import type { ClientOptions, Options, SamplingContext } from '@sentry/types';
 
-import type { NodeClient } from './client';
-import type { NodeTransportOptions } from './transports';
+import type { NodeClient } from './client.ts';
+import type { NodeTransportOptions } from './transports.ts';
 
 export interface BaseNodeOptions {
   /**

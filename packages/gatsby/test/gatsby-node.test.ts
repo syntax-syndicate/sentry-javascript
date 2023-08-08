@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { onCreateWebpackConfig } from '../gatsby-node';
+import { onCreateWebpackConfig } from '../gatsby-node.ts';
 
 describe('onCreateWebpackConfig', () => {
   it('sets a webpack config', () => {

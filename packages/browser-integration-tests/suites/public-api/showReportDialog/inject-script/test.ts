@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
+import { sentryTest } from '../../../../utils/fixtures.ts';
 
 sentryTest('should inject dialog script into <head> with correct attributes', async ({ getLocalTestPath, page }) => {
   const url = await getLocalTestPath({ testDir: __dirname });

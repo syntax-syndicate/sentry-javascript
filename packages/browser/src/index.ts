@@ -1,9 +1,9 @@
-export * from './exports';
+export * from './exports.ts';
 
 import { Integrations as CoreIntegrations } from '@sentry/core';
 
-import { WINDOW } from './helpers';
-import * as BrowserIntegrations from './integrations';
+import { WINDOW } from './helpers.ts';
+import * as BrowserIntegrations from './integrations.ts';
 
 let windowIntegrations = {};
 
@@ -38,6 +38,6 @@ export {
 } from '@sentry/core';
 export type { SpanStatusType } from '@sentry/core';
 export type { Span } from '@sentry/types';
-export { makeBrowserOfflineTransport } from './transports/offline';
-export { onProfilingStartRouteTransaction } from './profiling/hubextensions';
-export { BrowserProfilingIntegration } from './profiling/integration';
+export { makeBrowserOfflineTransport } from './transports/offline.ts';
+export { onProfilingStartRouteTransaction } from './profiling/hubextensions.ts';
+export { BrowserProfilingIntegration } from './profiling/integration.ts';

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { WINDOW } from '../../types';
-import { onHidden } from './onHidden';
+import { WINDOW } from '../../types.ts';
+import { onHidden } from './onHidden.ts';
 
 let firstHiddenTime = -1;
 

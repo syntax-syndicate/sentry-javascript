@@ -2,9 +2,9 @@ import type { Hub, Scope } from '@sentry/core';
 import { getCurrentHub } from '@sentry/core';
 import type { Client, ReplayEvent } from '@sentry/types';
 
-import { REPLAY_EVENT_NAME } from '../../../src/constants';
-import { prepareReplayEvent } from '../../../src/util/prepareReplayEvent';
-import { getDefaultClientOptions, TestClient } from '../../utils/TestClient';
+import { REPLAY_EVENT_NAME } from '../../../src/constants.ts';
+import { prepareReplayEvent } from '../../../src/util/prepareReplayEvent.ts';
+import { getDefaultClientOptions, TestClient } from '../../utils/TestClient.ts';
 
 describe('Unit | util | prepareReplayEvent', () => {
   let hub: Hub;

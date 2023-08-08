@@ -1,4 +1,4 @@
-import { ClientErrorDebugTools } from '../../components/client-error-debug-tools';
+import { ClientErrorDebugTools } from '../../components/client-error-debug-tools.ts';
 
 export const dynamic = 'force-dynamic';
 

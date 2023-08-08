@@ -1,8 +1,8 @@
 import { vi } from 'vitest';
 
-import * as autoInstrument from '../../src/vite/autoInstrument';
-import { sentrySvelteKit } from '../../src/vite/sentryVitePlugins';
-import * as sourceMaps from '../../src/vite/sourceMaps';
+import * as autoInstrument from '../../src/vite/autoInstrument.ts';
+import { sentrySvelteKit } from '../../src/vite/sentryVitePlugins.ts';
+import * as sourceMaps from '../../src/vite/sourceMaps.ts';
 
 vi.mock('fs', async () => {
   const actual = await vi.importActual('fs');

@@ -9,8 +9,8 @@ import type {
 import { createClientReportEnvelope, createEnvelope, dsnFromString, parseEnvelope } from '@sentry/utils';
 import { TextDecoder, TextEncoder } from 'util';
 
-import { createTransport, getEnvelopeEndpointWithUrlEncodedAuth, makeMultiplexedTransport } from '../../../src';
-import { eventFromEnvelope } from '../../../src/transports/multiplexed';
+import { createTransport, getEnvelopeEndpointWithUrlEncodedAuth, makeMultiplexedTransport } from '../../../src.ts';
+import { eventFromEnvelope } from '../../../src/transports/multiplexed.ts';
 
 const DSN1 = 'https://1234@5678.ingest.sentry.io/4321';
 const DSN1_URL = getEnvelopeEndpointWithUrlEncodedAuth(dsnFromString(DSN1)!);

@@ -1,8 +1,8 @@
-import { REPLAY_SESSION_KEY, WINDOW } from '../constants';
-import type { Session } from '../types';
-import { hasSessionStorage } from '../util/hasSessionStorage';
-import { logInfo } from '../util/log';
-import { makeSession } from './Session';
+import { REPLAY_SESSION_KEY, WINDOW } from '../constants.ts';
+import type { Session } from '../types.ts';
+import { hasSessionStorage } from '../util/hasSessionStorage.ts';
+import { logInfo } from '../util/log.ts';
+import { makeSession } from './Session.ts';
 
 /**
  * Fetches a session from storage

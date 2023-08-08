@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../../utils/fixtures';
-import { envelopeRequestParser, waitForErrorRequest } from '../../../../../utils/helpers';
+import { sentryTest } from '../../../../../utils/fixtures.ts';
+import { envelopeRequestParser, waitForErrorRequest } from '../../../../../utils/helpers.ts';
 import {
   getCustomRecordingEvents,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../../../utils/replayHelpers';
+} from '../../../../../utils/replayHelpers.ts';
 
 sentryTest('captures text request body', async ({ getLocalTestPath, page, browserName }) => {
   if (shouldSkipReplayTest()) {

@@ -3,7 +3,7 @@ import 'jsdom-worker';
 import pako from 'pako';
 
 import { BASE_TIMESTAMP } from '../..';
-import { EventBufferProxy } from '../../../src/eventBuffer/EventBufferProxy';
+import { EventBufferProxy } from '../../../src/eventBuffer/EventBufferProxy.ts';
 import { createEventBuffer } from './../../../src/eventBuffer';
 
 const TEST_EVENT = { data: {}, timestamp: BASE_TIMESTAMP, type: 3 };

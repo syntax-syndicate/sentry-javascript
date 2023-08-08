@@ -6,7 +6,7 @@ import { vi } from 'vitest';
 
 import { navigating, page } from '$app/stores';
 
-import { svelteKitRoutingInstrumentation } from '../../src/client/router';
+import { svelteKitRoutingInstrumentation } from '../../src/client/router.ts';
 
 // we have to overwrite the global mock from `vitest.setup.ts` here to reset the
 // `navigating` store for each test.

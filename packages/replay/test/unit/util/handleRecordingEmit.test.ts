@@ -1,11 +1,11 @@
 import { EventType } from '@sentry-internal/rrweb';
 
 import { BASE_TIMESTAMP } from '../..';
-import type { OptionFrameEvent } from '../../../src/types';
-import * as SentryAddEvent from '../../../src/util/addEvent';
-import { createOptionsEvent, getHandleRecordingEmit } from '../../../src/util/handleRecordingEmit';
-import { setupReplayContainer } from '../../utils/setupReplayContainer';
-import { useFakeTimers } from '../../utils/use-fake-timers';
+import type { OptionFrameEvent } from '../../../src/types.ts';
+import * as SentryAddEvent from '../../../src/util/addEvent.ts';
+import { createOptionsEvent, getHandleRecordingEmit } from '../../../src/util/handleRecordingEmit.ts';
+import { setupReplayContainer } from '../../utils/setupReplayContainer.ts';
+import { useFakeTimers } from '../../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

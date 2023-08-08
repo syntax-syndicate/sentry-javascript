@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
-import { fixJson } from '../../../../../src/util/truncateJson/fixJson';
+import { fixJson } from '../../../../../src/util/truncateJson/fixJson.ts';
 
 describe('Unit  | coreHandlers | util | truncateJson | fixJson', () => {
   test.each([

@@ -1,11 +1,11 @@
-export { CaptureConsole } from './captureconsole';
-export { Debug } from './debug';
-export { Dedupe } from './dedupe';
-export { ExtraErrorData } from './extraerrordata';
+export { CaptureConsole } from './captureconsole.ts';
+export { Debug } from './debug.ts';
+export { Dedupe } from './dedupe.ts';
+export { ExtraErrorData } from './extraerrordata.ts';
 // eslint-disable-next-line deprecation/deprecation
-export { Offline } from './offline';
-export { ReportingObserver } from './reportingobserver';
-export { RewriteFrames } from './rewriteframes';
-export { SessionTiming } from './sessiontiming';
-export { Transaction } from './transaction';
-export { HttpClient } from './httpclient';
+export { Offline } from './offline.ts';
+export { ReportingObserver } from './reportingobserver.ts';
+export { RewriteFrames } from './rewriteframes.ts';
+export { SessionTiming } from './sessiontiming.ts';
+export { Transaction } from './transaction.ts';
+export { HttpClient } from './httpclient.ts';

@@ -1,6 +1,6 @@
-import { isRegExp, isString } from './is';
+import { isRegExp, isString } from './is.ts';
 
-export { escapeStringForRegex } from './vendor/escapeStringForRegex';
+export { escapeStringForRegex } from './vendor/escapeStringForRegex.ts';
 
 /**
  * Truncates given string to the maximum characters count

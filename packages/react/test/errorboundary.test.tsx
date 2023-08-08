@@ -3,8 +3,8 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import * as React from 'react';
 import { useState } from 'react';
 
-import type { ErrorBoundaryProps } from '../src/errorboundary';
-import { ErrorBoundary, isAtLeastReact17, UNKNOWN_COMPONENT, withErrorBoundary } from '../src/errorboundary';
+import type { ErrorBoundaryProps } from '../src/errorboundary.ts';
+import { ErrorBoundary, isAtLeastReact17, UNKNOWN_COMPONENT, withErrorBoundary } from '../src/errorboundary.ts';
 
 const mockCaptureException = jest.fn();
 const mockShowReportDialog = jest.fn();

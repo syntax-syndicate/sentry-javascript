@@ -4,15 +4,15 @@ import {
   _interopNamespaceDefaultOnly,
   _interopRequireDefault,
   _interopRequireWildcard,
-} from '../../src/buildPolyfills';
-import type { RequireResult } from '../../src/buildPolyfills/types';
+} from '../../src/buildPolyfills.ts';
+import type { RequireResult } from '../../src/buildPolyfills/types.ts';
 import {
   _interopDefault as _interopDefaultOrig,
   _interopNamespace as _interopNamespaceOrig,
   _interopNamespaceDefaultOnly as _interopNamespaceDefaultOnlyOrig,
   _interopRequireDefault as _interopRequireDefaultOrig,
   _interopRequireWildcard as _interopRequireWildcardOrig,
-} from './originals';
+} from './originals.ts';
 
 // This file tests five different functions against a range of test cases. Though the inputs are the same for each
 // function's test cases, the expected output differs. The testcases for each function are therefore built from separate

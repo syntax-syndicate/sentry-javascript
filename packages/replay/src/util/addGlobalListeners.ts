@@ -3,13 +3,13 @@ import { addGlobalEventProcessor, getCurrentHub } from '@sentry/core';
 import type { Client, DynamicSamplingContext } from '@sentry/types';
 import { addInstrumentationHandler } from '@sentry/utils';
 
-import { handleAfterSendEvent } from '../coreHandlers/handleAfterSendEvent';
-import { handleDomListener } from '../coreHandlers/handleDom';
-import { handleGlobalEventListener } from '../coreHandlers/handleGlobalEvent';
-import { handleHistorySpanListener } from '../coreHandlers/handleHistory';
-import { handleNetworkBreadcrumbs } from '../coreHandlers/handleNetworkBreadcrumbs';
-import { handleScopeListener } from '../coreHandlers/handleScope';
-import type { ReplayContainer } from '../types';
+import { handleAfterSendEvent } from '../coreHandlers/handleAfterSendEvent.ts';
+import { handleDomListener } from '../coreHandlers/handleDom.ts';
+import { handleGlobalEventListener } from '../coreHandlers/handleGlobalEvent.ts';
+import { handleHistorySpanListener } from '../coreHandlers/handleHistory.ts';
+import { handleNetworkBreadcrumbs } from '../coreHandlers/handleNetworkBreadcrumbs.ts';
+import { handleScopeListener } from '../coreHandlers/handleScope.ts';
+import type { ReplayContainer } from '../types.ts';
 
 /**
  * Add global listeners that cannot be removed.

@@ -1,4 +1,4 @@
-import { getGlobalValueInjectionCode } from '../../src/vite/injectGlobalValues';
+import { getGlobalValueInjectionCode } from '../../src/vite/injectGlobalValues.ts';
 
 describe('getGlobalValueInjectionCode', () => {
   it('returns code that injects values into the global object', () => {

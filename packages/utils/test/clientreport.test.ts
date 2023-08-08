@@ -1,8 +1,8 @@
 import type { ClientReport } from '@sentry/types';
 import { TextDecoder, TextEncoder } from 'util';
 
-import { createClientReportEnvelope } from '../src/clientreport';
-import { parseEnvelope, serializeEnvelope } from '../src/envelope';
+import { createClientReportEnvelope } from '../src/clientreport.ts';
+import { parseEnvelope, serializeEnvelope } from '../src/envelope.ts';
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();

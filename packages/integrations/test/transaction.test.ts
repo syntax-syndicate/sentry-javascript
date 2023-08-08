@@ -1,4 +1,4 @@
-import { Transaction } from '../src/transaction';
+import { Transaction } from '../src/transaction.ts';
 
 const transaction: Transaction = new Transaction();
 

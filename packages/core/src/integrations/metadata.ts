@@ -1,7 +1,7 @@
 import type { EventItem, EventProcessor, Hub, Integration } from '@sentry/types';
 import { forEachEnvelopeItem } from '@sentry/utils';
 
-import { addMetadataToStackFrames, stripMetadataFromStackFrames } from '../metadata';
+import { addMetadataToStackFrames, stripMetadataFromStackFrames } from '../metadata.ts';
 
 /**
  * Adds module metadata to stack frames.

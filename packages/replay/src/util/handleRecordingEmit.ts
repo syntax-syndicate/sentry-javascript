@@ -1,10 +1,10 @@
 import { EventType } from '@sentry-internal/rrweb';
 import { logger } from '@sentry/utils';
 
-import { saveSession } from '../session/saveSession';
-import type { AddEventResult, OptionFrameEvent, RecordingEvent, ReplayContainer } from '../types';
-import { addEvent } from './addEvent';
-import { logInfo } from './log';
+import { saveSession } from '../session/saveSession.ts';
+import type { AddEventResult, OptionFrameEvent, RecordingEvent, ReplayContainer } from '../types.ts';
+import { addEvent } from './addEvent.ts';
+import { logInfo } from './log.ts';
 
 type RecordingEmitCallback = (event: RecordingEvent, isCheckout?: boolean) => void;
 
@@ -19,7 +19,7 @@ export function getHandleRecordingEmit(replay: ReplayContainer): RecordingEmitCa
   return (event: RecordingEvent, _isCheckout?: boolean) => {
     // If this is false, it means session is expired, create and a new session and wait for checkout
     if (!replay.checkAndHandleExpiredSession()) {
-      __DEBUG_BUILD__ && logger.warn('[Replay] Received replay event after session expired.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('[Replay] Received replay event after session expired.');
 
       return;
     }

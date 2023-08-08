@@ -4,14 +4,14 @@ import { getActiveTransaction } from '@sentry/core';
 import type { Measurements } from '@sentry/types';
 import { browserPerformanceTimeOrigin, htmlTreeAsString, logger } from '@sentry/utils';
 
-import { WINDOW } from '../types';
-import { onCLS } from '../web-vitals/getCLS';
-import { onFID } from '../web-vitals/getFID';
-import { onLCP } from '../web-vitals/getLCP';
-import { getVisibilityWatcher } from '../web-vitals/lib/getVisibilityWatcher';
-import { observe } from '../web-vitals/lib/observe';
-import type { NavigatorDeviceMemory, NavigatorNetworkInformation } from '../web-vitals/types';
-import { _startChild, isMeasurementValue } from './utils';
+import { WINDOW } from '../types.ts';
+import { onCLS } from '../web-vitals/getCLS.ts';
+import { onFID } from '../web-vitals/getFID.ts';
+import { onLCP } from '../web-vitals/getLCP.ts';
+import { getVisibilityWatcher } from '../web-vitals/lib/getVisibilityWatcher.ts';
+import { observe } from '../web-vitals/lib/observe.ts';
+import type { NavigatorDeviceMemory, NavigatorNetworkInformation } from '../web-vitals/types.ts';
+import { _startChild, isMeasurementValue } from './utils.ts';
 
 /**
  * Converts from milliseconds to seconds
@@ -125,7 +125,7 @@ function _trackCLS(): ReturnType<typeof onCLS> {
       return;
     }
 
-    __DEBUG_BUILD__ && logger.log('[Measurements] Adding CLS');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Measurements] Adding CLS');
     _measurements['cls'] = { value: metric.value, unit: '' };
     _clsEntry = entry as LayoutShift;
   });
@@ -139,7 +139,7 @@ function _trackLCP(): ReturnType<typeof onLCP> {
       return;
     }
 
-    __DEBUG_BUILD__ && logger.log('[Measurements] Adding LCP');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Measurements] Adding LCP');
     _measurements['lcp'] = { value: metric.value, unit: 'millisecond' };
     _lcpEntry = entry as LargestContentfulPaint;
   });
@@ -155,7 +155,7 @@ function _trackFID(): void {
 
     const timeOrigin = msToSec(browserPerformanceTimeOrigin as number);
     const startTime = msToSec(entry.startTime);
-    __DEBUG_BUILD__ && logger.log('[Measurements] Adding FID');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Measurements] Adding FID');
     _measurements['fid'] = { value: metric.value, unit: 'millisecond' };
     _measurements['mark.fid'] = { value: timeOrigin + startTime, unit: 'second' };
   });
@@ -169,7 +169,7 @@ export function addPerformanceEntries(transaction: Transaction): void {
     return;
   }
 
-  __DEBUG_BUILD__ && logger.log('[Tracing] Adding & adjusting spans using Performance API');
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Tracing] Adding & adjusting spans using Performance API');
   const timeOrigin = msToSec(browserPerformanceTimeOrigin);
 
   const performanceEntries = performance.getEntries();
@@ -204,11 +204,11 @@ export function addPerformanceEntries(transaction: Transaction): void {
         const shouldRecord = entry.startTime < firstHidden.firstHiddenTime;
 
         if (entry.name === 'first-paint' && shouldRecord) {
-          __DEBUG_BUILD__ && logger.log('[Measurements] Adding FP');
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Measurements] Adding FP');
           _measurements['fp'] = { value: entry.startTime, unit: 'millisecond' };
         }
         if (entry.name === 'first-contentful-paint' && shouldRecord) {
-          __DEBUG_BUILD__ && logger.log('[Measurements] Adding FCP');
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Measurements] Adding FCP');
           _measurements['fcp'] = { value: entry.startTime, unit: 'millisecond' };
         }
         break;
@@ -232,7 +232,7 @@ export function addPerformanceEntries(transaction: Transaction): void {
     // Generate TTFB (Time to First Byte), which measured as the time between the beginning of the transaction and the
     // start of the response in milliseconds
     if (typeof responseStartTimestamp === 'number') {
-      __DEBUG_BUILD__ && logger.log('[Measurements] Adding TTFB');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Measurements] Adding TTFB');
       _measurements['ttfb'] = {
         value: (responseStartTimestamp - transaction.startTimestamp) * 1000,
         unit: 'millisecond',
@@ -262,7 +262,7 @@ export function addPerformanceEntries(transaction: Transaction): void {
       const normalizedValue = Math.abs((measurementTimestamp - transaction.startTimestamp) * 1000);
       const delta = normalizedValue - oldValue;
 
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
         logger.log(`[Measurements] Normalized ${name} from ${oldValue} to ${normalizedValue} (${delta})`);
       _measurements[name].value = normalizedValue;
     });
@@ -465,7 +465,7 @@ function _trackNavigator(transaction: Transaction): void {
 /** Add LCP / CLS data to transaction to allow debugging */
 function _tagMetricInfo(transaction: Transaction): void {
   if (_lcpEntry) {
-    __DEBUG_BUILD__ && logger.log('[Measurements] Adding LCP Data');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Measurements] Adding LCP Data');
 
     // Capture Properties of the LCP element that contributes to the LCP.
 
@@ -487,7 +487,7 @@ function _tagMetricInfo(transaction: Transaction): void {
 
   // See: https://developer.mozilla.org/en-US/docs/Web/API/LayoutShift
   if (_clsEntry && _clsEntry.sources) {
-    __DEBUG_BUILD__ && logger.log('[Measurements] Adding CLS Data');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Measurements] Adding CLS Data');
     _clsEntry.sources.forEach((source, index) =>
       transaction.setTag(`cls.source.${index + 1}`, htmlTreeAsString(source.node)),
     );

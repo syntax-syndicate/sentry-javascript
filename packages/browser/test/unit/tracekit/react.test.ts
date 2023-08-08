@@ -1,5 +1,5 @@
-import { exceptionFromError } from '../../../src/eventbuilder';
-import { defaultStackParser as parser } from '../../../src/stack-parsers';
+import { exceptionFromError } from '../../../src/eventbuilder.ts';
+import { defaultStackParser as parser } from '../../../src/stack-parsers.ts';
 
 describe('Tracekit - React Tests', () => {
   it('should correctly parse Invariant Violation errors and use framesToPop to drop info message', () => {

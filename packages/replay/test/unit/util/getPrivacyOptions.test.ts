@@ -1,4 +1,4 @@
-import { getPrivacyOptions } from '../../../src/util/getPrivacyOptions';
+import { getPrivacyOptions } from '../../../src/util/getPrivacyOptions.ts';
 
 describe('Unit | util | getPrivacyOptions', () => {
   beforeEach(() => {

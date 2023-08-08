@@ -6,8 +6,8 @@ const patchedDecoder = (!global.window.TextDecoder && (global.window.TextDecoder
 
 import { JSDOM } from 'jsdom';
 
-import type { JSSelfProfile } from '../../../src/profiling/jsSelfProfiling';
-import { convertJSSelfProfileToSampledFormat } from '../../../src/profiling/utils';
+import type { JSSelfProfile } from '../../../src/profiling/jsSelfProfiling.ts';
+import { convertJSSelfProfileToSampledFormat } from '../../../src/profiling/utils.ts';
 
 const makeJSProfile = (partial: Partial<JSSelfProfile> = {}): JSSelfProfile => {
   return {

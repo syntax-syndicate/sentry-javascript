@@ -2,7 +2,7 @@ import type { Transport } from '@sentry/types';
 import { SyncPromise } from '@sentry/utils';
 import { TextEncoder } from 'util';
 
-import { createTransport } from '../../src/transports/base';
+import { createTransport } from '../../src/transports/base.ts';
 
 async function sleep(delay: number): Promise<void> {
   return new SyncPromise(resolve => setTimeout(resolve, delay));

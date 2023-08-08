@@ -1,7 +1,7 @@
-import { REPLAY_MAX_EVENT_BUFFER_SIZE } from '../../../src/constants';
-import { createEventBuffer } from '../../../src/eventBuffer';
-import { EventBufferSizeExceededError } from '../../../src/eventBuffer/error';
-import { BASE_TIMESTAMP } from '../../index';
+import { REPLAY_MAX_EVENT_BUFFER_SIZE } from '../../../src/constants.ts';
+import { createEventBuffer } from '../../../src/eventBuffer.ts';
+import { EventBufferSizeExceededError } from '../../../src/eventBuffer/error.ts';
+import { BASE_TIMESTAMP } from '../../index.ts';
 
 const TEST_EVENT = { data: {}, timestamp: BASE_TIMESTAMP, type: 3 };
 

@@ -1,6 +1,6 @@
 import { getCurrentHub } from '@sentry/core';
 
-import { BrowserTracing, Integrations } from '../src';
+import { BrowserTracing, Integrations } from '../src.ts';
 
 describe('index', () => {
   it('patches the global hub to add an implementation for `Hub.startTransaction` as a side effect', () => {

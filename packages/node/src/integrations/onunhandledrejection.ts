@@ -3,7 +3,7 @@ import { getCurrentHub } from '@sentry/core';
 import type { Integration } from '@sentry/types';
 import { consoleSandbox } from '@sentry/utils';
 
-import { logAndExitProcess } from './utils/errorhandling';
+import { logAndExitProcess } from './utils/errorhandling.ts';
 
 type UnhandledRejectionMode = 'none' | 'warn' | 'strict';
 

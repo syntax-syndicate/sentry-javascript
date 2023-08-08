@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { WINDOW } from '../../types';
-import type { Metric } from '../types';
-import { generateUniqueID } from './generateUniqueID';
-import { getActivationStart } from './getActivationStart';
-import { getNavigationEntry } from './getNavigationEntry';
+import { WINDOW } from '../../types.ts';
+import type { Metric } from '../types.ts';
+import { generateUniqueID } from './generateUniqueID.ts';
+import { getActivationStart } from './getActivationStart.ts';
+import { getNavigationEntry } from './getNavigationEntry.ts';
 
 export const initMetric = (name: Metric['name'], value?: number): Metric => {
   const navEntry = getNavigationEntry();

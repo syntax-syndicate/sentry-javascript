@@ -1,7 +1,7 @@
 import { getMainCarrier, initAndBind, runWithAsyncContext, SDK_VERSION } from '@sentry/core';
 import type { EventHint, Integration } from '@sentry/types';
 
-import type { Event, Scope } from '../src';
+import type { Event, Scope } from '../src.ts';
 import {
   addBreadcrumb,
   captureEvent,
@@ -11,12 +11,12 @@ import {
   getCurrentHub,
   init,
   NodeClient,
-} from '../src';
-import { setNodeAsyncContextStrategy } from '../src/async';
-import { ContextLines, LinkedErrors } from '../src/integrations';
-import { defaultStackParser } from '../src/sdk';
-import type { NodeClientOptions } from '../src/types';
-import { getDefaultNodeClientOptions } from './helper/node-client-options';
+} from '../src.ts';
+import { setNodeAsyncContextStrategy } from '../src/async.ts';
+import { ContextLines, LinkedErrors } from '../src/integrations.ts';
+import { defaultStackParser } from '../src/sdk.ts';
+import type { NodeClientOptions } from '../src/types.ts';
+import { getDefaultNodeClientOptions } from './helper/node-client-options.ts';
 
 jest.mock('@sentry/core', () => {
   const original = jest.requireActual('@sentry/core');

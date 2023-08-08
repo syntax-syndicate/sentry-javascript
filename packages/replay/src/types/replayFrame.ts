@@ -8,8 +8,8 @@ import type {
   NetworkRequestData,
   PaintData,
   ResourceData,
-} from './performance';
-import type { EventType } from './rrweb';
+} from './performance.ts';
+import type { EventType } from './rrweb.ts';
 
 type AnyRecord = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 

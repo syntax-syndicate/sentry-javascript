@@ -7,8 +7,8 @@ import type {
   NextConfigObjectWithSentry,
   SentryWebpackPluginOptions,
   UserSentryOptions,
-} from './types';
-import { constructWebpackConfigFunction } from './webpack';
+} from './types.ts';
+import { constructWebpackConfigFunction } from './webpack.ts';
 
 let showedExportModeTunnelWarning = false;
 

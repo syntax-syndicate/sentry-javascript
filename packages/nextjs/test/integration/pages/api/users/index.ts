@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { sampleUserData } from '../../../utils/sample-data';
+import { sampleUserData } from '../../../utils/sample-data.ts';
 
 const handler = async (_req: NextApiRequest, res: NextApiResponse): Promise<void> => {
   try {

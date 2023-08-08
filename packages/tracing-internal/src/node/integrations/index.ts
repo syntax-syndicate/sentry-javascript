@@ -1,8 +1,8 @@
-export { Express } from './express';
-export { Postgres } from './postgres';
-export { Mysql } from './mysql';
-export { Mongo } from './mongo';
-export { Prisma } from './prisma';
-export { GraphQL } from './graphql';
-export { Apollo } from './apollo';
-export * from './lazy';
+export { Express } from './express.ts';
+export { Postgres } from './postgres.ts';
+export { Mysql } from './mysql.ts';
+export { Mongo } from './mongo.ts';
+export { Prisma } from './prisma.ts';
+export { GraphQL } from './graphql.ts';
+export { Apollo } from './apollo.ts';
+export * from './lazy.ts';

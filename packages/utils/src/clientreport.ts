@@ -1,7 +1,7 @@
 import type { ClientReport, ClientReportEnvelope, ClientReportItem } from '@sentry/types';
 
-import { createEnvelope } from './envelope';
-import { dateTimestampInSeconds } from './time';
+import { createEnvelope } from './envelope.ts';
+import { dateTimestampInSeconds } from './time.ts';
 
 /**
  * Creates client report envelope

@@ -1,8 +1,8 @@
 import type { ClientOptions, Event, EventHint, StackFrame, StackParser } from '@sentry/types';
 import { dateTimestampInSeconds, GLOBAL_OBJ, normalize, resolvedSyncPromise, truncate, uuid4 } from '@sentry/utils';
 
-import { DEFAULT_ENVIRONMENT } from '../constants';
-import { Scope } from '../scope';
+import { DEFAULT_ENVIRONMENT } from '../constants.ts';
+import { Scope } from '../scope.ts';
 
 /**
  * Adds common information to events.

@@ -1,7 +1,7 @@
 import * as path from 'path';
 
-import { TestEnv } from '../../../../utils/index';
-import type { TestAPIResponse } from '../server';
+import { TestEnv } from '../../../../utils/index.ts';
+import type { TestAPIResponse } from '../server.ts';
 
 test('Should not overwrite baggage if the incoming request already has Sentry baggage data.', async () => {
   const env = await TestEnv.init(__dirname, `${path.resolve(__dirname, '..')}/server.ts`);

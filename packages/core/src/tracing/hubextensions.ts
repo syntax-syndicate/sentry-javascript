@@ -1,12 +1,12 @@
 import type { ClientOptions, CustomSamplingContext, Options, SamplingContext, TransactionContext } from '@sentry/types';
 import { isNaN, logger } from '@sentry/utils';
 
-import type { Hub } from '../hub';
-import { getMainCarrier } from '../hub';
-import { hasTracingEnabled } from '../utils/hasTracingEnabled';
-import { registerErrorInstrumentation } from './errors';
-import { IdleTransaction } from './idletransaction';
-import { Transaction } from './transaction';
+import type { Hub } from '../hub.ts';
+import { getMainCarrier } from '../hub.ts';
+import { hasTracingEnabled } from '../utils/hasTracingEnabled.ts';
+import { registerErrorInstrumentation } from './errors.ts';
+import { IdleTransaction } from './idletransaction.ts';
+import { Transaction } from './transaction.ts';
 
 /** Returns all trace headers that are currently on the top scope. */
 function traceHeaders(this: Hub): { [key: string]: string } {
@@ -77,14 +77,14 @@ function sample<T extends Transaction>(
   // Since this is coming from the user (or from a function provided by the user), who knows what we might get. (The
   // only valid values are booleans or numbers between 0 and 1.)
   if (!isValidSampleRate(sampleRate)) {
-    __DEBUG_BUILD__ && logger.warn('[Tracing] Discarding transaction because of invalid sample rate.');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('[Tracing] Discarding transaction because of invalid sample rate.');
     transaction.sampled = false;
     return transaction;
   }
 
   // if the function returned 0 (or false), or if `tracesSampleRate` is 0, it's a sign the transaction should be dropped
   if (!sampleRate) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.log(
         `[Tracing] Discarding transaction because ${
           typeof options.tracesSampler === 'function'
@@ -102,7 +102,7 @@ function sample<T extends Transaction>(
 
   // if we're not going to keep it, we're done
   if (!transaction.sampled) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.log(
         `[Tracing] Discarding transaction because it's not included in the random sample (sampling rate = ${Number(
           sampleRate,
@@ -111,7 +111,7 @@ function sample<T extends Transaction>(
     return transaction;
   }
 
-  __DEBUG_BUILD__ && logger.log(`[Tracing] starting ${transaction.op} transaction - ${transaction.name}`);
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(`[Tracing] starting ${transaction.op} transaction - ${transaction.name}`);
   return transaction;
 }
 
@@ -122,7 +122,7 @@ function isValidSampleRate(rate: unknown): boolean {
   // we need to check NaN explicitly because it's of type 'number' and therefore wouldn't get caught by this typecheck
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (isNaN(rate) || !(typeof rate === 'number' || typeof rate === 'boolean')) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn(
         `[Tracing] Given sample rate is invalid. Sample rate must be a boolean or a number between 0 and 1. Got ${JSON.stringify(
           rate,
@@ -133,7 +133,7 @@ function isValidSampleRate(rate: unknown): boolean {
 
   // in case sampleRate is a boolean, it will get automatically cast to 1 if it's true and 0 if it's false
   if (rate < 0 || rate > 1) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn(`[Tracing] Given sample rate is invalid. Sample rate must be between 0 and 1. Got ${rate}.`);
     return false;
   }
@@ -167,7 +167,7 @@ function _startTransaction(
   const transactionInstrumenter = transactionContext.instrumenter || 'sentry';
 
   if (configInstrumenter !== transactionInstrumenter) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.error(
         `A transaction was started with instrumenter=\`${transactionInstrumenter}\`, but the SDK is configured with the \`${configInstrumenter}\` instrumenter.
 The transaction will not be sampled. Please use the ${configInstrumenter} instrumentation to start transactions.`,

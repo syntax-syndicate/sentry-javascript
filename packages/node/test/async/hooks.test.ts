@@ -1,8 +1,8 @@
 import type { Hub } from '@sentry/core';
 import { getCurrentHub, runWithAsyncContext, setAsyncContextStrategy } from '@sentry/core';
 
-import { setHooksAsyncContextStrategy } from '../../src/async/hooks';
-import { conditionalTest } from '../utils';
+import { setHooksAsyncContextStrategy } from '../../src/async/hooks.ts';
+import { conditionalTest } from '../utils.ts';
 
 conditionalTest({ min: 12 })('async_hooks', () => {
   afterAll(() => {

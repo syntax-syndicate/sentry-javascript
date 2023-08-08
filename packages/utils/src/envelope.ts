@@ -14,9 +14,9 @@ import type {
   TextEncoderInternal,
 } from '@sentry/types';
 
-import { dsnToString } from './dsn';
-import { normalize } from './normalize';
-import { dropUndefinedKeys } from './object';
+import { dsnToString } from './dsn.ts';
+import { normalize } from './normalize.ts';
+import { dropUndefinedKeys } from './object.ts';
 
 /**
  * Creates an envelope.

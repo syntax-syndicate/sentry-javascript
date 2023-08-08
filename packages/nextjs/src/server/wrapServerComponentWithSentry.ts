@@ -7,8 +7,8 @@ import {
 } from '@sentry/core';
 import { tracingContextFromHeaders } from '@sentry/utils';
 
-import { isNotFoundNavigationError, isRedirectNavigationError } from '../common/nextNavigationErrorUtils';
-import type { ServerComponentContext } from '../common/types';
+import { isNotFoundNavigationError, isRedirectNavigationError } from '../common/nextNavigationErrorUtils.ts';
+import type { ServerComponentContext } from '../common/types.ts';
 
 /**
  * Wraps an `app` directory server component with Sentry error instrumentation.

@@ -2,7 +2,7 @@
 import type { ClientOptions, DsnComponents } from '@sentry/types';
 import { makeDsn } from '@sentry/utils';
 
-import { getEnvelopeEndpointWithUrlEncodedAuth, getReportDialogEndpoint } from '../../src/api';
+import { getEnvelopeEndpointWithUrlEncodedAuth, getReportDialogEndpoint } from '../../src/api.ts';
 
 const ingestDsn = 'https://abc@xxxx.ingest.sentry.io:1234/subpath/123';
 const dsnPublic = 'https://abc@sentry.io:1234/subpath/123';

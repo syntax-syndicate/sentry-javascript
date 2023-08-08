@@ -5,8 +5,8 @@ import * as dotenv from 'dotenv';
 import { sync as globSync } from 'glob';
 import { resolve } from 'path';
 
-import { validate } from './lib/validate';
-import { registrySetup } from './registrySetup';
+import { validate } from './lib/validate.ts';
+import { registrySetup } from './registrySetup.ts';
 
 function asyncExec(command: string, options: { env: Record<string, string | undefined>; cwd: string }): Promise<void> {
   return new Promise((resolve, reject) => {

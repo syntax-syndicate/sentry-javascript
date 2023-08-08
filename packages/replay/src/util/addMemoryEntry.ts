@@ -1,6 +1,6 @@
-import { WINDOW } from '../constants';
-import type { AddEventResult, MemoryData, ReplayContainer, ReplayPerformanceEntry } from '../types';
-import { createPerformanceSpans } from './createPerformanceSpans';
+import { WINDOW } from '../constants.ts';
+import type { AddEventResult, MemoryData, ReplayContainer, ReplayPerformanceEntry } from '../types.ts';
+import { createPerformanceSpans } from './createPerformanceSpans.ts';
 
 type ReplayMemoryEntry = ReplayPerformanceEntry<MemoryData> & { data: { memory: MemoryInfo } };
 

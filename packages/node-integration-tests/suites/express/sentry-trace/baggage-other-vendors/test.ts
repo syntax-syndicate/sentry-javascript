@@ -1,7 +1,7 @@
 import * as path from 'path';
 
-import { TestEnv } from '../../../../utils/index';
-import type { TestAPIResponse } from '../server';
+import { TestEnv } from '../../../../utils/index.ts';
+import type { TestAPIResponse } from '../server.ts';
 
 test('should merge `baggage` header of a third party vendor with the Sentry DSC baggage items', async () => {
   const env = await TestEnv.init(__dirname, `${path.resolve(__dirname, '.')}/server.ts`);

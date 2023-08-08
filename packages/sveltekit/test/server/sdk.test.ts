@@ -3,7 +3,7 @@ import * as SentryNode from '@sentry/node';
 import { SDK_VERSION } from '@sentry/node';
 import { GLOBAL_OBJ } from '@sentry/utils';
 
-import { init } from '../../src/server/sdk';
+import { init } from '../../src/server/sdk.ts';
 
 const nodeInit = vi.spyOn(SentryNode, 'init');
 

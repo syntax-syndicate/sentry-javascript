@@ -1,11 +1,11 @@
 import express from 'express';
 import { createRequestHandler } from '@remix-run/express';
 import { wrapExpressCreateRequestHandler } from '@sentry/remix';
-import { TestEnv } from '../../../../../../node-integration-tests/utils';
+import { TestEnv } from '../../../../../../node-integration-tests/utils.ts';
 import * as http from 'http';
 import { AddressInfo } from 'net';
 
-export * from '../../../../../../node-integration-tests/utils';
+export * from '../../../../../../node-integration-tests/utils.ts';
 
 export class RemixTestEnv extends TestEnv {
   private constructor(public readonly server: http.Server, public readonly url: string) {

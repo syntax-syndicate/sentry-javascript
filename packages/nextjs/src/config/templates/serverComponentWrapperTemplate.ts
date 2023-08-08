@@ -8,7 +8,7 @@ import * as serverComponentModule from '__SENTRY_WRAPPING_TARGET_FILE__';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as Sentry from '@sentry/nextjs';
 
-import type { RequestAsyncStorage } from './requestAsyncStorageShim';
+import type { RequestAsyncStorage } from './requestAsyncStorageShim.ts';
 
 declare const requestAsyncStorage: RequestAsyncStorage;
 

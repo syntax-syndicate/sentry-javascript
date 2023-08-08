@@ -21,11 +21,11 @@ import {
 } from '@sentry/utils';
 import type * as http from 'http';
 
-import type { NodeClient } from './client';
-import { extractRequestData } from './requestdata';
+import type { NodeClient } from './client.ts';
+import { extractRequestData } from './requestdata.ts';
 // TODO (v8 / XXX) Remove this import
-import type { ParseRequestOptions } from './requestDataDeprecated';
-import { flush, isAutoSessionTrackingEnabled } from './sdk';
+import type { ParseRequestOptions } from './requestDataDeprecated.ts';
+import { flush, isAutoSessionTrackingEnabled } from './sdk.ts';
 
 /**
  * Express-compatible tracing handler.
@@ -179,7 +179,7 @@ export function requestHandler(
             _end.call(this, chunk, encoding, cb);
           })
           .then(null, e => {
-            __DEBUG_BUILD__ && logger.error(e);
+            typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error(e);
             _end.call(this, chunk, encoding, cb);
           });
       };
@@ -364,6 +364,6 @@ export function trpcMiddleware(options: SentryTrpcMiddlewareOptions = {}) {
 
 // TODO (v8 / #5257): Remove this
 // eslint-disable-next-line deprecation/deprecation
-export type { ParseRequestOptions, ExpressRequest } from './requestDataDeprecated';
+export type { ParseRequestOptions, ExpressRequest } from './requestDataDeprecated.ts';
 // eslint-disable-next-line deprecation/deprecation
-export { parseRequest, extractRequestData } from './requestDataDeprecated';
+export { parseRequest, extractRequestData } from './requestDataDeprecated.ts';

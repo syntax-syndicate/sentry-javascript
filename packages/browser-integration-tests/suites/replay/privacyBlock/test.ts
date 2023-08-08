@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../utils/fixtures';
+import { sentryTest } from '../../../utils/fixtures.ts';
 import {
   getFullRecordingSnapshots,
   normalize,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../utils/replayHelpers';
+} from '../../../utils/replayHelpers.ts';
 
 sentryTest('should allow to manually block elements', async ({ getLocalTestPath, page }) => {
   if (shouldSkipReplayTest()) {

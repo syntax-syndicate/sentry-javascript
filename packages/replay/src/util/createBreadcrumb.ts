@@ -1,4 +1,4 @@
-import type { BreadcrumbFrame } from '../types/replayFrame';
+import type { BreadcrumbFrame } from '../types/replayFrame.ts';
 
 /**
  * Create a breadcrumb for a replay.

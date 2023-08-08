@@ -8,7 +8,7 @@ import { getCurrentHub } from '@sentry/core';
 import type { Transaction } from '@sentry/types';
 import { JSDOM } from 'jsdom';
 
-import { onProfilingStartRouteTransaction } from '../../../src';
+import { onProfilingStartRouteTransaction } from '../../../src.ts';
 
 // @ts-ignore store a reference so we can reset it later
 const globalDocument = global.document;

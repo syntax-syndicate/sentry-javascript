@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 import type { UserFeedback } from '@sentry/types';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getFirstSentryEnvelopeRequest } from '../../../../utils/helpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getFirstSentryEnvelopeRequest } from '../../../../utils/helpers.ts';
 
 sentryTest('should capture simple user feedback', async ({ getLocalTestPath, page }) => {
   const url = await getLocalTestPath({ testDir: __dirname });

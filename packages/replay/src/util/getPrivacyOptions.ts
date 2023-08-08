@@ -1,4 +1,4 @@
-import type { DeprecatedPrivacyOptions, ReplayIntegrationPrivacyOptions } from '../types';
+import type { DeprecatedPrivacyOptions, ReplayIntegrationPrivacyOptions } from '../types.ts';
 
 type GetPrivacyOptions = Required<Omit<ReplayIntegrationPrivacyOptions, 'maskFn'>> &
   Omit<DeprecatedPrivacyOptions, 'maskInputOptions'>;

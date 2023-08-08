@@ -1,4 +1,4 @@
-import { NextTestEnv } from './utils/helpers';
+import { NextTestEnv } from './utils/helpers.ts';
 
 describe('Loading the server component', () => {
   it('should capture an error event', async () => {

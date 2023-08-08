@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import type { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import type { Hub } from '@sentry/types';
 
-import { instrumentAngularRouting, TraceClassDecorator, TraceDirective, TraceMethodDecorator } from '../src';
-import { getParameterizedRouteFromSnapshot } from '../src/tracing';
-import { AppComponent, TestEnv } from './utils/index';
+import { instrumentAngularRouting, TraceClassDecorator, TraceDirective, TraceMethodDecorator } from '../src.ts';
+import { getParameterizedRouteFromSnapshot } from '../src/tracing.ts';
+import { AppComponent, TestEnv } from './utils/index.ts';
 
 let transaction: any;
 

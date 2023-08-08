@@ -2,7 +2,7 @@ import type { Tracer } from '@opentelemetry/api';
 import { trace } from '@opentelemetry/api';
 import { NodeClient, SDK_VERSION } from '@sentry/node';
 
-import type { NodeExperimentalClientOptions } from '../types';
+import type { NodeExperimentalClientOptions } from '../types.ts';
 
 /**
  * A client built on top of the NodeClient, which provides some otel-specific things on top.

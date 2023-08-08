@@ -3,7 +3,7 @@ import { test as base } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
-import { generatePage } from './generatePage';
+import { generatePage } from './generatePage.ts';
 
 export const TEST_HOST = 'http://sentry-test.io';
 

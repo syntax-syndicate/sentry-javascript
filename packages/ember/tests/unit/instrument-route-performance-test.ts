@@ -3,7 +3,7 @@ import { setupTest } from 'ember-qunit';
 import Route from '@ember/routing/route';
 import { instrumentRoutePerformance } from '@sentry/ember';
 import sinon from 'sinon';
-import { setupSentryTest } from '../helpers/setup-sentry';
+import { setupSentryTest } from '../helpers/setup-sentry.ts';
 
 module('Unit | Utility | instrument-route-performance', function (hooks) {
   setupTest(hooks);

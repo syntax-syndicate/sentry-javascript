@@ -17,7 +17,7 @@
 // WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
 // OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import type { RequireResult } from './types';
+import type { RequireResult } from './types.ts';
 
 /**
  * Unwraps a module if it has been wrapped in an object under the key `default`.

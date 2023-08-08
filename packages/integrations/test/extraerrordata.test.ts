@@ -1,6 +1,6 @@
 import type { Event as SentryEvent, ExtendedError } from '@sentry/types';
 
-import { ExtraErrorData } from '../src/extraerrordata';
+import { ExtraErrorData } from '../src/extraerrordata.ts';
 
 const extraErrorData = new ExtraErrorData();
 let event: SentryEvent;

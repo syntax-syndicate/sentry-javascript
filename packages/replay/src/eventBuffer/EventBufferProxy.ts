@@ -1,10 +1,10 @@
 import type { ReplayRecordingData } from '@sentry/types';
 import { logger } from '@sentry/utils';
 
-import type { AddEventResult, EventBuffer, EventBufferType, RecordingEvent } from '../types';
-import { logInfo } from '../util/log';
-import { EventBufferArray } from './EventBufferArray';
-import { EventBufferCompressionWorker } from './EventBufferCompressionWorker';
+import type { AddEventResult, EventBuffer, EventBufferType, RecordingEvent } from '../types.ts';
+import { logInfo } from '../util/log.ts';
+import { EventBufferArray } from './EventBufferArray.ts';
+import { EventBufferCompressionWorker } from './EventBufferCompressionWorker.ts';
 
 /**
  * This proxy will try to use the compression worker, and fall back to use the simple buffer if an error occurs there.
@@ -105,7 +105,7 @@ export class EventBufferProxy implements EventBuffer {
     try {
       await Promise.all(addEventPromises);
     } catch (error) {
-      __DEBUG_BUILD__ && logger.warn('[Replay] Failed to add events when switching buffers.', error);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('[Replay] Failed to add events when switching buffers.', error);
     }
   }
 }

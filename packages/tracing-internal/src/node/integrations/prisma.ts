@@ -2,7 +2,7 @@ import { getCurrentHub, trace } from '@sentry/core';
 import type { Integration } from '@sentry/types';
 import { addNonEnumerableProperty, logger } from '@sentry/utils';
 
-import { shouldDisableAutoInstrumentation } from './utils/node-utils';
+import { shouldDisableAutoInstrumentation } from './utils/node-utils.ts';
 
 type PrismaAction =
   | 'findUnique'
@@ -83,7 +83,7 @@ export class Prisma implements Integration {
         );
       });
     } else {
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
         logger.warn(
           `Unsupported Prisma client provided to PrismaIntegration. Provided client: ${JSON.stringify(options.client)}`,
         );

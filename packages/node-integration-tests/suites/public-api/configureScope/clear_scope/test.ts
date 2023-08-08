@@ -1,6 +1,6 @@
 import type { Event } from '@sentry/node';
 
-import { assertSentryEvent, TestEnv } from '../../../../utils';
+import { assertSentryEvent, TestEnv } from '../../../../utils.ts';
 
 test('should clear previously set properties of a scope', async () => {
   const env = await TestEnv.init(__dirname);

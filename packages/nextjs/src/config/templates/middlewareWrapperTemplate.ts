@@ -11,7 +11,7 @@ import * as origModule from '__SENTRY_WRAPPING_TARGET_FILE__';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as Sentry from '@sentry/nextjs';
 
-import type { EdgeRouteHandler } from '../../edge/types';
+import type { EdgeRouteHandler } from '../../edge/types.ts';
 
 type NextApiModule =
   | {

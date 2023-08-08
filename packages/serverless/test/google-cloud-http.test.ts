@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import * as nock from 'nock';
 import * as path from 'path';
 
-import { GoogleCloudHttp } from '../src/google-cloud-http';
+import { GoogleCloudHttp } from '../src/google-cloud-http.ts';
 
 /**
  * Why @ts-ignore some Sentry.X calls

@@ -6,11 +6,11 @@ import { addGlobalEventProcessor, addTracingExtensions, getCurrentHub, Transacti
 import type { DynamicSamplingContext, Span as SentrySpan, TraceparentData, TransactionContext } from '@sentry/types';
 import { isString, logger } from '@sentry/utils';
 
-import { SENTRY_DYNAMIC_SAMPLING_CONTEXT_KEY, SENTRY_TRACE_PARENT_CONTEXT_KEY } from './constants';
-import { isSentryRequestSpan } from './utils/isSentryRequest';
-import { mapOtelStatus } from './utils/mapOtelStatus';
-import { parseSpanDescription } from './utils/parseOtelSpanDescription';
-import { clearOtelSpanData, getOtelSpanData } from './utils/spanData';
+import { SENTRY_DYNAMIC_SAMPLING_CONTEXT_KEY, SENTRY_TRACE_PARENT_CONTEXT_KEY } from './constants.ts';
+import { isSentryRequestSpan } from './utils/isSentryRequest.ts';
+import { mapOtelStatus } from './utils/mapOtelStatus.ts';
+import { parseSpanDescription } from './utils/parseOtelSpanDescription.ts';
+import { clearOtelSpanData, getOtelSpanData } from './utils/spanData.ts';
 
 export const SENTRY_SPAN_PROCESSOR_MAP: Map<SentrySpan['spanId'], SentrySpan> = new Map<
   SentrySpan['spanId'],
@@ -95,7 +95,7 @@ export class SentrySpanProcessor implements OtelSpanProcessor {
     const sentrySpan = SENTRY_SPAN_PROCESSOR_MAP.get(otelSpanId);
 
     if (!sentrySpan) {
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
         logger.error(`SentrySpanProcessor could not find span with OTEL-spanId ${otelSpanId} to finish.`);
       return;
     }

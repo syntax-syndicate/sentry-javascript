@@ -1,7 +1,7 @@
 import type { Transaction, TransactionContext } from '@sentry/types';
 import { addInstrumentationHandler, browserPerformanceTimeOrigin, logger } from '@sentry/utils';
 
-import { WINDOW } from './types';
+import { WINDOW } from './types.ts';
 
 /**
  * Default function implementing pageload and navigation transactions
@@ -12,7 +12,7 @@ export function instrumentRoutingWithDefaults<T extends Transaction>(
   startTransactionOnLocationChange: boolean = true,
 ): void {
   if (!WINDOW || !WINDOW.location) {
-    __DEBUG_BUILD__ && logger.warn('Could not initialize routing instrumentation due to invalid location');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Could not initialize routing instrumentation due to invalid location');
     return;
   }
 
@@ -48,7 +48,7 @@ export function instrumentRoutingWithDefaults<T extends Transaction>(
       if (from !== to) {
         startingUrl = undefined;
         if (activeTransaction) {
-          __DEBUG_BUILD__ && logger.log(`[Tracing] Finishing current transaction with op: ${activeTransaction.op}`);
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(`[Tracing] Finishing current transaction with op: ${activeTransaction.op}`);
           // If there's an open transaction on the scope, we need to finish it before creating an new one.
           activeTransaction.finish();
         }

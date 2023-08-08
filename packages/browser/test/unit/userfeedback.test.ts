@@ -1,4 +1,4 @@
-import { createUserFeedbackEnvelope } from '../../src/userfeedback';
+import { createUserFeedbackEnvelope } from '../../src/userfeedback.ts';
 
 describe('userFeedback', () => {
   test('creates user feedback envelope header', () => {

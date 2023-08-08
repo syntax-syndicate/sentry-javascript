@@ -1,4 +1,4 @@
-import type { DynamicSamplingContext } from './envelope';
+import type { DynamicSamplingContext } from './envelope.ts';
 
 export type TracePropagationTargets = (string | RegExp)[];
 

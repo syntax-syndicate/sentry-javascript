@@ -11,10 +11,10 @@ import type {
 } from '@sentry/types';
 import { dropUndefinedKeys, logger } from '@sentry/utils';
 
-import type { Hub } from '../hub';
-import { getCurrentHub } from '../hub';
-import { getDynamicSamplingContextFromClient } from './dynamicSamplingContext';
-import { Span as SpanClass, SpanRecorder } from './span';
+import type { Hub } from '../hub.ts';
+import { getCurrentHub } from '../hub.ts';
+import { getDynamicSamplingContextFromClient } from './dynamicSamplingContext.ts';
+import { Span as SpanClass, SpanRecorder } from './span.ts';
 
 /** JSDoc */
 export class Transaction extends SpanClass implements TransactionInterface {
@@ -137,7 +137,7 @@ export class Transaction extends SpanClass implements TransactionInterface {
     }
 
     if (!this.name) {
-      __DEBUG_BUILD__ && logger.warn('Transaction has no name, falling back to `<unlabeled transaction>`.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Transaction has no name, falling back to `<unlabeled transaction>`.');
       this.name = '<unlabeled transaction>';
     }
 
@@ -151,7 +151,7 @@ export class Transaction extends SpanClass implements TransactionInterface {
 
     if (this.sampled !== true) {
       // At this point if `sampled !== true` we want to discard the transaction.
-      __DEBUG_BUILD__ && logger.log('[Tracing] Discarding transaction because its trace was not chosen to be sampled.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Tracing] Discarding transaction because its trace was not chosen to be sampled.');
 
       if (client) {
         client.recordDroppedEvent('sample_rate', 'transaction');
@@ -199,7 +199,7 @@ export class Transaction extends SpanClass implements TransactionInterface {
     const hasMeasurements = Object.keys(this._measurements).length > 0;
 
     if (hasMeasurements) {
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
         logger.log(
           '[Measurements] Adding measurements to transaction',
           JSON.stringify(this._measurements, undefined, 2),
@@ -207,7 +207,7 @@ export class Transaction extends SpanClass implements TransactionInterface {
       transaction.measurements = this._measurements;
     }
 
-    __DEBUG_BUILD__ && logger.log(`[Tracing] Finishing ${this.op} transaction: ${this.name}.`);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(`[Tracing] Finishing ${this.op} transaction: ${this.name}.`);
 
     return this._hub.captureEvent(transaction);
   }

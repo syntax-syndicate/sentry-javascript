@@ -2,8 +2,8 @@ import type { Hub } from '@sentry/core';
 import type { EventProcessor } from '@sentry/types';
 import { fill, isThenable, loadModule, logger } from '@sentry/utils';
 
-import type { LazyLoadedIntegration } from './lazy';
-import { shouldDisableAutoInstrumentation } from './utils/node-utils';
+import type { LazyLoadedIntegration } from './lazy.ts';
+import { shouldDisableAutoInstrumentation } from './utils/node-utils.ts';
 
 interface PgClient {
   prototype: {
@@ -48,19 +48,19 @@ export class Postgres implements LazyLoadedIntegration<PGModule> {
    */
   public setupOnce(_: (callback: EventProcessor) => void, getCurrentHub: () => Hub): void {
     if (shouldDisableAutoInstrumentation(getCurrentHub)) {
-      __DEBUG_BUILD__ && logger.log('Postgres Integration is skipped because of instrumenter configuration.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Postgres Integration is skipped because of instrumenter configuration.');
       return;
     }
 
     const pkg = this.loadDependency();
 
     if (!pkg) {
-      __DEBUG_BUILD__ && logger.error('Postgres Integration was unable to require `pg` package.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('Postgres Integration was unable to require `pg` package.');
       return;
     }
 
     if (this._usePgNative && !pkg.native?.Client) {
-      __DEBUG_BUILD__ && logger.error("Postgres Integration was unable to access 'pg-native' bindings.");
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error("Postgres Integration was unable to access 'pg-native' bindings.");
       return;
     }
 

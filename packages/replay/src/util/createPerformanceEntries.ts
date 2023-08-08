@@ -1,7 +1,7 @@
 import { record } from '@sentry-internal/rrweb';
 import { browserPerformanceTimeOrigin } from '@sentry/utils';
 
-import { WINDOW } from '../constants';
+import { WINDOW } from '../constants.ts';
 import type {
   AllPerformanceEntry,
   AllPerformanceEntryData,
@@ -11,7 +11,7 @@ import type {
   PaintData,
   ReplayPerformanceEntry,
   ResourceData,
-} from '../types';
+} from '../types.ts';
 
 // Map entryType -> function to normalize data for event
 // @ts-ignore TODO: entry type does not fit the create* functions entry type

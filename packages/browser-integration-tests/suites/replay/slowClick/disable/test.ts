@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getCustomRecordingEvents, shouldSkipReplayTest, waitForReplayRequest } from '../../../../utils/replayHelpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getCustomRecordingEvents, shouldSkipReplayTest, waitForReplayRequest } from '../../../../utils/replayHelpers.ts';
 
 sentryTest('does not capture slow click when slowClickTimeout === 0', async ({ getLocalTestUrl, page }) => {
   if (shouldSkipReplayTest()) {

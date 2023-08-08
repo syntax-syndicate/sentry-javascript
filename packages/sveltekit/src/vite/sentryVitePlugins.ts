@@ -1,11 +1,11 @@
 import type { SentryVitePluginOptions } from '@sentry/vite-plugin';
 import type { Plugin } from 'vite';
 
-import type { AutoInstrumentSelection } from './autoInstrument';
-import { makeAutoInstrumentationPlugin } from './autoInstrument';
-import type { SupportedSvelteKitAdapters } from './detectAdapter';
-import { detectAdapter } from './detectAdapter';
-import { makeCustomSentryVitePlugin } from './sourceMaps';
+import type { AutoInstrumentSelection } from './autoInstrument.ts';
+import { makeAutoInstrumentationPlugin } from './autoInstrument.ts';
+import type { SupportedSvelteKitAdapters } from './detectAdapter.ts';
+import { detectAdapter } from './detectAdapter.ts';
+import { makeCustomSentryVitePlugin } from './sourceMaps.ts';
 
 type SourceMapsUploadOptions = {
   /**

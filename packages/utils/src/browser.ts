@@ -1,5 +1,5 @@
-import { isString } from './is';
-import { getGlobalObject } from './worldwide';
+import { isString } from './is.ts';
+import { getGlobalObject } from './worldwide.ts';
 
 // eslint-disable-next-line deprecation/deprecation
 const WINDOW = getGlobalObject<Window>();

@@ -10,8 +10,8 @@ import type {
 import { createEnvelope } from '@sentry/utils';
 import { TextDecoder, TextEncoder } from 'util';
 
-import { MIN_DELAY } from '../../../../core/src/transports/offline';
-import { createStore, insert, makeBrowserOfflineTransport, pop } from '../../../src/transports/offline';
+import { MIN_DELAY } from '../../../../core/src/transports/offline.ts';
+import { createStore, insert, makeBrowserOfflineTransport, pop } from '../../../src/transports/offline.ts';
 
 function deleteDatabase(name: string): Promise<void> {
   return new Promise<void>((resolve, reject) => {

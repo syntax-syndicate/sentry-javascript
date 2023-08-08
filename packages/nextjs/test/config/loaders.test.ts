@@ -1,15 +1,15 @@
 // mock helper functions not tested directly in this file
 import './mocks';
 
-import type { ModuleRuleUseProperty, WebpackModuleRule } from '../../src/config/types';
+import type { ModuleRuleUseProperty, WebpackModuleRule } from '../../src/config/types.ts';
 import {
   clientBuildContext,
   clientWebpackConfig,
   exportedNextConfig,
   serverBuildContext,
   serverWebpackConfig,
-} from './fixtures';
-import { materializeFinalWebpackConfig } from './testUtils';
+} from './fixtures.ts';
+import { materializeFinalWebpackConfig } from './testUtils.ts';
 
 type MatcherResult = { pass: boolean; message: () => string };
 

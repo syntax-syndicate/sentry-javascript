@@ -1,7 +1,7 @@
-import { createEventBuffer } from '../../src/eventBuffer';
-import { ReplayContainer } from '../../src/replay';
-import { clearSession } from '../../src/session/clearSession';
-import type { RecordingOptions, ReplayPluginOptions } from '../../src/types';
+import { createEventBuffer } from '../../src/eventBuffer.ts';
+import { ReplayContainer } from '../../src/replay.ts';
+import { clearSession } from '../../src/session/clearSession.ts';
+import type { RecordingOptions, ReplayPluginOptions } from '../../src/types.ts';
 
 const DEFAULT_OPTIONS = {
   flushMinDelay: 100,

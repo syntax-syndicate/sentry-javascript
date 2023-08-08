@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { FirstInputPolyfillEntry, NavigationTimingPolyfillEntry } from './polyfills';
+import type { FirstInputPolyfillEntry, NavigationTimingPolyfillEntry } from './polyfills.ts';
 
 export interface Metric {
   /**

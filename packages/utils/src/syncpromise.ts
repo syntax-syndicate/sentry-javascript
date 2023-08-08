@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/typedef */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { isThenable } from './is';
+import { isThenable } from './is.ts';
 
 /** SyncPromise internal states */
 const enum States {

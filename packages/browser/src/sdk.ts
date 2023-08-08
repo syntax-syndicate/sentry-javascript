@@ -15,13 +15,13 @@ import {
   supportsFetch,
 } from '@sentry/utils';
 
-import type { BrowserClientOptions, BrowserOptions } from './client';
-import { BrowserClient } from './client';
-import type { ReportDialogOptions } from './helpers';
-import { WINDOW, wrap as internalWrap } from './helpers';
-import { Breadcrumbs, Dedupe, GlobalHandlers, HttpContext, LinkedErrors, TryCatch } from './integrations';
-import { defaultStackParser } from './stack-parsers';
-import { makeFetchTransport, makeXHRTransport } from './transports';
+import type { BrowserClientOptions, BrowserOptions } from './client.ts';
+import { BrowserClient } from './client.ts';
+import type { ReportDialogOptions } from './helpers.ts';
+import { WINDOW, wrap as internalWrap } from './helpers.ts';
+import { Breadcrumbs, Dedupe, GlobalHandlers, HttpContext, LinkedErrors, TryCatch } from './integrations.ts';
+import { defaultStackParser } from './stack-parsers.ts';
+import { makeFetchTransport, makeXHRTransport } from './transports.ts';
 
 export const defaultIntegrations = [
   new CoreIntegrations.InboundFilters(),
@@ -140,14 +140,14 @@ export function init(options: BrowserOptions = {}): void {
 export function showReportDialog(options: ReportDialogOptions = {}, hub: Hub = getCurrentHub()): void {
   // doesn't work without a document (React Native)
   if (!WINDOW.document) {
-    __DEBUG_BUILD__ && logger.error('Global document not defined in showReportDialog call');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('Global document not defined in showReportDialog call');
     return;
   }
 
   const { client, scope } = hub.getStackTop();
   const dsn = options.dsn || (client && client.getDsn());
   if (!dsn) {
-    __DEBUG_BUILD__ && logger.error('DSN not configured for showReportDialog call');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('DSN not configured for showReportDialog call');
     return;
   }
 
@@ -175,7 +175,7 @@ export function showReportDialog(options: ReportDialogOptions = {}, hub: Hub = g
   if (injectionPoint) {
     injectionPoint.appendChild(script);
   } else {
-    __DEBUG_BUILD__ && logger.error('Not injecting report dialog. No injection point found in HTML');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('Not injecting report dialog. No injection point found in HTML');
   }
 }
 
@@ -217,7 +217,7 @@ export function flush(timeout?: number): PromiseLike<boolean> {
   if (client) {
     return client.flush(timeout);
   }
-  __DEBUG_BUILD__ && logger.warn('Cannot flush events. No client defined.');
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Cannot flush events. No client defined.');
   return resolvedSyncPromise(false);
 }
 
@@ -234,7 +234,7 @@ export function close(timeout?: number): PromiseLike<boolean> {
   if (client) {
     return client.close(timeout);
   }
-  __DEBUG_BUILD__ && logger.warn('Cannot flush events and disable SDK. No client defined.');
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Cannot flush events and disable SDK. No client defined.');
   return resolvedSyncPromise(false);
 }
 
@@ -260,7 +260,7 @@ function startSessionOnHub(hub: Hub): void {
  */
 function startSessionTracking(): void {
   if (typeof WINDOW.document === 'undefined') {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn('Session tracking in non-browser environment with @sentry/browser is not supported.');
     return;
   }

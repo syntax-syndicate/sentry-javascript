@@ -12,14 +12,14 @@ import {
   SLOW_CLICK_SCROLL_TIMEOUT,
   SLOW_CLICK_THRESHOLD,
   WINDOW,
-} from './constants';
-import { ClickDetector } from './coreHandlers/handleClick';
-import { handleKeyboardEvent } from './coreHandlers/handleKeyboardEvent';
-import { setupPerformanceObserver } from './coreHandlers/performanceObserver';
-import { createEventBuffer } from './eventBuffer';
-import { clearSession } from './session/clearSession';
-import { getSession } from './session/getSession';
-import { saveSession } from './session/saveSession';
+} from './constants.ts';
+import { ClickDetector } from './coreHandlers/handleClick.ts';
+import { handleKeyboardEvent } from './coreHandlers/handleKeyboardEvent.ts';
+import { setupPerformanceObserver } from './coreHandlers/performanceObserver.ts';
+import { createEventBuffer } from './eventBuffer.ts';
+import { clearSession } from './session/clearSession.ts';
+import { getSession } from './session/getSession.ts';
+import { saveSession } from './session/saveSession.ts';
 import type {
   AddEventResult,
   AddUpdateCallback,
@@ -36,21 +36,21 @@ import type {
   Session,
   SlowClickConfig,
   Timeouts,
-} from './types';
-import { addEvent } from './util/addEvent';
-import { addGlobalListeners } from './util/addGlobalListeners';
-import { addMemoryEntry } from './util/addMemoryEntry';
-import { createBreadcrumb } from './util/createBreadcrumb';
-import { createPerformanceEntries } from './util/createPerformanceEntries';
-import { createPerformanceSpans } from './util/createPerformanceSpans';
-import { debounce } from './util/debounce';
-import { getHandleRecordingEmit } from './util/handleRecordingEmit';
-import { isExpired } from './util/isExpired';
-import { isSessionExpired } from './util/isSessionExpired';
-import { logInfo } from './util/log';
-import { sendReplay } from './util/sendReplay';
-import type { SKIPPED } from './util/throttle';
-import { throttle, THROTTLED } from './util/throttle';
+} from './types.ts';
+import { addEvent } from './util/addEvent.ts';
+import { addGlobalListeners } from './util/addGlobalListeners.ts';
+import { addMemoryEntry } from './util/addMemoryEntry.ts';
+import { createBreadcrumb } from './util/createBreadcrumb.ts';
+import { createPerformanceEntries } from './util/createPerformanceEntries.ts';
+import { createPerformanceSpans } from './util/createPerformanceSpans.ts';
+import { debounce } from './util/debounce.ts';
+import { getHandleRecordingEmit } from './util/handleRecordingEmit.ts';
+import { isExpired } from './util/isExpired.ts';
+import { isSessionExpired } from './util/isSessionExpired.ts';
+import { logInfo } from './util/log.ts';
+import { sendReplay } from './util/sendReplay.ts';
+import type { SKIPPED } from './util/throttle.ts';
+import { throttle, THROTTLED } from './util/throttle.ts';
 
 /**
  * The main replay container class, which holds all the state and methods for recording and sending replays.
@@ -739,9 +739,9 @@ export class ReplayContainer implements ReplayContainerInterface {
 
   /** A wrapper to conditionally capture exceptions. */
   private _handleException(error: unknown): void {
-    __DEBUG_BUILD__ && logger.error('[Replay]', error);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('[Replay]', error);
 
-    if (__DEBUG_BUILD__ && this._options._experiments && this._options._experiments.captureExceptions) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && this._options._experiments && this._options._experiments.captureExceptions) {
       captureException(error);
     }
   }
@@ -1038,7 +1038,7 @@ export class ReplayContainer implements ReplayContainerInterface {
    */
   private async _runFlush(): Promise<void> {
     if (!this.session || !this.eventBuffer) {
-      __DEBUG_BUILD__ && logger.error('[Replay] No session or eventBuffer found to flush.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('[Replay] No session or eventBuffer found to flush.');
       return;
     }
 
@@ -1117,12 +1117,12 @@ export class ReplayContainer implements ReplayContainerInterface {
     }
 
     if (!this.checkAndHandleExpiredSession()) {
-      __DEBUG_BUILD__ && logger.error('[Replay] Attempting to finish replay event after session expired.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('[Replay] Attempting to finish replay event after session expired.');
       return;
     }
 
     if (!this.session) {
-      __DEBUG_BUILD__ && logger.error('[Replay] No session found to flush.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('[Replay] No session found to flush.');
       return;
     }
 
@@ -1168,7 +1168,7 @@ export class ReplayContainer implements ReplayContainerInterface {
     try {
       await this._flushLock;
     } catch (err) {
-      __DEBUG_BUILD__ && logger.error(err);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error(err);
     } finally {
       this._debouncedFlush();
     }

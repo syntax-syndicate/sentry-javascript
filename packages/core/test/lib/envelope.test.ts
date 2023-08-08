@@ -1,6 +1,6 @@
 import type { DsnComponents, DynamicSamplingContext, Event } from '@sentry/types';
 
-import { createEventEnvelope } from '../../src/envelope';
+import { createEventEnvelope } from '../../src/envelope.ts';
 
 const testDsn: DsnComponents = { protocol: 'https', projectId: 'abc', host: 'testry.io', publicKey: 'pubKey123' };
 

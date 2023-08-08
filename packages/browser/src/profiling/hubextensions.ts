@@ -3,9 +3,9 @@ import { getCurrentHub } from '@sentry/core';
 import type { Transaction } from '@sentry/types';
 import { logger, uuid4 } from '@sentry/utils';
 
-import { WINDOW } from '../helpers';
-import type { JSSelfProfile, JSSelfProfiler, JSSelfProfilerConstructor } from './jsSelfProfiling';
-import { addProfileToMap, isValidSampleRate } from './utils';
+import { WINDOW } from '../helpers.ts';
+import type { JSSelfProfile, JSSelfProfiler, JSSelfProfilerConstructor } from './jsSelfProfiling.ts';
+import { addProfileToMap, isValidSampleRate } from './utils.ts';
 
 export const MAX_PROFILE_DURATION_MS = 30_000;
 // Keep a flag value to avoid re-initializing the profiler constructor. If it fails
@@ -29,7 +29,7 @@ function isJSProfilerSupported(maybeProfiler: unknown): maybeProfiler is typeof 
  */
 export function onProfilingStartRouteTransaction(transaction: Transaction | undefined): Transaction | undefined {
   if (!transaction) {
-    if (__DEBUG_BUILD__) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
       logger.log('[Profiling] Transaction is undefined, skipping profiling');
     }
     return transaction;
@@ -48,7 +48,7 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
   const JSProfilerConstructor = WINDOW.Profiler;
 
   if (!isJSProfilerSupported(JSProfilerConstructor)) {
-    if (__DEBUG_BUILD__) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
       logger.log(
         '[Profiling] Profiling is not supported by this browser, Profiler interface missing on window object.',
       );
@@ -58,7 +58,7 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
 
   // If constructor failed once, it will always fail, so we can early return.
   if (PROFILING_CONSTRUCTOR_FAILED) {
-    if (__DEBUG_BUILD__) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
       logger.log('[Profiling] Profiling has been disabled for the duration of the current user session.');
     }
     return transaction;
@@ -67,7 +67,7 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
   const client = getCurrentHub().getClient();
   const options = client && client.getOptions();
   if (!options) {
-    __DEBUG_BUILD__ && logger.log('[Profiling] Profiling disabled, no options found.');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Profiling] Profiling disabled, no options found.');
     return transaction;
   }
 
@@ -77,13 +77,13 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
   // Since this is coming from the user (or from a function provided by the user), who knows what we might get. (The
   // only valid values are booleans or numbers between 0 and 1.)
   if (!isValidSampleRate(profilesSampleRate)) {
-    __DEBUG_BUILD__ && logger.warn('[Profiling] Discarding profile because of invalid sample rate.');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('[Profiling] Discarding profile because of invalid sample rate.');
     return transaction;
   }
 
   // if the function returned 0 (or false), or if `profileSampleRate` is 0, it's a sign the profile should be dropped
   if (!profilesSampleRate) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.log(
         '[Profiling] Discarding profile because a negative sampling decision was inherited or profileSampleRate is set to 0',
       );
@@ -95,7 +95,7 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
   const sampled = profilesSampleRate === true ? true : Math.random() < profilesSampleRate;
   // Check if we should sample this profile
   if (!sampled) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.log(
         `[Profiling] Discarding profile because it's not included in the random sample (sampling rate = ${Number(
           profilesSampleRate,
@@ -116,7 +116,7 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
   try {
     profiler = new JSProfilerConstructor({ sampleInterval: samplingIntervalMS, maxBufferSize: maxSamples });
   } catch (e) {
-    if (__DEBUG_BUILD__) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
       logger.log(
         "[Profiling] Failed to initialize the Profiling constructor, this is likely due to a missing 'Document-Policy': 'js-profiling' header.",
       );
@@ -131,7 +131,7 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
     return transaction;
   }
 
-  if (__DEBUG_BUILD__) {
+  if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
     logger.log(`[Profiling] started profiling transaction: ${transaction.name || transaction.description}`);
   }
 
@@ -162,7 +162,7 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
       return null;
     }
     if (processedProfile) {
-      if (__DEBUG_BUILD__) {
+      if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
         logger.log(
           '[Profiling] profile for:',
           transaction.name || transaction.description,
@@ -186,13 +186,13 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
           maxDurationTimeoutID = undefined;
         }
 
-        if (__DEBUG_BUILD__) {
+        if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
           logger.log(`[Profiling] stopped profiling of transaction: ${transaction.name || transaction.description}`);
         }
 
         // In case of an overlapping transaction, stopProfiling may return null and silently ignore the overlapping profile.
         if (!p) {
-          if (__DEBUG_BUILD__) {
+          if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
             logger.log(
               `[Profiling] profiler returned null profile for: ${transaction.name || transaction.description}`,
               'this may indicate an overlapping transaction or a call to stopProfiling with a profile title that was never started',
@@ -206,7 +206,7 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
       })
       .catch(error => {
         stopProfilerSpan.finish();
-        if (__DEBUG_BUILD__) {
+        if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
           logger.log('[Profiling] error while stopping profiler:', error);
         }
         return null;
@@ -215,7 +215,7 @@ export function wrapTransactionWithProfiling(transaction: Transaction): Transact
 
   // Enqueue a timeout to prevent profiles from running over max duration.
   let maxDurationTimeoutID: number | undefined = WINDOW.setTimeout(() => {
-    if (__DEBUG_BUILD__) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
       logger.log(
         '[Profiling] max profile duration elapsed, stopping profiling for:',
         transaction.name || transaction.description,

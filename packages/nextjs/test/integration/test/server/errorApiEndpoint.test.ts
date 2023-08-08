@@ -1,4 +1,4 @@
-import { NextTestEnv } from './utils/helpers';
+import { NextTestEnv } from './utils/helpers.ts';
 
 describe('Error API Endpoints', () => {
   it('should capture an error event', async () => {

@@ -1,7 +1,7 @@
 import type { Event } from '@sentry/types';
 import { createStackParser, GLOBAL_OBJ } from '@sentry/utils';
 
-import { applyDebugIds, applyDebugMeta } from '../../src/utils/prepareEvent';
+import { applyDebugIds, applyDebugMeta } from '../../src/utils/prepareEvent.ts';
 
 describe('applyDebugIds', () => {
   afterEach(() => {

@@ -17,8 +17,8 @@ export type {
   Session,
 } from '@sentry/types';
 
-export type { BrowserOptions } from './client';
-export type { ReportDialogOptions } from './helpers';
+export type { BrowserOptions } from './client.ts';
+export type { ReportDialogOptions } from './helpers.ts';
 
 export {
   addGlobalEventProcessor,
@@ -46,9 +46,9 @@ export {
   InboundFilters,
 } from '@sentry/core';
 
-export { WINDOW } from './helpers';
-export { BrowserClient } from './client';
-export { makeFetchTransport, makeXHRTransport } from './transports';
+export { WINDOW } from './helpers.ts';
+export { BrowserClient } from './client.ts';
+export { makeFetchTransport, makeXHRTransport } from './transports.ts';
 export {
   defaultStackParser,
   defaultStackLineParsers,
@@ -57,9 +57,9 @@ export {
   opera10StackLineParser,
   opera11StackLineParser,
   winjsStackLineParser,
-} from './stack-parsers';
-export { eventFromException, eventFromMessage } from './eventbuilder';
-export { createUserFeedbackEnvelope } from './userfeedback';
+} from './stack-parsers.ts';
+export { eventFromException, eventFromMessage } from './eventbuilder.ts';
+export { createUserFeedbackEnvelope } from './userfeedback.ts';
 export {
   defaultIntegrations,
   forceLoad,
@@ -71,5 +71,5 @@ export {
   close,
   wrap,
   captureUserFeedback,
-} from './sdk';
-export { GlobalHandlers, TryCatch, Breadcrumbs, LinkedErrors, HttpContext, Dedupe } from './integrations';
+} from './sdk.ts';
+export { GlobalHandlers, TryCatch, Breadcrumbs, LinkedErrors, HttpContext, Dedupe } from './integrations.ts';

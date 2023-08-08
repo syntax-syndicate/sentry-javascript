@@ -1,5 +1,5 @@
-import { Span, Transaction } from '../../../src';
-import { _startChild } from '../../../src/browser/metrics/utils';
+import { Span, Transaction } from '../../../src.ts';
+import { _startChild } from '../../../src/browser/metrics/utils.ts';
 
 describe('_startChild()', () => {
   it('creates a span with given properties', () => {

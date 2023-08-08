@@ -11,8 +11,8 @@ import {
   serverBuildContext,
   serverWebpackConfig,
   userNextConfig,
-} from '../fixtures';
-import { materializeFinalNextConfig, materializeFinalWebpackConfig } from '../testUtils';
+} from '../fixtures.ts';
+import { materializeFinalNextConfig, materializeFinalWebpackConfig } from '../testUtils.ts';
 
 describe('constructWebpackConfigFunction()', () => {
   it('includes expected properties', async () => {

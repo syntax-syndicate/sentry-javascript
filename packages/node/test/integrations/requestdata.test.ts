@@ -2,12 +2,12 @@ import { getCurrentHub, Hub, makeMain } from '@sentry/core';
 import type { Event, EventProcessor, PolymorphicRequest } from '@sentry/types';
 import * as http from 'http';
 
-import { NodeClient } from '../../src/client';
-import { requestHandler } from '../../src/handlers';
-import type { RequestDataIntegrationOptions } from '../../src/integrations/requestdata';
-import { RequestData } from '../../src/integrations/requestdata';
-import * as requestDataModule from '../../src/requestdata';
-import { getDefaultNodeClientOptions } from '../helper/node-client-options';
+import { NodeClient } from '../../src/client.ts';
+import { requestHandler } from '../../src/handlers.ts';
+import type { RequestDataIntegrationOptions } from '../../src/integrations/requestdata.ts';
+import { RequestData } from '../../src/integrations/requestdata.ts';
+import * as requestDataModule from '../../src/requestdata.ts';
+import { getDefaultNodeClientOptions } from '../helper/node-client-options.ts';
 
 const addRequestDataToEventSpy = jest.spyOn(requestDataModule, 'addRequestDataToEvent');
 const requestDataEventProcessor = jest.fn();

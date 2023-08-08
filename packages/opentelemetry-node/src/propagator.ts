@@ -12,8 +12,8 @@ import {
   SENTRY_DYNAMIC_SAMPLING_CONTEXT_KEY,
   SENTRY_TRACE_HEADER,
   SENTRY_TRACE_PARENT_CONTEXT_KEY,
-} from './constants';
-import { SENTRY_SPAN_PROCESSOR_MAP } from './spanprocessor';
+} from './constants.ts';
+import { SENTRY_SPAN_PROCESSOR_MAP } from './spanprocessor.ts';
 
 /**
  * Injects and extracts `sentry-trace` and `baggage` headers from carriers.

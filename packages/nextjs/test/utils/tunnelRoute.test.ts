@@ -1,6 +1,6 @@
 import type { BrowserOptions } from '@sentry/react';
 
-import { applyTunnelRouteOption } from '../../src/client/tunnelRoute';
+import { applyTunnelRouteOption } from '../../src/client/tunnelRoute.ts';
 
 const globalWithInjectedValues = global as typeof global & {
   __sentryRewritesTunnelPath__?: string;

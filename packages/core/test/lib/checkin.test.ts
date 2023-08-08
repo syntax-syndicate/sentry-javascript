@@ -1,6 +1,6 @@
 import type { SerializedCheckIn } from '@sentry/types';
 
-import { createCheckInEnvelope } from '../../src/checkin';
+import { createCheckInEnvelope } from '../../src/checkin.ts';
 
 describe('createCheckInEnvelope', () => {
   test('creates a check in envelope header', () => {

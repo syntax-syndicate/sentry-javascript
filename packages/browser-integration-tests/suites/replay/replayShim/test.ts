@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../utils/fixtures';
+import { sentryTest } from '../../../utils/fixtures.ts';
 
 sentryTest(
   'exports a shim Replay integration for non-replay bundles',

@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getReplaySnapshot, shouldSkipReplayTest } from '../../../../utils/replayHelpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getReplaySnapshot, shouldSkipReplayTest } from '../../../../utils/replayHelpers.ts';
 
 sentryTest(
   '[error-mode] should handle errors that result in API error response',

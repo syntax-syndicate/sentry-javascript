@@ -93,26 +93,26 @@ export function _mergeOptions(
 /** JSDoc */
 export function _shouldDropEvent(event: Event, options: Partial<InboundFiltersOptions>): boolean {
   if (options.ignoreInternal && _isSentryError(event)) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn(`Event dropped due to being internal Sentry Error.\nEvent: ${getEventDescription(event)}`);
     return true;
   }
   if (_isIgnoredError(event, options.ignoreErrors)) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn(
         `Event dropped due to being matched by \`ignoreErrors\` option.\nEvent: ${getEventDescription(event)}`,
       );
     return true;
   }
   if (_isIgnoredTransaction(event, options.ignoreTransactions)) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn(
         `Event dropped due to being matched by \`ignoreTransactions\` option.\nEvent: ${getEventDescription(event)}`,
       );
     return true;
   }
   if (_isDeniedUrl(event, options.denyUrls)) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn(
         `Event dropped due to being matched by \`denyUrls\` option.\nEvent: ${getEventDescription(
           event,
@@ -121,7 +121,7 @@ export function _shouldDropEvent(event: Event, options: Partial<InboundFiltersOp
     return true;
   }
   if (!_isAllowedUrl(event, options.allowUrls)) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn(
         `Event dropped due to not being matched by \`allowUrls\` option.\nEvent: ${getEventDescription(
           event,
@@ -178,7 +178,7 @@ function _getPossibleEventMessages(event: Event): string[] {
       const { type = '', value = '' } = (values && values[values.length - 1]) || {};
       return [`${value}`, `${type}: ${value}`];
     } catch (oO) {
-      __DEBUG_BUILD__ && logger.error(`Cannot extract message for event ${getEventDescription(event)}`);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error(`Cannot extract message for event ${getEventDescription(event)}`);
       return [];
     }
   }
@@ -219,7 +219,7 @@ function _getEventFilterUrl(event: Event): string | null {
     }
     return frames ? _getLastValidUrl(frames) : null;
   } catch (oO) {
-    __DEBUG_BUILD__ && logger.error(`Cannot extract url for event ${getEventDescription(event)}`);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error(`Cannot extract url for event ${getEventDescription(event)}`);
     return null;
   }
 }

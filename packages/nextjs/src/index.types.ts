@@ -2,17 +2,17 @@
 
 // We export everything from both the client part of the SDK and from the server part. Some of the exports collide,
 // which is not allowed, unless we redifine the colliding exports in this file - which we do below.
-export * from './config';
-export * from './client';
-export * from './server';
-export * from './edge';
+export * from './config.ts';
+export * from './client.ts';
+export * from './server.ts';
+export * from './edge.ts';
 
 import type { Integration, Options, StackParser } from '@sentry/types';
 
-import type * as clientSdk from './client';
-import type { ServerComponentContext, VercelCronsConfig } from './common/types';
-import type * as edgeSdk from './edge';
-import type * as serverSdk from './server';
+import type * as clientSdk from './client.ts';
+import type { ServerComponentContext, VercelCronsConfig } from './common/types.ts';
+import type * as edgeSdk from './edge.ts';
+import type * as serverSdk from './server.ts';
 
 /** Initializes Sentry Next.js SDK */
 export declare function init(
@@ -39,7 +39,7 @@ export declare const withErrorBoundary: typeof clientSdk.withErrorBoundary;
 export declare const Span: typeof edgeSdk.Span;
 export declare const Transaction: typeof edgeSdk.Transaction;
 
-export { withSentryConfig } from './config';
+export { withSentryConfig } from './config.ts';
 
 /**
  * @deprecated Use `wrapApiHandlerWithSentry` instead

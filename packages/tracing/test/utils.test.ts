@@ -1,5 +1,5 @@
 /* eslint-disable deprecation/deprecation */
-import { extractTraceparentData, hasTracingEnabled } from '../src';
+import { extractTraceparentData, hasTracingEnabled } from '../src.ts';
 
 describe('hasTracingEnabled (deprecated)', () => {
   const tracesSampler = () => 1;

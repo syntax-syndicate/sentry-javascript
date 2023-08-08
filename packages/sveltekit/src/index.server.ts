@@ -1,2 +1,2 @@
-export * from './server';
-export * from './vite';
+export * from './server.ts';
+export * from './vite.ts';

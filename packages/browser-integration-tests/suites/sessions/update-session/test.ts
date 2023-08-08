@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 import type { SessionContext } from '@sentry/types';
 
-import { sentryTest } from '../../../utils/fixtures';
-import { getFirstSentryEnvelopeRequest } from '../../../utils/helpers';
+import { sentryTest } from '../../../utils/fixtures.ts';
+import { getFirstSentryEnvelopeRequest } from '../../../utils/helpers.ts';
 
 sentryTest('should update session when an error is thrown.', async ({ getLocalTestPath, page }) => {
   const url = await getLocalTestPath({ testDir: __dirname });

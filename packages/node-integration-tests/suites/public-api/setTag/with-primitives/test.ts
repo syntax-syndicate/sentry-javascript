@@ -1,4 +1,4 @@
-import { assertSentryEvent, TestEnv } from '../../../../utils';
+import { assertSentryEvent, TestEnv } from '../../../../utils.ts';
 
 test('should set primitive tags', async () => {
   const env = await TestEnv.init(__dirname);

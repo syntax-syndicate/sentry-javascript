@@ -1,4 +1,4 @@
-import { SessionTiming } from '../src/sessiontiming';
+import { SessionTiming } from '../src/sessiontiming.ts';
 
 const sessionTiming: SessionTiming = new SessionTiming();
 

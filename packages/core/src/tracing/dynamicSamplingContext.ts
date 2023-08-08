@@ -1,7 +1,7 @@
 import type { Client, DynamicSamplingContext, Scope } from '@sentry/types';
 import { dropUndefinedKeys } from '@sentry/utils';
 
-import { DEFAULT_ENVIRONMENT } from '../constants';
+import { DEFAULT_ENVIRONMENT } from '../constants.ts';
 
 /**
  * Creates a dynamic sampling context from a client.

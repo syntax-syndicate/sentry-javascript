@@ -1,5 +1,5 @@
-import * as SentryClient from '../src/client';
-import * as SentryServer from '../src/server';
+import * as SentryClient from '../src/client.ts';
+import * as SentryServer from '../src/server.ts';
 
 describe('SvelteKit SDK', () => {
   // This is a place holder test at best to satisfy the test runner

@@ -1,5 +1,5 @@
-import { SentryError } from './error';
-import { rejectedSyncPromise, resolvedSyncPromise, SyncPromise } from './syncpromise';
+import { SentryError } from './error.ts';
+import { rejectedSyncPromise, resolvedSyncPromise, SyncPromise } from './syncpromise.ts';
 
 export interface PromiseBuffer<T> {
   // exposes the internal array so tests can assert on the state of it.

@@ -1,7 +1,7 @@
 import MagicString from 'magic-string';
 import type { PreprocessorGroup } from 'svelte/types/compiler/preprocess';
 
-import type { ComponentTrackingInitOptions, SentryPreprocessorGroup, TrackComponentOptions } from './types';
+import type { ComponentTrackingInitOptions, SentryPreprocessorGroup, TrackComponentOptions } from './types.ts';
 
 export const defaultComponentTrackingOptions: Required<ComponentTrackingInitOptions> = {
   trackComponents: true,

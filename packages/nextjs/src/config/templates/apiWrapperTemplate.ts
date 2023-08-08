@@ -13,10 +13,10 @@ import * as origModule from '__SENTRY_WRAPPING_TARGET_FILE__';
 import * as Sentry from '@sentry/nextjs';
 import type { PageConfig } from 'next';
 
-import type { VercelCronsConfig } from '../../common/types';
+import type { VercelCronsConfig } from '../../common/types.ts';
 // We import this from `wrappers` rather than directly from `next` because our version can work simultaneously with
 // multiple versions of next. See note in `wrappers/types` for more.
-import type { NextApiHandler } from '../../server/types';
+import type { NextApiHandler } from '../../server/types.ts';s';
 
 type NextApiModule = (
   | {

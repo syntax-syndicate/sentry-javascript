@@ -1,7 +1,7 @@
 import type { HandlerDataFetch } from '@sentry/types';
 
-import type { NetworkRequestData, ReplayContainer, ReplayPerformanceEntry } from '../types';
-import { addNetworkBreadcrumb } from './util/addNetworkBreadcrumb';
+import type { NetworkRequestData, ReplayContainer, ReplayPerformanceEntry } from '../types.ts';
+import { addNetworkBreadcrumb } from './util/addNetworkBreadcrumb.ts';
 
 /** only exported for tests */
 export function handleFetch(handlerData: HandlerDataFetch): null | ReplayPerformanceEntry<NetworkRequestData> {

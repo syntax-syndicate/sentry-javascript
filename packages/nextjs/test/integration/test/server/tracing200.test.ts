@@ -1,4 +1,4 @@
-import { NextTestEnv } from './utils/helpers';
+import { NextTestEnv } from './utils/helpers.ts';
 
 describe('Tracing 200', () => {
   it('should capture a transaction', async () => {

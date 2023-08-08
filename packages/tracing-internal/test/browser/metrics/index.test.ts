@@ -1,6 +1,6 @@
-import { Transaction } from '../../../src';
-import type { ResourceEntry } from '../../../src/browser/metrics';
-import { _addMeasureSpans, _addResourceSpans } from '../../../src/browser/metrics';
+import { Transaction } from '../../../src.ts';
+import type { ResourceEntry } from '../../../src/browser/metrics.ts';
+import { _addMeasureSpans, _addResourceSpans } from '../../../src/browser/metrics.ts';
 
 describe('_addMeasureSpans', () => {
   const transaction = new Transaction({ op: 'pageload', name: '/' });

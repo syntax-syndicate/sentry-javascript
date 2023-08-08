@@ -3,8 +3,8 @@ import { createTransport, Scope } from '@sentry/core';
 import type { Client, Integration } from '@sentry/types';
 import { resolvedSyncPromise } from '@sentry/utils';
 
-import type { BrowserOptions } from '../../src';
-import { init } from '../../src/sdk';
+import type { BrowserOptions } from '../../src.ts';
+import { init } from '../../src/sdk.ts';s';
 
 const PUBLIC_DSN = 'https://username@domain/123';
 

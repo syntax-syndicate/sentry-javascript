@@ -2,11 +2,11 @@ import type { ClientOptions, EventProcessor } from '@sentry/types';
 import type { Debugger, InspectorNotification } from 'inspector';
 import type { LRUMap } from 'lru_map';
 
-import { defaultStackParser } from '../../src';
-import type { DebugSession, FrameVariables } from '../../src/integrations/localvariables';
-import { createCallbackList, LocalVariables } from '../../src/integrations/localvariables';
-import { NODE_VERSION } from '../../src/nodeVersion';
-import { getDefaultNodeClientOptions } from '../../test/helper/node-client-options';
+import { defaultStackParser } from '../../src.ts';
+import type { DebugSession, FrameVariables } from '../../src/integrations/localvariables.ts';
+import { createCallbackList, LocalVariables } from '../../src/integrations/localvariables.ts';
+import { NODE_VERSION } from '../../src/nodeVersion.ts';
+import { getDefaultNodeClientOptions } from '../../test/helper/node-client-options.ts';
 
 const describeIf = (condition: boolean) => (condition ? describe : describe.skip);
 

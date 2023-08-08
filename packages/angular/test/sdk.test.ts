@@ -1,6 +1,6 @@
 import * as SentryBrowser from '@sentry/browser';
 
-import { defaultIntegrations, init } from '../src/index';
+import { defaultIntegrations, init } from '../src/index.ts';
 
 describe('init', () => {
   it('sets the Angular version (if available) in the global scope', () => {

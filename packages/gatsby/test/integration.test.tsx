@@ -5,8 +5,8 @@ import { useEffect } from 'react';
 import * as React from 'react';
 import { TextDecoder, TextEncoder } from 'util';
 
-import { onClientEntry } from '../gatsby-browser';
-import * as Sentry from '../src';
+import { onClientEntry } from '../gatsby-browser.ts';
+import * as Sentry from '../src.ts';
 
 beforeAll(() => {
   (global as any).__SENTRY_RELEASE__ = '683f3a6ab819d47d23abfca9a914c81f0524d35b';

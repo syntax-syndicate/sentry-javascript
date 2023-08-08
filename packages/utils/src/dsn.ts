@@ -1,6 +1,6 @@
 import type { DsnComponents, DsnLike, DsnProtocol } from '@sentry/types';
 
-import { logger } from './logger';
+import { logger } from './logger.ts';
 
 /** Regular expression used to parse a Dsn. */
 const DSN_REGEX = /^(?:(\w+):)\/\/(?:(\w+)(?::(\w+)?)?@)([\w.-]+)(?::(\d+))?\/(.+)/;
@@ -75,7 +75,7 @@ function dsnFromComponents(components: DsnComponents): DsnComponents {
 }
 
 function validateDsn(dsn: DsnComponents): boolean {
-  if (!__DEBUG_BUILD__) {
+  if (typeof __DEBUG_BUILD__ !== 'undefined' && !__DEBUG_BUILD__) {
     return true;
   }
 

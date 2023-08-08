@@ -4,7 +4,7 @@ import * as SentryNode from '@sentry/node';
 // eslint-disable-next-line import/no-unresolved
 import type { Callback, Handler } from 'aws-lambda';
 
-import * as Sentry from '../src';
+import * as Sentry from '../src.ts';
 
 const { wrapHandler } = Sentry.AWSLambda;
 

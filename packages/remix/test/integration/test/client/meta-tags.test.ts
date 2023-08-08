@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { getFirstSentryEnvelopeRequest } from './utils/helpers';
+import { getFirstSentryEnvelopeRequest } from './utils/helpers.ts';
 import { Event } from '@sentry/types';
 
 test('should inject `sentry-trace` and `baggage` meta tags inside the root page.', async ({ page }) => {

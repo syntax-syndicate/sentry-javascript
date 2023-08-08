@@ -1,8 +1,8 @@
-export type { ClientClass } from './sdk';
-export type { AsyncContextStrategy, Carrier, Layer, RunWithAsyncContextOptions } from './hub';
-export type { OfflineStore, OfflineTransportOptions } from './transports/offline';
+export type { ClientClass } from './sdk.ts';
+export type { AsyncContextStrategy, Carrier, Layer, RunWithAsyncContextOptions } from './hub.ts';
+export type { OfflineStore, OfflineTransportOptions } from './transports/offline.ts';
 
-export * from './tracing';
+export * from './tracing/index.ts';
 export {
   addBreadcrumb,
   captureException,
@@ -18,7 +18,7 @@ export {
   setUser,
   withScope,
   captureCheckIn,
-} from './exports';
+} from './exports.ts';
 export {
   getCurrentHub,
   getHubFromCarrier,
@@ -29,24 +29,24 @@ export {
   setHubOnCarrier,
   ensureHubOnCarrier,
   setAsyncContextStrategy,
-} from './hub';
-export { makeSession, closeSession, updateSession } from './session';
-export { SessionFlusher } from './sessionflusher';
-export { addGlobalEventProcessor, Scope } from './scope';
-export { getEnvelopeEndpointWithUrlEncodedAuth, getReportDialogEndpoint } from './api';
-export { BaseClient } from './baseclient';
-export { initAndBind } from './sdk';
-export { createTransport } from './transports/base';
-export { makeOfflineTransport } from './transports/offline';
-export { makeMultiplexedTransport } from './transports/multiplexed';
-export { SDK_VERSION } from './version';
-export { getIntegrationsToSetup } from './integration';
-export { FunctionToString, InboundFilters } from './integrations';
-export { prepareEvent } from './utils/prepareEvent';
-export { createCheckInEnvelope } from './checkin';
-export { hasTracingEnabled } from './utils/hasTracingEnabled';
-export { DEFAULT_ENVIRONMENT } from './constants';
-export { ModuleMetadata } from './integrations/metadata';
-import * as Integrations from './integrations';
+} from './hub.ts';
+export { makeSession, closeSession, updateSession } from './session.ts';
+export { SessionFlusher } from './sessionflusher.ts';
+export { addGlobalEventProcessor, Scope } from './scope.ts';
+export { getEnvelopeEndpointWithUrlEncodedAuth, getReportDialogEndpoint } from './api.ts';
+export { BaseClient } from './baseclient.ts';
+export { initAndBind } from './sdk.ts';
+export { createTransport } from './transports/base.ts';
+export { makeOfflineTransport } from './transports/offline.ts';
+export { makeMultiplexedTransport } from './transports/multiplexed.ts';
+export { SDK_VERSION } from './version.ts';
+export { getIntegrationsToSetup } from './integration.ts';
+export { FunctionToString, InboundFilters } from './integrations/index.ts';
+export { prepareEvent } from './utils/prepareEvent.ts';
+export { createCheckInEnvelope } from './checkin.ts';
+export { hasTracingEnabled } from './utils/hasTracingEnabled.ts';
+export { DEFAULT_ENVIRONMENT } from './constants.ts';
+export { ModuleMetadata } from './integrations/metadata.ts';
+import * as Integrations from './integrations/index.ts';
 
 export { Integrations };

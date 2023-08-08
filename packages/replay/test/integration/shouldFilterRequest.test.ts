@@ -1,5 +1,5 @@
-import { shouldFilterRequest } from '../../src/util/shouldFilterRequest';
-import { mockSdk } from '../index';
+import { shouldFilterRequest } from '../../src/util/shouldFilterRequest.ts';
+import { mockSdk } from '../index.ts';
 
 describe('Integration | shouldFilterRequest', () => {
   beforeEach(() => {

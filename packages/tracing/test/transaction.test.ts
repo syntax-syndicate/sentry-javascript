@@ -1,8 +1,8 @@
 /* eslint-disable deprecation/deprecation */
 import { BrowserClient, Hub } from '@sentry/browser';
 
-import { addExtensionMethods, Transaction } from '../src';
-import { getDefaultBrowserClientOptions } from './testutils';
+import { addExtensionMethods, Transaction } from '../src.ts';
+import { getDefaultBrowserClientOptions } from './testutils.ts';
 
 describe('`Transaction` class', () => {
   beforeAll(() => {

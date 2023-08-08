@@ -1,5 +1,5 @@
-import type { Mechanism } from './mechanism';
-import type { Stacktrace } from './stacktrace';
+import type { Mechanism } from './mechanism.ts';
+import type { Stacktrace } from './stacktrace.ts';
 
 /** JSDoc */
 export interface Exception {

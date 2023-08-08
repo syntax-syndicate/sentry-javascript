@@ -2,13 +2,13 @@ import { expect } from '@playwright/test';
 import { IncrementalSource } from '@sentry-internal/rrweb';
 import type { inputData } from '@sentry-internal/rrweb/typings/types';
 
-import { sentryTest } from '../../../utils/fixtures';
-import type { IncrementalRecordingSnapshot } from '../../../utils/replayHelpers';
+import { sentryTest } from '../../../utils/fixtures.ts';
+import type { IncrementalRecordingSnapshot } from '../../../utils/replayHelpers.ts';
 import {
   getIncrementalRecordingSnapshots,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../utils/replayHelpers';
+} from '../../../utils/replayHelpers.ts';
 
 function isInputMutation(
   snap: IncrementalRecordingSnapshot,

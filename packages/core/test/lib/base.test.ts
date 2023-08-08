@@ -1,11 +1,11 @@
 import type { Client, Envelope, Event, Span, Transaction } from '@sentry/types';
 import { dsnToString, logger, SentryError, SyncPromise } from '@sentry/utils';
 
-import { Hub, makeSession, Scope } from '../../src';
-import * as integrationModule from '../../src/integration';
-import { getDefaultTestClientOptions, TestClient } from '../mocks/client';
-import { AdHocIntegration, TestIntegration } from '../mocks/integration';
-import { makeFakeTransport } from '../mocks/transport';
+import { Hub, makeSession, Scope } from '../../src.ts';
+import * as integrationModule from '../../src/integration.ts';s';
+import { getDefaultTestClientOptions, TestClient } from '../mocks/client.ts';
+import { AdHocIntegration, TestIntegration } from '../mocks/integration.ts';
+import { makeFakeTransport } from '../mocks/transport.ts';
 
 const PUBLIC_DSN = 'https://username@domain/123';
 // eslint-disable-next-line no-var

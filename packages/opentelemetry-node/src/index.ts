@@ -1,3 +1,3 @@
-export { SentrySpanProcessor } from './spanprocessor';
-export { SentryPropagator } from './propagator';
-export * from './utils/spanData';
+export { SentrySpanProcessor } from './spanprocessor.ts';
+export { SentryPropagator } from './propagator.ts';
+export * from './utils/spanData.ts';

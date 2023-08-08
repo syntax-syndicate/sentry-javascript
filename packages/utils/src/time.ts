@@ -1,5 +1,5 @@
-import { dynamicRequire, isNodeEnv } from './node';
-import { getGlobalObject } from './worldwide';
+import { dynamicRequire, isNodeEnv } from './node.ts';
+import { getGlobalObject } from './worldwide.ts';
 
 // eslint-disable-next-line deprecation/deprecation
 const WINDOW = getGlobalObject<Window>();

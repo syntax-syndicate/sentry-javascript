@@ -1,4 +1,4 @@
-import type { DebugImage } from './debugMeta';
+import type { DebugImage } from './debugMeta.ts';
 export type ThreadId = string;
 export type FrameId = number;
 export type StackId = number;

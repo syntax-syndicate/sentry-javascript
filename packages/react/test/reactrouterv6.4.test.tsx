@@ -12,8 +12,8 @@ import {
   useNavigationType,
 } from 'react-router-6.4';
 
-import { reactRouterV6Instrumentation, wrapCreateBrowserRouter } from '../src';
-import type { CreateRouterFunction } from '../src/types';
+import { reactRouterV6Instrumentation, wrapCreateBrowserRouter } from '../src.ts';
+import type { CreateRouterFunction } from '../src/types.ts';
 
 beforeAll(() => {
   // @ts-ignore need to override global Request because it's not in the jest environment (even with an

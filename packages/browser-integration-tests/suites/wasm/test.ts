@@ -2,8 +2,8 @@ import { expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
-import { sentryTest } from '../../utils/fixtures';
-import { shouldSkipWASMTests } from '../../utils/wasmHelpers';
+import { sentryTest } from '../../utils/fixtures.ts';
+import { shouldSkipWASMTests } from '../../utils/wasmHelpers.ts';
 
 sentryTest(
   'captured exception should include modified frames and debug_meta attribute',

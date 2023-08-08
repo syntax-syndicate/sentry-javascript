@@ -1,4 +1,4 @@
-import { REPLAY_MAX_EVENT_BUFFER_SIZE } from '../constants';
+import { REPLAY_MAX_EVENT_BUFFER_SIZE } from '../constants.ts';
 
 /** This error indicates that the event buffer size exceeded the limit.. */
 export class EventBufferSizeExceededError extends Error {

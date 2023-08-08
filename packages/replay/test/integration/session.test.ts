@@ -8,17 +8,17 @@ import {
   SESSION_IDLE_EXPIRE_DURATION,
   SESSION_IDLE_PAUSE_DURATION,
   WINDOW,
-} from '../../src/constants';
-import type { ReplayContainer } from '../../src/replay';
-import { clearSession } from '../../src/session/clearSession';
-import type { Session } from '../../src/types';
-import { addEvent } from '../../src/util/addEvent';
-import { createPerformanceSpans } from '../../src/util/createPerformanceSpans';
-import { createOptionsEvent } from '../../src/util/handleRecordingEmit';
-import { BASE_TIMESTAMP } from '../index';
-import type { RecordMock } from '../mocks/mockRrweb';
-import { resetSdkMock } from '../mocks/resetSdkMock';
-import { useFakeTimers } from '../utils/use-fake-timers';
+} from '../../src/constants.ts';
+import type { ReplayContainer } from '../../src/replay.ts';
+import { clearSession } from '../../src/session/clearSession.ts';
+import type { Session } from '../../src/types.ts';
+import { addEvent } from '../../src/util/addEvent.ts';
+import { createPerformanceSpans } from '../../src/util/createPerformanceSpans.ts';
+import { createOptionsEvent } from '../../src/util/handleRecordingEmit.ts';
+import { BASE_TIMESTAMP } from '../index.ts';
+import type { RecordMock } from '../mocks/mockRrweb.ts';
+import { resetSdkMock } from '../mocks/resetSdkMock.ts';
+import { useFakeTimers } from '../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

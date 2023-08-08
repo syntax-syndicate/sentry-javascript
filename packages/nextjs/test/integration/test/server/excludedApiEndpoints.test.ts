@@ -1,4 +1,4 @@
-import { NextTestEnv } from './utils/helpers';
+import { NextTestEnv } from './utils/helpers.ts';
 
 describe('Excluded API Endpoints', () => {
   it('Should exclude API endpoint via RegExp', async () => {

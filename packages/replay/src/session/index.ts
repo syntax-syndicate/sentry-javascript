@@ -1,1 +1,1 @@
-export * from './createSession';
+export * from './createSession.ts';

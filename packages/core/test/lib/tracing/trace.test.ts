@@ -1,6 +1,6 @@
-import { addTracingExtensions, Hub, makeMain } from '../../../src';
-import { trace } from '../../../src/tracing';
-import { getDefaultTestClientOptions, TestClient } from '../../mocks/client';
+import { addTracingExtensions, Hub, makeMain } from '../../../src.ts';
+import { trace } from '../../../src/tracing.ts';
+import { getDefaultTestClientOptions, TestClient } from '../../mocks/client.ts';
 
 beforeAll(() => {
   addTracingExtensions();

@@ -1,6 +1,6 @@
 import type { Options } from '@sentry/types';
 
-import { getCurrentHub } from '../hub';
+import { getCurrentHub } from '../hub.ts';
 
 // Treeshakable guard to remove all code related to tracing
 declare const __SENTRY_TRACING__: boolean | undefined;

@@ -3,8 +3,8 @@ import { logger } from '@sentry/utils';
 import type { Debugger, InspectorNotification, Runtime, Session } from 'inspector';
 import { LRUMap } from 'lru_map';
 
-import { NODE_VERSION } from '../nodeVersion';
-import type { NodeClientOptions } from '../types';
+import { NODE_VERSION } from '../nodeVersion.ts';
+import type { NodeClientOptions } from '../types.ts';
 
 type Variables = Record<string, unknown>;
 type OnPauseEvent = InspectorNotification<Debugger.PausedEventDataType>;

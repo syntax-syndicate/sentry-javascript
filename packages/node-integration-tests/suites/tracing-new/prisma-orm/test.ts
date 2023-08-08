@@ -1,4 +1,4 @@
-import { assertSentryTransaction, conditionalTest, TestEnv } from '../../../utils';
+import { assertSentryTransaction, conditionalTest, TestEnv } from '../../../utils.ts';
 
 conditionalTest({ min: 12 })('Prisma ORM Integration', () => {
   test('should instrument Prisma client for tracing.', async () => {

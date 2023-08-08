@@ -10,7 +10,7 @@ import {
   forEachEnvelopeItem,
   parseEnvelope,
   serializeEnvelope,
-} from '../src/envelope';
+} from '../src/envelope.ts';
 
 describe('envelope', () => {
   describe('createEnvelope()', () => {

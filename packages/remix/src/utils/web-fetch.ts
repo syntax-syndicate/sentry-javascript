@@ -24,8 +24,8 @@
 
 import { logger } from '@sentry/utils';
 
-import { getClientIPAddress } from './vendor/getIpAddress';
-import type { RemixRequest } from './vendor/types';
+import { getClientIPAddress } from './vendor/getIpAddress.ts';
+import type { RemixRequest } from './vendor/types.ts';
 
 /*
  * Symbol extractor utility to be able to access internal fields of Remix requests.
@@ -125,7 +125,7 @@ export const normalizeRemixRequest = (request: RemixRequest): Record<string, any
   try {
     ip = getClientIPAddress(headers);
   } catch (e) {
-    __DEBUG_BUILD__ && logger.warn('Could not get client IP address', e);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Could not get client IP address', e);
   }
 
   // HTTP-network fetch step 4.2

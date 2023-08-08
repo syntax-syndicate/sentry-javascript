@@ -2,8 +2,8 @@ import type { Route } from '@playwright/test';
 import { expect } from '@playwright/test';
 import type { Event } from '@sentry/types';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getFirstSentryEnvelopeRequest, shouldSkipTracingTest } from '../../../../utils/helpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getFirstSentryEnvelopeRequest, shouldSkipTracingTest } from '../../../../utils/helpers.ts';
 
 sentryTest('should capture a LCP vital with element details.', async ({ browserName, getLocalTestPath, page }) => {
   if (shouldSkipTracingTest() || browserName !== 'chromium') {

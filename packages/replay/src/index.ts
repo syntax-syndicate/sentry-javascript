@@ -1,4 +1,4 @@
-export { Replay } from './integration';
+export { Replay } from './integration.ts';
 export type {
   EventType,
   eventWithTime,
@@ -9,4 +9,4 @@ export type {
   ReplayFrameEvent,
   SpanFrame,
   SpanFrameEvent,
-} from './types';
+} from './types.ts';

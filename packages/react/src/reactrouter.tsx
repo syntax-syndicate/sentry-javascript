@@ -3,7 +3,7 @@ import type { Transaction, TransactionSource } from '@sentry/types';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 
-import type { Action, Location, ReactRouterInstrumentation } from './types';
+import type { Action, Location, ReactRouterInstrumentation } from './types.ts';
 
 // We need to disable eslint no-explict-any because any is required for the
 // react-router typings.

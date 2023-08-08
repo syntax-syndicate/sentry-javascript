@@ -1,4 +1,4 @@
-import type { TraceContext } from './context';
+import type { TraceContext } from './context.ts';
 
 interface CrontabSchedule {
   type: 'crontab';

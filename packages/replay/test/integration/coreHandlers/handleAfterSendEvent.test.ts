@@ -1,13 +1,13 @@
 import { getCurrentHub } from '@sentry/core';
 import type { ErrorEvent, Event } from '@sentry/types';
 
-import { UNABLE_TO_SEND_REPLAY } from '../../../src/constants';
-import { handleAfterSendEvent } from '../../../src/coreHandlers/handleAfterSendEvent';
-import type { ReplayContainer } from '../../../src/replay';
-import { Error } from '../../fixtures/error';
-import { Transaction } from '../../fixtures/transaction';
-import { resetSdkMock } from '../../mocks/resetSdkMock';
-import { useFakeTimers } from '../../utils/use-fake-timers';
+import { UNABLE_TO_SEND_REPLAY } from '../../../src/constants.ts';
+import { handleAfterSendEvent } from '../../../src/coreHandlers/handleAfterSendEvent.ts';
+import type { ReplayContainer } from '../../../src/replay.ts';
+import { Error } from '../../fixtures/error.ts';
+import { Transaction } from '../../fixtures/transaction.ts';
+import { resetSdkMock } from '../../mocks/resetSdkMock.ts';
+import { useFakeTimers } from '../../utils/use-fake-timers.ts';
 
 useFakeTimers();
 let replay: ReplayContainer;

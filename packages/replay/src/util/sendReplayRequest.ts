@@ -1,12 +1,12 @@
 import { getCurrentHub } from '@sentry/core';
 import type { ReplayEvent, TransportMakeRequestResponse } from '@sentry/types';
 
-import { REPLAY_EVENT_NAME, UNABLE_TO_SEND_REPLAY } from '../constants';
-import type { SendReplayData } from '../types';
-import { createReplayEnvelope } from './createReplayEnvelope';
-import { logInfo } from './log';
-import { prepareRecordingData } from './prepareRecordingData';
-import { prepareReplayEvent } from './prepareReplayEvent';
+import { REPLAY_EVENT_NAME, UNABLE_TO_SEND_REPLAY } from '../constants.ts';
+import type { SendReplayData } from '../types.ts';
+import { createReplayEnvelope } from './createReplayEnvelope.ts';
+import { logInfo } from './log.ts';
+import { prepareRecordingData } from './prepareRecordingData.ts';
+import { prepareReplayEvent } from './prepareReplayEvent.ts';
 
 /**
  * Send replay attachment using `fetch()`

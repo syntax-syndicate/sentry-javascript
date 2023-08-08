@@ -14,7 +14,7 @@
 
 import type { Integration } from '@sentry/types';
 
-import type { SdkSource } from './env';
+import type { SdkSource } from './env.ts';
 
 /** Internal global with common properties and Sentry extensions  */
 export interface InternalGlobal {

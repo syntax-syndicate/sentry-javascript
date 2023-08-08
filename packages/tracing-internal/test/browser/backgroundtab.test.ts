@@ -1,10 +1,10 @@
 import { Hub, makeMain } from '@sentry/core';
 import { JSDOM } from 'jsdom';
 
-import { addExtensionMethods } from '../../../tracing/src';
-import { conditionalTest, getDefaultBrowserClientOptions } from '../../../tracing/test/testutils';
-import { registerBackgroundTabDetection } from '../../src/browser/backgroundtab';
-import { TestClient } from '../utils/TestClient';
+import { addExtensionMethods } from '../../../tracing/src.ts';
+import { conditionalTest, getDefaultBrowserClientOptions } from '../../../tracing/test/testutils.ts';
+import { registerBackgroundTabDetection } from '../../src/browser/backgroundtab.ts';
+import { TestClient } from '../utils/TestClient.ts';
 
 conditionalTest({ min: 10 })('registerBackgroundTabDetection', () => {
   let events: Record<string, any> = {};

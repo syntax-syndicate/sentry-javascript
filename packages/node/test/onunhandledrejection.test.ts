@@ -1,6 +1,6 @@
 import { Hub } from '@sentry/core';
 
-import { OnUnhandledRejection } from '../src/integrations/onunhandledrejection';
+import { OnUnhandledRejection } from '../src/integrations/onunhandledrejection.ts';
 
 // don't log the test errors we're going to throw, so at a quick glance it doesn't look like the test itself has failed
 global.console.warn = () => null;

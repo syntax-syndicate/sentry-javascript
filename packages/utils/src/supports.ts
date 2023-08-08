@@ -1,10 +1,10 @@
-import { logger } from './logger';
-import { getGlobalObject } from './worldwide';
+import { logger } from './logger.ts';
+import { getGlobalObject } from './worldwide.ts';
 
 // eslint-disable-next-line deprecation/deprecation
 const WINDOW = getGlobalObject<Window>();
 
-export { supportsHistory } from './vendor/supportsHistory';
+export { supportsHistory } from './vendor/supportsHistory.ts';
 
 /**
  * Tells whether current environment supports ErrorEvent objects
@@ -115,7 +115,7 @@ export function supportsNativeFetch(): boolean {
       }
       doc.head.removeChild(sandbox);
     } catch (err) {
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
         logger.warn('Could not create sandbox iframe for pure fetch check, bailing to window.fetch: ', err);
     }
   }

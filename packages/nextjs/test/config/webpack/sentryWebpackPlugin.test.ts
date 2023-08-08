@@ -3,8 +3,8 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
-import type { BuildContext, ExportedNextConfig } from '../../../src/config/types';
-import { getUserConfigFile, getWebpackPluginOptions } from '../../../src/config/webpack';
+import type { BuildContext, ExportedNextConfig } from '../../../src/config/types.ts';
+import { getUserConfigFile, getWebpackPluginOptions } from '../../../src/config/webpack.ts';
 import {
   clientBuildContext,
   clientWebpackConfig,
@@ -13,9 +13,9 @@ import {
   serverBuildContext,
   serverWebpackConfig,
   userSentryWebpackPluginConfig,
-} from '../fixtures';
-import { exitsSync, mkdtempSyncSpy, mockExistsSync, realExistsSync } from '../mocks';
-import { findWebpackPlugin, materializeFinalWebpackConfig } from '../testUtils';
+} from '../fixtures.ts';
+import { exitsSync, mkdtempSyncSpy, mockExistsSync, realExistsSync } from '../mocks.ts';
+import { findWebpackPlugin, materializeFinalWebpackConfig } from '../testUtils.ts';
 
 describe('Sentry webpack plugin config', () => {
   it('includes expected properties', async () => {

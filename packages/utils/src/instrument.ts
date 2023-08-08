@@ -9,12 +9,12 @@ import type {
   WrappedFunction,
 } from '@sentry/types';
 
-import { isString } from './is';
-import { CONSOLE_LEVELS, logger } from './logger';
-import { fill } from './object';
-import { getFunctionName } from './stacktrace';
-import { supportsHistory, supportsNativeFetch } from './supports';
-import { getGlobalObject } from './worldwide';
+import { isString } from './is.ts';
+import { CONSOLE_LEVELS, logger } from './logger.ts';
+import { fill } from './object.ts';
+import { getFunctionName } from './stacktrace.ts';
+import { supportsHistory, supportsNativeFetch } from './supports.ts';
+import { getGlobalObject } from './worldwide.ts';
 
 // eslint-disable-next-line deprecation/deprecation
 const WINDOW = getGlobalObject<Window>();
@@ -77,7 +77,7 @@ function instrument(type: InstrumentHandlerType): void {
       instrumentUnhandledRejection();
       break;
     default:
-      __DEBUG_BUILD__ && logger.warn('unknown instrumentation type:', type);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('unknown instrumentation type:', type);
       return;
   }
 }
@@ -103,7 +103,7 @@ function triggerHandlers(type: InstrumentHandlerType, data: any): void {
     try {
       handler(data);
     } catch (e) {
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
         logger.error(
           `Error while triggering instrumentation handler.\nType: ${type}\nName: ${getFunctionName(handler)}\nError:`,
           e,

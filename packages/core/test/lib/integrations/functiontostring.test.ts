@@ -1,5 +1,5 @@
-import { fill } from '../../../../utils/src/object';
-import { FunctionToString } from '../../../src/integrations/functiontostring';
+import { fill } from '../../../../utils/src/object.ts';
+import { FunctionToString } from '../../../src/integrations/functiontostring.ts';
 
 describe('FunctionToString', () => {
   it('it works as expected', () => {

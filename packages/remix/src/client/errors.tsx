@@ -1,7 +1,7 @@
 import { captureException, withScope } from '@sentry/core';
 import { addExceptionMechanism, isNodeEnv, isString } from '@sentry/utils';
 
-import type { ErrorResponse } from '../utils/vendor/types';
+import type { ErrorResponse } from '../utils/vendor/types.ts';
 
 /**
  * Checks whether the given error is an ErrorResponse.

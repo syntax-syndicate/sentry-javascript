@@ -1,9 +1,9 @@
 import { captureEvent, configureScope } from '@sentry/core';
 import { GLOBAL_OBJ } from '@sentry/utils';
 
-import { initAndBind } from '../../src/sdk';
-import { getDefaultTestClientOptions, TestClient } from '../mocks/client';
-import { AddAttachmentTestIntegration } from '../mocks/integration';
+import { initAndBind } from '../../src/sdk.ts';
+import { getDefaultTestClientOptions, TestClient } from '../mocks/client.ts';
+import { AddAttachmentTestIntegration } from '../mocks/integration.ts';
 
 const PUBLIC_DSN = 'https://username@domain/123';
 const sendEvent = jest.spyOn(TestClient.prototype, 'sendEvent');

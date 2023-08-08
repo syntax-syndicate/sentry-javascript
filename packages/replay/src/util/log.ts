@@ -5,7 +5,7 @@ import { logger } from '@sentry/utils';
  * Log a message in debug mode, and add a breadcrumb when _experiment.traceInternals is enabled.
  */
 export function logInfo(message: string, shouldAddBreadcrumb?: boolean): void {
-  if (!__DEBUG_BUILD__) {
+  if (typeof __DEBUG_BUILD__ !== 'undefined' && !__DEBUG_BUILD__) {
     return;
   }
 

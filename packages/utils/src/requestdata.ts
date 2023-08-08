@@ -22,9 +22,9 @@ import type {
   TransactionSource,
 } from '@sentry/types';
 
-import { isPlainObject, isString } from './is';
-import { normalize } from './normalize';
-import { stripUrlQueryAndFragment } from './url';
+import { isPlainObject, isString } from './is.ts';
+import { normalize } from './normalize.ts';
+import { stripUrlQueryAndFragment } from './url.ts';
 
 const DEFAULT_INCLUDES = {
   ip: false,

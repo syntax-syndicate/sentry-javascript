@@ -5,7 +5,7 @@ import type {
   NextConfigObject,
   NextConfigObjectWithSentry,
   WebpackConfigObject,
-} from '../../src/config/types';
+} from '../../src/config/types.ts';
 
 export const SERVER_SDK_CONFIG_FILE = 'sentry.server.config.js';
 export const CLIENT_SDK_CONFIG_FILE = 'sentry.client.config.js';

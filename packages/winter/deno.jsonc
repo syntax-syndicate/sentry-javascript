@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "@sentry/core": "../core/src/index.ts",
+    "@sentry/utils": "../utils/src/index.ts",
+    "@sentry/types": "../types/src/index.ts"
+  }
+}

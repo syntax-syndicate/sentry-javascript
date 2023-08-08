@@ -2,9 +2,9 @@ import { EventType } from '@sentry-internal/rrweb';
 import { getCurrentHub } from '@sentry/core';
 import { logger } from '@sentry/utils';
 
-import { EventBufferSizeExceededError } from '../eventBuffer/error';
-import type { AddEventResult, RecordingEvent, ReplayContainer, ReplayFrameEvent, ReplayPluginOptions } from '../types';
-import { timestampToMs } from './timestamp';
+import { EventBufferSizeExceededError } from '../eventBuffer/error.ts';
+import type { AddEventResult, RecordingEvent, ReplayContainer, ReplayFrameEvent, ReplayPluginOptions } from '../types.ts';
+import { timestampToMs } from './timestamp.ts';
 
 function isCustomEvent(event: RecordingEvent): event is ReplayFrameEvent {
   return event.type === EventType.Custom;
@@ -56,7 +56,7 @@ export async function addEvent(
   } catch (error) {
     const reason = error && error instanceof EventBufferSizeExceededError ? 'addEventSizeExceeded' : 'addEvent';
 
-    __DEBUG_BUILD__ && logger.error(error);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error(error);
     await replay.stop(reason);
 
     const client = getCurrentHub().getClient();
@@ -76,7 +76,7 @@ function maybeApplyCallback(
       return callback(event);
     }
   } catch (error) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.error('[Replay] An error occured in the `beforeAddRecordingEvent` callback, skipping the event...', error);
     return null;
   }

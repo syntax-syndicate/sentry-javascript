@@ -41,14 +41,14 @@ import {
   SyncPromise,
 } from '@sentry/utils';
 
-import { getEnvelopeEndpointWithUrlEncodedAuth } from './api';
-import { createEventEnvelope, createSessionEnvelope } from './envelope';
-import type { IntegrationIndex } from './integration';
-import { setupIntegration, setupIntegrations } from './integration';
-import type { Scope } from './scope';
-import { updateSession } from './session';
-import { getDynamicSamplingContextFromClient } from './tracing/dynamicSamplingContext';
-import { prepareEvent } from './utils/prepareEvent';
+import { getEnvelopeEndpointWithUrlEncodedAuth } from './api.ts';
+import { createEventEnvelope, createSessionEnvelope } from './envelope.ts';
+import type { IntegrationIndex } from './integration.ts';
+import { setupIntegration, setupIntegrations } from './integration.ts';
+import type { Scope } from './scope.ts';
+import { updateSession } from './session.ts';
+import { getDynamicSamplingContextFromClient } from './tracing/dynamicSamplingContext.ts';
+import { prepareEvent } from './utils/prepareEvent.ts';
 
 const ALREADY_SEEN_ERROR = "Not capturing exception because it's already been captured.";
 
@@ -123,7 +123,7 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
     if (options.dsn) {
       this._dsn = makeDsn(options.dsn);
     } else {
-      __DEBUG_BUILD__ && logger.warn('No DSN provided, client will not do anything.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('No DSN provided, client will not do anything.');
     }
 
     if (this._dsn) {
@@ -143,7 +143,7 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   public captureException(exception: any, hint?: EventHint, scope?: Scope): string | undefined {
     // ensure we haven't captured this very object before
     if (checkOrSetAlreadyCaught(exception)) {
-      __DEBUG_BUILD__ && logger.log(ALREADY_SEEN_ERROR);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(ALREADY_SEEN_ERROR);
       return;
     }
 
@@ -193,7 +193,7 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   public captureEvent(event: Event, hint?: EventHint, scope?: Scope): string | undefined {
     // ensure we haven't captured this very object before
     if (hint && hint.originalException && checkOrSetAlreadyCaught(hint.originalException)) {
-      __DEBUG_BUILD__ && logger.log(ALREADY_SEEN_ERROR);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(ALREADY_SEEN_ERROR);
       return;
     }
 
@@ -213,12 +213,12 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
    */
   public captureSession(session: Session): void {
     if (!this._isEnabled()) {
-      __DEBUG_BUILD__ && logger.warn('SDK not enabled, will not capture session.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('SDK not enabled, will not capture session.');
       return;
     }
 
     if (!(typeof session.release === 'string')) {
-      __DEBUG_BUILD__ && logger.warn('Discarded session because of missing or non-string release');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Discarded session because of missing or non-string release');
     } else {
       this.sendSession(session);
       // After sending, we set init false to indicate it's not the first occurrence
@@ -306,7 +306,7 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
     try {
       return (this._integrations[integration.id] as T) || null;
     } catch (_oO) {
-      __DEBUG_BUILD__ && logger.warn(`Cannot retrieve integration ${integration.id} from the current Client`);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn(`Cannot retrieve integration ${integration.id} from the current Client`);
       return null;
     }
   }
@@ -366,7 +366,7 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
       // would be `Partial<Record<SentryRequestType, Partial<Record<Outcome, number>>>>`
       // With typescript 4.1 we could even use template literal types
       const key = `${reason}:${category}`;
-      __DEBUG_BUILD__ && logger.log(`Adding outcome: "${key}"`);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(`Adding outcome: "${key}"`);
 
       // The following works because undefined + 1 === NaN and NaN is falsy
       this._outcomes[key] = this._outcomes[key] + 1 || 1;
@@ -564,7 +564,7 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
         return finalEvent.event_id;
       },
       reason => {
-        if (__DEBUG_BUILD__) {
+        if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
           // If something's gone wrong, log the error as a warning. If it's just us having used a `SentryError` for
           // control flow, log just the message (no stack) as a log-level log.
           const sentryError = reason as SentryError;
@@ -703,10 +703,10 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
       this.emit('beforeEnvelope', envelope);
 
       return this._transport.send(envelope).then(null, reason => {
-        __DEBUG_BUILD__ && logger.error('Error while sending event:', reason);
+        typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('Error while sending event:', reason);
       });
     } else {
-      __DEBUG_BUILD__ && logger.error('Transport disabled');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('Transport disabled');
     }
   }
 

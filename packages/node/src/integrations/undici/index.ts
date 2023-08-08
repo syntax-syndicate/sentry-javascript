@@ -10,16 +10,16 @@ import {
 } from '@sentry/utils';
 import { LRUMap } from 'lru_map';
 
-import type { NodeClient } from '../../client';
-import { NODE_VERSION } from '../../nodeVersion';
-import { isSentryRequest } from '../utils/http';
+import type { NodeClient } from '../../client.ts';
+import { NODE_VERSION } from '../../nodeVersion.ts';
+import { isSentryRequest } from '../utils/http.ts';
 import type {
   DiagnosticsChannel,
   RequestCreateMessage,
   RequestEndMessage,
   RequestErrorMessage,
   RequestWithSentry,
-} from './types';
+} from './types.ts';
 
 export enum ChannelName {
   // https://github.com/nodejs/undici/blob/e6fc80f809d1217814c044f52ed40ef13f21e43c/docs/api/DiagnosticsChannel.md#undicirequestcreate

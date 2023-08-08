@@ -21,7 +21,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import { getGlobalObject } from '../worldwide';
+import { getGlobalObject } from '../worldwide.ts';
 
 // eslint-disable-next-line deprecation/deprecation
 const WINDOW = getGlobalObject<Window>();

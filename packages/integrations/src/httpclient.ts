@@ -113,7 +113,7 @@ export class HttpClient implements Integration {
                 cookies = this._parseCookieString(cookieString);
               }
             } catch (e) {
-              __DEBUG_BUILD__ && logger.log(`Could not extract cookies from header ${cookieHeader}`);
+              typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(`Could not extract cookies from header ${cookieHeader}`);
             }
 
             return {
@@ -157,13 +157,13 @@ export class HttpClient implements Integration {
             responseCookies = this._parseCookieString(cookieString);
           }
         } catch (e) {
-          __DEBUG_BUILD__ && logger.log('Could not extract cookies from response headers');
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Could not extract cookies from response headers');
         }
 
         try {
           responseHeaders = this._getXHRResponseHeaders(xhr);
         } catch (e) {
-          __DEBUG_BUILD__ && logger.log('Could not extract headers from response');
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Could not extract headers from response');
         }
 
         requestHeaders = headers;
@@ -339,7 +339,7 @@ export class HttpClient implements Integration {
         try {
           this._xhrResponseHandler(xhr, method, headers);
         } catch (e) {
-          __DEBUG_BUILD__ && logger.warn('Error while extracting response event form XHR response', e);
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Error while extracting response event form XHR response', e);
         }
       },
     );

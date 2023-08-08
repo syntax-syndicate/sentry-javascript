@@ -2,8 +2,8 @@ import { hasTracingEnabled } from '@sentry/core';
 import { getCurrentHub } from '@sentry/node';
 import type { GetStaticProps } from 'next';
 
-import { isBuild } from './utils/isBuild';
-import { callDataFetcherTraced, withErrorInstrumentation } from './utils/wrapperUtils';
+import { isBuild } from './utils/isBuild.ts';
+import { callDataFetcherTraced, withErrorInstrumentation } from './utils/wrapperUtils.ts';
 
 type Props = { [key: string]: unknown };
 

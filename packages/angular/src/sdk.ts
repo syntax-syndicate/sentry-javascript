@@ -3,7 +3,7 @@ import type { BrowserOptions } from '@sentry/browser';
 import { defaultIntegrations, init as browserInit, SDK_VERSION, setContext } from '@sentry/browser';
 import { logger } from '@sentry/utils';
 
-import { IS_DEBUG_BUILD } from './flags';
+import { IS_DEBUG_BUILD } from './flags.ts';
 
 /**
  * Inits the Angular SDK

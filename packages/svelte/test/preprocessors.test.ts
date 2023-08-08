@@ -5,8 +5,8 @@ import {
   componentTrackingPreprocessor,
   defaultComponentTrackingOptions,
   FIRST_PASS_COMPONENT_TRACKING_PREPROC_ID,
-} from '../src/preprocessors';
-import type { SentryPreprocessorGroup } from '../src/types';
+} from '../src/preprocessors.ts';
+import type { SentryPreprocessorGroup } from '../src/types.ts';
 
 function expectComponentCodeToBeModified(
   preprocessedComponents: {

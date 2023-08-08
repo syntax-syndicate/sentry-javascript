@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { bindReporter } from './lib/bindReporter';
-import { getActivationStart } from './lib/getActivationStart';
-import { getVisibilityWatcher } from './lib/getVisibilityWatcher';
-import { initMetric } from './lib/initMetric';
-import { observe } from './lib/observe';
-import { onHidden } from './lib/onHidden';
-import type { LCPMetric, ReportCallback, StopListening } from './types';
+import { bindReporter } from './lib/bindReporter.ts';
+import { getActivationStart } from './lib/getActivationStart.ts';
+import { getVisibilityWatcher } from './lib/getVisibilityWatcher.ts';
+import { initMetric } from './lib/initMetric.ts';
+import { observe } from './lib/observe.ts';
+import { onHidden } from './lib/onHidden.ts';
+import type { LCPMetric, ReportCallback, StopListening } from './types.ts';
 
 const reportedMetricIDs: Record<string, boolean> = {};
 

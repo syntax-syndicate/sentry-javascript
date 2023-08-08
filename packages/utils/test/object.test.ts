@@ -2,8 +2,8 @@
  * @jest-environment jsdom
  */
 
-import { dropUndefinedKeys, extractExceptionKeysForMessage, fill, objectify, urlEncode } from '../src/object';
-import { testOnlyIfNodeVersionAtLeast } from './testutils';
+import { dropUndefinedKeys, extractExceptionKeysForMessage, fill, objectify, urlEncode } from '../src/object.ts';
+import { testOnlyIfNodeVersionAtLeast } from './testutils.ts';
 
 describe('fill()', () => {
   test('wraps a method by calling a replacement function on it', () => {

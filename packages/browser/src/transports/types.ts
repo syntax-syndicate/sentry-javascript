@@ -1,6 +1,6 @@
 import type { BaseTransportOptions } from '@sentry/types';
 
-import type { BrowserOfflineTransportOptions } from './offline';
+import type { BrowserOfflineTransportOptions } from './offline.ts';
 
 type BaseTransportAndOfflineTransportOptions = BaseTransportOptions & BrowserOfflineTransportOptions;
 

@@ -28,7 +28,7 @@
 import { WINDOW } from '@sentry/svelte';
 import { getDomElement } from '@sentry/utils';
 
-import { build_selector } from './buildSelector';
+import { build_selector } from './buildSelector.ts';
 
 /**
  * Checks if a request is cached by looking for a script tag with the same selector as the constructed selector of the request.

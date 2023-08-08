@@ -7,9 +7,9 @@ import {
   isNaN,
   isPrimitive,
   isThenable,
-} from '../src/is';
-import { supportsDOMError, supportsDOMException, supportsErrorEvent } from '../src/supports';
-import { resolvedSyncPromise } from '../src/syncpromise';
+} from '../src/is.ts';
+import { supportsDOMError, supportsDOMException, supportsErrorEvent } from '../src/supports.ts';
+import { resolvedSyncPromise } from '../src/syncpromise.ts';
 
 class SentryError extends Error {
   public name: string;

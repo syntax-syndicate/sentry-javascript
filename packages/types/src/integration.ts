@@ -1,5 +1,5 @@
-import type { EventProcessor } from './eventprocessor';
-import type { Hub } from './hub';
+import type { EventProcessor } from './eventprocessor.ts';
+import type { Hub } from './hub.ts';
 
 /** Integration Class Interface */
 export interface IntegrationClass<T> {

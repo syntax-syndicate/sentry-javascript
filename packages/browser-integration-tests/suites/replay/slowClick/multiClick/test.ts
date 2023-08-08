@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
+import { sentryTest } from '../../../../utils/fixtures.ts';
 import {
   getCustomRecordingEvents,
   shouldSkipReplayTest,
   waitForReplayRequest,
   waitForReplayRequests,
-} from '../../../../utils/replayHelpers';
+} from '../../../../utils/replayHelpers.ts';
 
 sentryTest('captures multi click when not detecting slow click', async ({ getLocalTestUrl, page }) => {
   if (shouldSkipReplayTest()) {

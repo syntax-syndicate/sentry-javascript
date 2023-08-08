@@ -1,4 +1,4 @@
-import { dedupePerformanceEntries } from '../../../src/util/dedupePerformanceEntries';
+import { dedupePerformanceEntries } from '../../../src/util/dedupePerformanceEntries.ts';
 import { PerformanceEntryLcp } from './../../fixtures/performanceEntry/lcp';
 import { PerformanceEntryNavigation } from './../../fixtures/performanceEntry/navigation';
 import { PerformanceEntryResource } from './../../fixtures/performanceEntry/resource';

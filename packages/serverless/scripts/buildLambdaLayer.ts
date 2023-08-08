@@ -3,7 +3,7 @@ import * as childProcess from 'child_process';
 import * as fs from 'fs';
 import * as rimraf from 'rimraf';
 
-import { ensureBundleBuildPrereqs } from '../../../scripts/ensure-bundle-deps';
+import { ensureBundleBuildPrereqs } from '../../../scripts/ensure-bundle-deps.ts';
 import { version } from '../package.json';
 
 /**

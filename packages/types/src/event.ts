@@ -1,19 +1,19 @@
-import type { Attachment } from './attachment';
-import type { Breadcrumb } from './breadcrumb';
-import type { Contexts } from './context';
-import type { DebugMeta } from './debugMeta';
-import type { Exception } from './exception';
-import type { Extras } from './extra';
-import type { Measurements } from './measurement';
-import type { Primitive } from './misc';
-import type { Request } from './request';
-import type { CaptureContext } from './scope';
-import type { SdkInfo } from './sdkinfo';
-import type { Severity, SeverityLevel } from './severity';
-import type { Span } from './span';
-import type { Thread } from './thread';
-import type { TransactionSource } from './transaction';
-import type { User } from './user';
+import type { Attachment } from './attachment.ts';
+import type { Breadcrumb } from './breadcrumb.ts';
+import type { Contexts } from './context.ts';
+import type { DebugMeta } from './debugMeta.ts';
+import type { Exception } from './exception.ts';
+import type { Extras } from './extra.ts';
+import type { Measurements } from './measurement.ts';
+import type { Primitive } from './misc.ts';
+import type { Request } from './request.ts';
+import type { CaptureContext } from './scope.ts';
+import type { SdkInfo } from './sdkinfo.ts';
+import type { Severity, SeverityLevel } from './severity.ts';
+import type { Span } from './span.ts';
+import type { Thread } from './thread.ts';
+import type { TransactionSource } from './transaction.ts';
+import type { User } from './user.ts';
 
 /** JSDoc */
 export interface Event {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 import type { Event, Hub, Integration } from '@sentry/types';
 
-import { CaptureConsole } from '../src/captureconsole';
+import { CaptureConsole } from '../src/captureconsole.ts';
 
 const mockScope = {
   setLevel: jest.fn(),

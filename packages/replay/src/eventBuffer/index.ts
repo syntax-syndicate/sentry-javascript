@@ -1,9 +1,9 @@
 import { getWorkerURL } from '@sentry-internal/replay-worker';
 
-import type { EventBuffer } from '../types';
-import { logInfo } from '../util/log';
-import { EventBufferArray } from './EventBufferArray';
-import { EventBufferProxy } from './EventBufferProxy';
+import type { EventBuffer } from '../types.ts';
+import { logInfo } from '../util/log.ts';
+import { EventBufferArray } from './EventBufferArray.ts';
+import { EventBufferProxy } from './EventBufferProxy.ts';
 
 interface CreateEventBufferParams {
   useCompression: boolean;

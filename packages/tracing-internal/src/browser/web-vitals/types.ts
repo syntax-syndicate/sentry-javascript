@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import type { FirstInputPolyfillCallback } from './types/polyfills';
+import type { FirstInputPolyfillCallback } from './types/polyfills.ts';
 
-export * from './types/base';
-export * from './types/polyfills';
+export * from './types/base.ts';
+export * from './types/polyfills.ts';
 
-export * from './types/cls';
-export * from './types/fid';
-export * from './types/lcp';
+export * from './types/cls.ts';
+export * from './types/fid.ts';
+export * from './types/lcp.ts';
 
 // --------------------------------------------------------------------------
 // Web Vitals package globals

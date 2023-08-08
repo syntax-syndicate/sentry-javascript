@@ -1,7 +1,7 @@
 import type { Event } from '@sentry/types';
 import { createStackParser, GLOBAL_OBJ, nodeStackLineParser } from '@sentry/utils';
 
-import { addMetadataToStackFrames, getMetadataForUrl, stripMetadataFromStackFrames } from '../../src/metadata';
+import { addMetadataToStackFrames, getMetadataForUrl, stripMetadataFromStackFrames } from '../../src/metadata.ts';
 
 const parser = createStackParser(nodeStackLineParser());
 

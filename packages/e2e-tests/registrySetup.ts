@@ -2,7 +2,7 @@
 import * as childProcess from 'child_process';
 import * as path from 'path';
 
-import { PUBLISH_PACKAGES_DOCKER_IMAGE_NAME, TEST_REGISTRY_CONTAINER_NAME, VERDACCIO_VERSION } from './lib/constants';
+import { PUBLISH_PACKAGES_DOCKER_IMAGE_NAME, TEST_REGISTRY_CONTAINER_NAME, VERDACCIO_VERSION } from './lib/constants.ts';
 
 const publishScriptNodeVersion = process.env.E2E_TEST_PUBLISH_SCRIPT_NODE_VERSION;
 const repositoryRoot = path.resolve(__dirname, '../..');

@@ -2,8 +2,8 @@ import type { Request } from '@playwright/test';
 import { expect } from '@playwright/test';
 import type { Event } from '@sentry/types';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getFirstSentryEnvelopeRequest, shouldSkipTracingTest } from '../../../../utils/helpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getFirstSentryEnvelopeRequest, shouldSkipTracingTest } from '../../../../utils/helpers.ts';
 
 sentryTest('should create spans for multiple XHR requests', async ({ getLocalTestPath, page }) => {
   if (shouldSkipTracingTest()) {

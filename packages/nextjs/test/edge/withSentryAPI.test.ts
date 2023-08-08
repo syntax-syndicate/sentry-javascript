@@ -1,6 +1,6 @@
 import * as coreSdk from '@sentry/core';
 
-import { wrapApiHandlerWithSentry } from '../../src/edge';
+import { wrapApiHandlerWithSentry } from '../../src/edge.ts';
 
 // The wrap* functions require the hub to have tracing extensions. This is normally called by the EdgeClient
 // constructor but the client isn't used in these tests.

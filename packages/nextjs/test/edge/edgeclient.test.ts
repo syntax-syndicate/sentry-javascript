@@ -1,8 +1,8 @@
 import { createTransport } from '@sentry/core';
 import type { Event, EventHint } from '@sentry/types';
 
-import type { EdgeClientOptions } from '../../src/edge/edgeclient';
-import { EdgeClient } from '../../src/edge/edgeclient';
+import type { EdgeClientOptions } from '../../src/edge/edgeclient.ts';
+import { EdgeClient } from '../../src/edge/edgeclient.ts';s';
 
 const PUBLIC_DSN = 'https://username@domain/123';
 

@@ -1,9 +1,9 @@
 import type { TransactionContext } from '@sentry/types';
 import { isThenable } from '@sentry/utils';
 
-import { getCurrentHub } from '../hub';
-import { hasTracingEnabled } from '../utils/hasTracingEnabled';
-import type { Span } from './span';
+import { getCurrentHub } from '../hub.ts';
+import { hasTracingEnabled } from '../utils/hasTracingEnabled.ts';
+import type { Span } from './span.ts';
 
 /**
  * Wraps a function with a transaction/span and finishes the span after the function is done.

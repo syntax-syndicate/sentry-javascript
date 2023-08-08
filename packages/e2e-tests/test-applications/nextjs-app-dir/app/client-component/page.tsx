@@ -1,6 +1,6 @@
 'use client';
 
-import { ClientErrorDebugTools } from '../../components/client-error-debug-tools';
+import { ClientErrorDebugTools } from '../../components/client-error-debug-tools.ts';
 
 export default function Page() {
   return (

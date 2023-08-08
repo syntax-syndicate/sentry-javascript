@@ -1,7 +1,7 @@
 import type { Event, EventHint, Exception, ExtendedError, StackParser } from '@sentry/types';
 
-import { isInstanceOf } from './is';
-import { truncate } from './string';
+import { isInstanceOf } from './is.ts';
+import { truncate } from './string.ts';
 
 /**
  * Creates exceptions inside `event.exception.values` for errors that are nested on properties based on the `key` parameter.

@@ -9,7 +9,7 @@ import type { Integration, StackParser } from '@sentry/types';
 
 import * as clientSdk from './index.client';
 import * as serverSdk from './index.server';
-import type { RemixOptions } from './utils/remixOptions';
+import type { RemixOptions } from './utils/remixOptions.ts';
 
 /** Initializes Sentry Remix SDK */
 export declare function init(options: RemixOptions): void;

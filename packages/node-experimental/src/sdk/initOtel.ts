@@ -3,7 +3,7 @@ import { AlwaysOnSampler, NodeTracerProvider } from '@opentelemetry/sdk-trace-no
 import { getCurrentHub } from '@sentry/core';
 import { SentryPropagator, SentrySpanProcessor } from '@sentry/opentelemetry-node';
 
-import type { NodeExperimentalClient } from './client';
+import type { NodeExperimentalClient } from './client.ts';
 
 /**
  * Initialize OpenTelemetry for Node.

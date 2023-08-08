@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 
-import { canWrapLoad, makeAutoInstrumentationPlugin } from '../../src/vite/autoInstrument';
+import { canWrapLoad, makeAutoInstrumentationPlugin } from '../../src/vite/autoInstrument.ts';
 
 const DEFAULT_CONTENT = `
   export const load = () => {};
@@ -185,7 +185,7 @@ describe('canWrapLoad', () => {
     ],
     [
       'export variable declaration - inline function with assigned type',
-      `import type { LayoutLoad } from './$types';
+      `import type { LayoutLoad } from './$types.ts';
        export const load :  LayoutLoad = async () => { return { props: { msg: "hi" } } }`,
     ],
   ])('returns `true` if a load declaration  (%s) exists', async (_, code) => {

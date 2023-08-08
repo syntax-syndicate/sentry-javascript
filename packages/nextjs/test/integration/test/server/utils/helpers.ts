@@ -1,4 +1,4 @@
-import { TestEnv } from '../../../../../../node-integration-tests/utils';
+import { TestEnv } from '../../../../../../node-integration-tests/utils.ts';
 import * as http from 'http';
 import * as path from 'path';
 import { createServer, Server } from 'http';

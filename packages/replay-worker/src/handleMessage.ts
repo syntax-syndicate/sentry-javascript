@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import { compress, Compressor } from './Compressor';
+import { compress, Compressor } from './Compressor.ts';
 
 const compressor = new Compressor();
 

@@ -22,9 +22,9 @@ import type {
 } from '@sentry/types';
 import { consoleSandbox, dateTimestampInSeconds, getGlobalSingleton, GLOBAL_OBJ, logger, uuid4 } from '@sentry/utils';
 
-import { DEFAULT_ENVIRONMENT } from './constants';
-import { Scope } from './scope';
-import { closeSession, makeSession, updateSession } from './session';
+import { DEFAULT_ENVIRONMENT } from './constants.ts';
+import { Scope } from './scope.ts';
+import { closeSession, makeSession, updateSession } from './session.ts';
 
 /**
  * API compatibility version of this hub.
@@ -362,7 +362,7 @@ export class Hub implements HubInterface {
     try {
       return client.getIntegration(integration);
     } catch (_oO) {
-      __DEBUG_BUILD__ && logger.warn(`Cannot retrieve integration ${integration.id} from the current Hub`);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn(`Cannot retrieve integration ${integration.id} from the current Hub`);
       return null;
     }
   }
@@ -373,7 +373,7 @@ export class Hub implements HubInterface {
   public startTransaction(context: TransactionContext, customSamplingContext?: CustomSamplingContext): Transaction {
     const result = this._callExtensionMethod<Transaction>('startTransaction', context, customSamplingContext);
 
-    if (__DEBUG_BUILD__ && !result) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && !result) {
       // eslint-disable-next-line no-console
       console.warn(`Tracing extension 'startTransaction' has not been added. Call 'addTracingExtensions' before calling 'init':
 Sentry.addTracingExtensions();
@@ -497,7 +497,7 @@ Sentry.init({...});
     if (sentry && sentry.extensions && typeof sentry.extensions[method] === 'function') {
       return sentry.extensions[method].apply(this, args);
     }
-    __DEBUG_BUILD__ && logger.warn(`Extension method ${method} couldn't be found, doing nothing.`);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn(`Extension method ${method} couldn't be found, doing nothing.`);
   }
 }
 

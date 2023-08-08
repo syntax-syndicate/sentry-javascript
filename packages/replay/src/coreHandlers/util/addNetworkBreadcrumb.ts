@@ -1,6 +1,6 @@
-import type { NetworkRequestData, ReplayContainer, ReplayPerformanceEntry } from '../../types';
-import { createPerformanceSpans } from '../../util/createPerformanceSpans';
-import { shouldFilterRequest } from '../../util/shouldFilterRequest';
+import type { NetworkRequestData, ReplayContainer, ReplayPerformanceEntry } from '../../types.ts';
+import { createPerformanceSpans } from '../../util/createPerformanceSpans.ts';
+import { shouldFilterRequest } from '../../util/shouldFilterRequest.ts';
 
 /** Add a performance entry breadcrumb */
 export function addNetworkBreadcrumb(

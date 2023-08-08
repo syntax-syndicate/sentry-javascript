@@ -2,9 +2,9 @@ import { expect } from '@playwright/test';
 import type * as Sentry from '@sentry/browser';
 import type { EventEnvelopeHeaders } from '@sentry/types';
 
-import { sentryTest } from '../../../utils/fixtures';
-import { envelopeRequestParser, shouldSkipTracingTest, waitForTransactionRequest } from '../../../utils/helpers';
-import { getReplaySnapshot, shouldSkipReplayTest, waitForReplayRunning } from '../../../utils/replayHelpers';
+import { sentryTest } from '../../../utils/fixtures.ts';
+import { envelopeRequestParser, shouldSkipTracingTest, waitForTransactionRequest } from '../../../utils/helpers.ts';
+import { getReplaySnapshot, shouldSkipReplayTest, waitForReplayRunning } from '../../../utils/replayHelpers.ts';
 
 type TestWindow = Window & { Sentry: typeof Sentry; Replay: Sentry.Replay };
 

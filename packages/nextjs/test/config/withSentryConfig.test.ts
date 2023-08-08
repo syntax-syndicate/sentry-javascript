@@ -1,5 +1,5 @@
-import { defaultRuntimePhase, defaultsObject, exportedNextConfig, userNextConfig } from './fixtures';
-import { materializeFinalNextConfig } from './testUtils';
+import { defaultRuntimePhase, defaultsObject, exportedNextConfig, userNextConfig } from './fixtures.ts';
+import { materializeFinalNextConfig } from './testUtils.ts';
 
 describe('withSentryConfig', () => {
   it('includes expected properties', () => {

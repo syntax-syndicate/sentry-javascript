@@ -1,5 +1,5 @@
-import type { EdgeRouteHandler } from './types';
-import { withEdgeWrapping } from './utils/edgeWrapperUtils';
+import type { EdgeRouteHandler } from './types.ts';
+import { withEdgeWrapping } from './utils/edgeWrapperUtils.ts';
 
 /**
  * Wraps Next.js middleware with Sentry error and performance instrumentation.

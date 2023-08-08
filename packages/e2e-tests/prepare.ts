@@ -2,8 +2,8 @@
 /* eslint-disable no-console */
 import * as dotenv from 'dotenv';
 
-import { validate } from './lib/validate';
-import { registrySetup } from './registrySetup';
+import { validate } from './lib/validate.ts';
+import { registrySetup } from './registrySetup.ts';
 
 async function run(): Promise<void> {
   // Load environment variables from .env file locally

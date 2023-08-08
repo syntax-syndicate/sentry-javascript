@@ -10,11 +10,11 @@ import { SENTRY_XHR_DATA_KEY } from '@sentry/utils';
 import { TextEncoder } from 'util';
 
 import { BASE_TIMESTAMP } from '../..';
-import { NETWORK_BODY_MAX_SIZE } from '../../../src/constants';
-import { beforeAddNetworkBreadcrumb } from '../../../src/coreHandlers/handleNetworkBreadcrumbs';
-import type { EventBufferArray } from '../../../src/eventBuffer/EventBufferArray';
-import type { ReplayContainer, ReplayNetworkOptions } from '../../../src/types';
-import { setupReplayContainer } from '../../utils/setupReplayContainer';
+import { NETWORK_BODY_MAX_SIZE } from '../../../src/constants.ts';
+import { beforeAddNetworkBreadcrumb } from '../../../src/coreHandlers/handleNetworkBreadcrumbs.ts';
+import type { EventBufferArray } from '../../../src/eventBuffer/EventBufferArray.ts';
+import type { ReplayContainer, ReplayNetworkOptions } from '../../../src/types.ts';
+import { setupReplayContainer } from '../../utils/setupReplayContainer.ts';
 
 jest.useFakeTimers();
 

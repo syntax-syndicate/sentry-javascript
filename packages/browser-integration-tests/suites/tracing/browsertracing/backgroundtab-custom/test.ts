@@ -2,8 +2,8 @@ import type { JSHandle } from '@playwright/test';
 import { expect } from '@playwright/test';
 import type { Event } from '@sentry/types';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getFirstSentryEnvelopeRequest, shouldSkipTracingTest } from '../../../../utils/helpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getFirstSentryEnvelopeRequest, shouldSkipTracingTest } from '../../../../utils/helpers.ts';
 
 async function getPropertyValue(handle: JSHandle, prop: string) {
   return (await handle.getProperty(prop))?.jsonValue();

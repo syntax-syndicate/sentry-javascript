@@ -1,9 +1,9 @@
 import { BrowserClient } from '@sentry/browser';
 import { TRACING_DEFAULTS, Transaction } from '@sentry/core';
 
-import { Hub, IdleTransaction, Span } from '../../core/src';
-import { IdleTransactionSpanRecorder } from '../../core/src/tracing/idletransaction';
-import { getDefaultBrowserClientOptions } from './testutils';
+import { Hub, IdleTransaction, Span } from '../../core/src.ts';
+import { IdleTransactionSpanRecorder } from '../../core/src/tracing/idletransaction.ts';
+import { getDefaultBrowserClientOptions } from './testutils.ts';
 
 const dsn = 'https://123@sentry.io/42';
 let hub: Hub;

@@ -5,9 +5,9 @@ import * as http from 'http';
 import * as https from 'https';
 import { TextEncoder } from 'util';
 
-import { makeNodeTransport } from '../../src/transports';
-import type { HTTPModule, HTTPModuleRequestIncomingMessage } from '../../src/transports/http-module';
-import testServerCerts from './test-server-certs';
+import { makeNodeTransport } from '../../src/transports.ts';
+import type { HTTPModule, HTTPModuleRequestIncomingMessage } from '../../src/transports/http-module.ts';
+import testServerCerts from './test-server-certs.ts';
 
 const textEncoder = new TextEncoder();
 

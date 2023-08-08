@@ -16,9 +16,9 @@ import type {
 } from '@sentry/types';
 import { logger, uuid4 } from '@sentry/utils';
 
-import type { Hub } from './hub';
-import { getCurrentHub } from './hub';
-import type { Scope } from './scope';
+import type { Hub } from './hub.ts';
+import { getCurrentHub } from './hub.ts';
+import type { Scope } from './scope.ts';
 
 // Note: All functions in this file are typed with a return value of `ReturnType<Hub[HUB_FUNCTION]>`,
 // where HUB_FUNCTION is some method on the Hub class.
@@ -200,9 +200,9 @@ export function captureCheckIn(checkIn: CheckIn, upsertMonitorConfig?: MonitorCo
   const scope = hub.getScope();
   const client = hub.getClient();
   if (!client) {
-    __DEBUG_BUILD__ && logger.warn('Cannot capture check-in. No client defined.');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Cannot capture check-in. No client defined.');
   } else if (!client.captureCheckIn) {
-    __DEBUG_BUILD__ && logger.warn('Cannot capture check-in. Client does not support sending check-ins.');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Cannot capture check-in. Client does not support sending check-ins.');
   } else {
     return client.captureCheckIn(checkIn, upsertMonitorConfig, scope);
   }

@@ -15,9 +15,9 @@ import type { Observable } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
-import { ANGULAR_INIT_OP, ANGULAR_OP, ANGULAR_ROUTING_OP } from './constants';
-import { IS_DEBUG_BUILD } from './flags';
-import { runOutsideAngular } from './zone';
+import { ANGULAR_INIT_OP, ANGULAR_OP, ANGULAR_ROUTING_OP } from './constants.ts';
+import { IS_DEBUG_BUILD } from './flags.ts';
+import { runOutsideAngular } from './zone.ts';
 
 let instrumentationInitialized: boolean;
 let stashedStartTransaction: (context: TransactionContext) => Transaction | undefined;

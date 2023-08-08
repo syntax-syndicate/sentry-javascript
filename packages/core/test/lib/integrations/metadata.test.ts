@@ -2,8 +2,8 @@ import type { Event } from '@sentry/types';
 import { createStackParser, GLOBAL_OBJ, nodeStackLineParser, parseEnvelope } from '@sentry/utils';
 import { TextDecoder, TextEncoder } from 'util';
 
-import { createTransport, getCurrentHub, ModuleMetadata } from '../../../src';
-import { getDefaultTestClientOptions, TestClient } from '../../mocks/client';
+import { createTransport, getCurrentHub, ModuleMetadata } from '../../../src.ts';
+import { getDefaultTestClientOptions, TestClient } from '../../mocks/client.ts';
 
 const stackParser = createStackParser(nodeStackLineParser());
 

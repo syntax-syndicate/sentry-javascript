@@ -1,8 +1,8 @@
 import * as SentryNode from '@sentry/node';
 import * as domain from 'domain';
 
-import * as Sentry from '../src';
-import { wrapCloudEventFunction, wrapEventFunction, wrapHttpFunction } from '../src/gcpfunction';
+import * as Sentry from '../src.ts';
+import { wrapCloudEventFunction, wrapEventFunction, wrapHttpFunction } from '../src/gcpfunction.ts';
 import type {
   CloudEventFunction,
   CloudEventFunctionWithCallback,
@@ -11,7 +11,7 @@ import type {
   HttpFunction,
   Request,
   Response,
-} from '../src/gcpfunction/general';
+} from '../src/gcpfunction/general.ts';
 
 /**
  * Why @ts-ignore some Sentry.X calls

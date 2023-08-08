@@ -1,6 +1,6 @@
-import { NODE_VERSION } from '../nodeVersion';
-import { setDomainAsyncContextStrategy } from './domain';
-import { setHooksAsyncContextStrategy } from './hooks';
+import { NODE_VERSION } from '../nodeVersion.ts';
+import { setDomainAsyncContextStrategy } from './domain.ts';
+import { setHooksAsyncContextStrategy } from './hooks.ts';
 
 /**
  * Sets the correct async context strategy for Node.js

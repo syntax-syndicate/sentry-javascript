@@ -4,7 +4,7 @@ import type { Transaction, TransactionContext } from '@sentry/types';
 import { isNodeEnv, logger } from '@sentry/utils';
 import * as React from 'react';
 
-import { getFutureFlagsBrowser } from '../utils/futureFlags';
+import { getFutureFlagsBrowser } from '../utils/futureFlags.ts';
 
 const DEFAULT_TAGS = {
   'routing.instrumentation': 'remix-router',
@@ -103,7 +103,9 @@ export function withSentry<P extends Record<string, unknown>, R extends React.FC
   const SentryRoot: React.FC<P> = (props: P) => {
     // Early return when any of the required functions is not available.
     if (!_useEffect || !_useLocation || !_useMatches || !_customStartTransaction) {
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' &&
+        typeof __DEBUG_BUILD__ !== 'undefined' &&
+        __DEBUG_BUILD__ &&
         !isNodeEnv() &&
         logger.warn('Remix SDK was unable to wrap your root because of one or more missing parameters.');
 

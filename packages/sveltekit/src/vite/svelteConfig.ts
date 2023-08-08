@@ -5,7 +5,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as url from 'url';
 
-import type { SupportedSvelteKitAdapters } from './detectAdapter';
+import type { SupportedSvelteKitAdapters } from './detectAdapter.ts';
 
 /**
  * Imports the svelte.config.js file and returns the config object.

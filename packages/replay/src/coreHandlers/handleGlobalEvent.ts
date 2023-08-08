@@ -1,11 +1,11 @@
 import type { Event, EventHint } from '@sentry/types';
 import { logger } from '@sentry/utils';
 
-import type { ReplayContainer } from '../types';
-import { isErrorEvent, isReplayEvent, isTransactionEvent } from '../util/eventUtils';
-import { isRrwebError } from '../util/isRrwebError';
-import { handleAfterSendEvent } from './handleAfterSendEvent';
-import { shouldSampleForBufferEvent } from './util/shouldSampleForBufferEvent';
+import type { ReplayContainer } from '../types.ts';
+import { isErrorEvent, isReplayEvent, isTransactionEvent } from '../util/eventUtils.ts';
+import { isRrwebError } from '../util/isRrwebError.ts';
+import { handleAfterSendEvent } from './handleAfterSendEvent.ts';
+import { shouldSampleForBufferEvent } from './util/shouldSampleForBufferEvent.ts';
 
 /**
  * Returns a listener to be added to `addGlobalEventProcessor(listener)`.
@@ -37,7 +37,7 @@ export function handleGlobalEventListener(
     // Unless `captureExceptions` is enabled, we want to ignore errors coming from rrweb
     // As there can be a bunch of stuff going wrong in internals there, that we don't want to bubble up to users
     if (isRrwebError(event, hint) && !replay.getOptions()._experiments.captureExceptions) {
-      __DEBUG_BUILD__ && logger.log('[Replay] Ignoring error from rrweb internals', event);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('[Replay] Ignoring error from rrweb internals', event);
       return null;
     }
 

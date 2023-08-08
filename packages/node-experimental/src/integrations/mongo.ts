@@ -2,7 +2,7 @@ import type { Instrumentation } from '@opentelemetry/instrumentation';
 import { MongoDBInstrumentation } from '@opentelemetry/instrumentation-mongodb';
 import type { Integration } from '@sentry/types';
 
-import { NodePerformanceIntegration } from './NodePerformanceIntegration';
+import { NodePerformanceIntegration } from './NodePerformanceIntegration.ts';
 
 /**
  * MongoDB integration

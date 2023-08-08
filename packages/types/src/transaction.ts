@@ -1,10 +1,10 @@
-import type { Context } from './context';
-import type { DynamicSamplingContext } from './envelope';
-import type { Instrumenter } from './instrumenter';
-import type { MeasurementUnit } from './measurement';
-import type { ExtractedNodeRequestData, Primitive, WorkerLocation } from './misc';
-import type { PolymorphicRequest } from './polymorphics';
-import type { Span, SpanContext } from './span';
+import type { Context } from './context.ts';
+import type { DynamicSamplingContext } from './envelope.ts';
+import type { Instrumenter } from './instrumenter.ts';
+import type { MeasurementUnit } from './measurement.ts';
+import type { ExtractedNodeRequestData, Primitive, WorkerLocation } from './misc.ts';
+import type { PolymorphicRequest } from './polymorphics.ts';
+import type { Span, SpanContext } from './span.ts';
 
 /**
  * Interface holding Transaction-specific properties

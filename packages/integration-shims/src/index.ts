@@ -1,2 +1,2 @@
-export { Replay } from './Replay';
-export { BrowserTracing, addTracingExtensions } from './BrowserTracing';
+export { Replay } from './Replay.ts';
+export { BrowserTracing, addTracingExtensions } from './BrowserTracing.ts';

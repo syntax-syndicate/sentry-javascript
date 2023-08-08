@@ -201,7 +201,10 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       }
 
       if (fallback) {
-        __DEBUG_BUILD__ && logger.warn('fallback did not produce a valid ReactElement');
+        typeof __DEBUG_BUILD__ !== 'undefined' &&
+          typeof __DEBUG_BUILD__ !== 'undefined' &&
+          __DEBUG_BUILD__ &&
+          logger.warn('fallback did not produce a valid ReactElement');
       }
 
       // Fail gracefully if no fallback provided or is not valid

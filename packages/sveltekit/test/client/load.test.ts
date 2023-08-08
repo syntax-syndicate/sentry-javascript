@@ -4,7 +4,7 @@ import type { Load } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
 import { vi } from 'vitest';
 
-import { wrapLoadWithSentry } from '../../src/client/load';
+import { wrapLoadWithSentry } from '../../src/client/load.ts';
 
 const SENTRY_TRACE_HEADER = '1234567890abcdef1234567890abcdef-1234567890abcdef-1';
 const BAGGAGE_HEADER =

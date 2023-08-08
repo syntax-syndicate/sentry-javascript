@@ -5,9 +5,9 @@ import type { TransactionContext } from '@sentry/types';
 import { addExceptionMechanism, addNonEnumerableProperty, objectify } from '@sentry/utils';
 import type { LoadEvent, ServerLoadEvent } from '@sveltejs/kit';
 
-import type { SentryWrappedFlag } from '../common/utils';
-import { isHttpError, isRedirect } from '../common/utils';
-import { getTracePropagationData } from './utils';
+import type { SentryWrappedFlag } from '../common/utils.ts';
+import { isHttpError, isRedirect } from '../common/utils.ts';
+import { getTracePropagationData } from './utils.ts';
 
 type PatchedLoadEvent = LoadEvent & SentryWrappedFlag;
 type PatchedServerLoadEvent = ServerLoadEvent & SentryWrappedFlag;

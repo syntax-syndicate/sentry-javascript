@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import axios, { AxiosError } from 'axios';
-import { ReplayRecordingData } from './fixtures/ReplayRecordingData';
+import { ReplayRecordingData } from './fixtures/ReplayRecordingData.ts';
 
 const EVENT_POLLING_TIMEOUT = 30_000;
 

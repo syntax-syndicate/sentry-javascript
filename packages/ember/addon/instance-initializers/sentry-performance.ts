@@ -8,7 +8,7 @@ import { EmberRunQueues } from '@ember/runloop/-private/types';
 import { getActiveTransaction } from '..';
 import { browserPerformanceTimeOrigin, GLOBAL_OBJ, timestampInSeconds } from '@sentry/utils';
 import { macroCondition, isTesting, getOwnConfig } from '@embroider/macros';
-import { EmberSentryConfig, GlobalConfig, OwnConfig } from '../types';
+import { EmberSentryConfig, GlobalConfig, OwnConfig } from '../types.ts';
 import RouterService from '@ember/routing/router-service';
 import type { BaseClient } from '@sentry/core';
 

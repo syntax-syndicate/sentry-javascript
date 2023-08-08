@@ -1,4 +1,4 @@
-import type { StackFrame } from './stackframe';
+import type { StackFrame } from './stackframe.ts';
 
 /** JSDoc */
 export interface Stacktrace {

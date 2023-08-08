@@ -1,5 +1,5 @@
-import { handleDom } from '../../../src/coreHandlers/handleDom';
-import type { DomHandlerData } from '../../../src/coreHandlers/util/domUtils';
+import { handleDom } from '../../../src/coreHandlers/handleDom.ts';
+import type { DomHandlerData } from '../../../src/coreHandlers/util/domUtils.ts';
 
 describe('Unit | coreHandlers | handleDom', () => {
   test('it works with a basic click event on a div', () => {

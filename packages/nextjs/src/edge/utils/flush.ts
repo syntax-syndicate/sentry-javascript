@@ -15,6 +15,6 @@ export async function flush(timeout?: number): Promise<boolean> {
   if (client) {
     return client.flush(timeout);
   }
-  __DEBUG_BUILD__ && logger.warn('Cannot flush events. No client defined.');
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Cannot flush events. No client defined.');
   return Promise.resolve(false);
 }

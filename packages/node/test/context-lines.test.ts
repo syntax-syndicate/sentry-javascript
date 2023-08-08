@@ -1,10 +1,10 @@
 import type { StackFrame } from '@sentry/types';
 import * as fs from 'fs';
 
-import { parseStackFrames } from '../src/eventbuilder';
-import { ContextLines, resetFileContentCache } from '../src/integrations/contextlines';
-import { defaultStackParser } from '../src/sdk';
-import { getError } from './helper/error';
+import { parseStackFrames } from '../src/eventbuilder.ts';
+import { ContextLines, resetFileContentCache } from '../src/integrations/contextlines.ts';
+import { defaultStackParser } from '../src/sdk.ts';
+import { getError } from './helper/error.ts';
 
 describe('ContextLines', () => {
   let readFileSpy: jest.SpyInstance;

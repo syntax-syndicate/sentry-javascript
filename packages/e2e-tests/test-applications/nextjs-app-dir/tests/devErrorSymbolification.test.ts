@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { waitForError } from '../event-proxy-server';
+import { waitForError } from '../event-proxy-server.ts';
 
 test.describe('dev mode error symbolification', () => {
   if (process.env.TEST_ENV !== 'development') {

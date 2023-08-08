@@ -3,7 +3,7 @@ import { captureException, flush, getCurrentHub } from '@sentry/node';
 import { isString, isThenable, logger, stripUrlQueryAndFragment, tracingContextFromHeaders } from '@sentry/utils';
 
 import { domainify, proxyFunction } from './../utils';
-import type { HttpFunction, WrapperOptions } from './general';
+import type { HttpFunction, WrapperOptions } from './general.ts';
 
 // TODO (v8 / #5257): Remove this whole old/new business and just use the new stuff
 type ParseRequestOptions = AddRequestDataToEventOptions['include'] & {
@@ -110,7 +110,7 @@ function _wrapHttpFunction(fn: HttpFunction, wrapOptions: Partial<HttpFunctionWr
 
       void flush(options.flushTimeout)
         .then(null, e => {
-          __DEBUG_BUILD__ && logger.error(e);
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error(e);
         })
         .then(() => {
           _end.call(this, chunk, encoding, cb);

@@ -1,4 +1,4 @@
-import { TransactionContextProvider } from '../components/transaction-context';
+import { TransactionContextProvider } from '../components/transaction-context.ts';
 import Link from 'next/link';
 
 export default function Layout({ children }: { children: React.ReactNode }) {

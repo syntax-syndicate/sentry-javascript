@@ -1,6 +1,6 @@
-import type { Instrumenter } from './instrumenter';
-import type { Primitive } from './misc';
-import type { Transaction } from './transaction';
+import type { Instrumenter } from './instrumenter.ts';
+import type { Primitive } from './misc.ts';
+import type { Transaction } from './transaction.ts';
 
 /** Interface holding all properties that can be set on a Span on creation. */
 export interface SpanContext {

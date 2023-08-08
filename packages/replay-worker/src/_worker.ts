@@ -1,4 +1,4 @@
-import { handleMessage } from './handleMessage';
+import { handleMessage } from './handleMessage.ts';
 
 addEventListener('message', handleMessage);
 

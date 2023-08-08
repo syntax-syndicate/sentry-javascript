@@ -2,9 +2,9 @@ import { createTransport } from '@sentry/core';
 import type { Transport, TransportMakeRequestResponse, TransportRequest } from '@sentry/types';
 import { rejectedSyncPromise } from '@sentry/utils';
 
-import type { BrowserTransportOptions } from './types';
-import type { FetchImpl } from './utils';
-import { clearCachedFetchImplementation, getNativeFetchImplementation } from './utils';
+import type { BrowserTransportOptions } from './types.ts';
+import type { FetchImpl } from './utils.ts';
+import { clearCachedFetchImplementation, getNativeFetchImplementation } from './utils.ts';
 
 /**
  * Creates a Transport that uses the Fetch API to send events to Sentry.

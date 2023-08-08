@@ -1,10 +1,10 @@
 /* eslint-disable import/export */
 import { configureScope, init as reactInit } from '@sentry/react';
 
-import { buildMetadata } from './utils/metadata';
-import type { RemixOptions } from './utils/remixOptions';
-export { remixRouterInstrumentation, withSentry } from './client/performance';
-export { captureRemixErrorBoundaryError } from './client/errors';
+import { buildMetadata } from './utils/metadata.ts';
+import type { RemixOptions } from './utils/remixOptions.ts';
+export { remixRouterInstrumentation, withSentry } from './client/performance.ts';
+export { captureRemixErrorBoundaryError } from './client/errors.ts';
 export * from '@sentry/react';
 
 export function init(options: RemixOptions): void {

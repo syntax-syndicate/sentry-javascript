@@ -1,8 +1,8 @@
 import type { Breadcrumb, TextEncoderInternal, XhrBreadcrumbData } from '@sentry/types';
 import { logger, SENTRY_XHR_DATA_KEY } from '@sentry/utils';
 
-import type { ReplayContainer, ReplayNetworkOptions, ReplayNetworkRequestData, XhrHint } from '../../types';
-import { addNetworkBreadcrumb } from './addNetworkBreadcrumb';
+import type { ReplayContainer, ReplayNetworkOptions, ReplayNetworkRequestData, XhrHint } from '../../types.ts';
+import { addNetworkBreadcrumb } from './addNetworkBreadcrumb.ts';
 import {
   buildNetworkRequestOrResponse,
   buildSkippedNetworkRequestOrResponse,
@@ -12,7 +12,7 @@ import {
   makeNetworkReplayBreadcrumb,
   parseContentLengthHeader,
   urlMatches,
-} from './networkUtils';
+} from './networkUtils.ts';
 
 /**
  * Capture an XHR breadcrumb to a replay.
@@ -30,7 +30,7 @@ export async function captureXhrBreadcrumbToReplay(
     const result = makeNetworkReplayBreadcrumb('resource.xhr', data);
     addNetworkBreadcrumb(options.replay, result);
   } catch (error) {
-    __DEBUG_BUILD__ && logger.error('[Replay] Failed to capture fetch breadcrumb', error);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('[Replay] Failed to capture fetch breadcrumb', error);
   }
 }
 

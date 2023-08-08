@@ -1,4 +1,4 @@
-import { mockSdk } from '../index';
+import { mockSdk } from '../index.ts';
 
 describe('Integration | integrationSettings', () => {
   beforeEach(() => {

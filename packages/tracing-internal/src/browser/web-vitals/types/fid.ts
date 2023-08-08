@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import type { LoadState, Metric, ReportCallback } from './base';
-import type { FirstInputPolyfillEntry } from './polyfills';
+import type { LoadState, Metric, ReportCallback } from './base.ts';
+import type { FirstInputPolyfillEntry } from './polyfills.ts';
 
 /**
  * An FID-specific version of the Metric object.

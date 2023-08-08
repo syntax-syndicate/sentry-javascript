@@ -20,9 +20,9 @@ export function applyTunnelRouteOption(options: BrowserOptions): void {
       const orgId = sentrySaasDsnMatch[1];
       const tunnelPath = `${tunnelRouteOption}?o=${orgId}&p=${dsnComponents.projectId}`;
       options.tunnel = tunnelPath;
-      __DEBUG_BUILD__ && logger.info(`Tunneling events to "${tunnelPath}"`);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.info(`Tunneling events to "${tunnelPath}"`);
     } else {
-      __DEBUG_BUILD__ && logger.warn('Provided DSN is not a Sentry SaaS DSN. Will not tunnel events.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Provided DSN is not a Sentry SaaS DSN. Will not tunnel events.');
     }
   }
 }

@@ -1,11 +1,11 @@
 import 'jsdom-worker';
 
 import { BASE_TIMESTAMP } from '../..';
-import { REPLAY_MAX_EVENT_BUFFER_SIZE } from '../../../src/constants';
-import type { EventBufferProxy } from '../../../src/eventBuffer/EventBufferProxy';
-import { addEvent } from '../../../src/util/addEvent';
-import { setupReplayContainer } from '../../utils/setupReplayContainer';
-import { useFakeTimers } from '../../utils/use-fake-timers';
+import { REPLAY_MAX_EVENT_BUFFER_SIZE } from '../../../src/constants.ts';
+import type { EventBufferProxy } from '../../../src/eventBuffer/EventBufferProxy.ts';
+import { addEvent } from '../../../src/util/addEvent.ts';
+import { setupReplayContainer } from '../../utils/setupReplayContainer.ts';
+import { useFakeTimers } from '../../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

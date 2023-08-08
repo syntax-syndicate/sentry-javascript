@@ -1,5 +1,5 @@
-import type { HistoryData, ReplayContainer, ReplayPerformanceEntry } from '../types';
-import { createPerformanceSpans } from '../util/createPerformanceSpans';
+import type { HistoryData, ReplayContainer, ReplayPerformanceEntry } from '../types.ts';
+import { createPerformanceSpans } from '../util/createPerformanceSpans.ts';
 
 interface HistoryHandlerData {
   from: string;

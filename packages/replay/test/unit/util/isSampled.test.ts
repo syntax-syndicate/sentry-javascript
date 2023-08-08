@@ -1,4 +1,4 @@
-import { isSampled } from '../../../src/util/isSampled';
+import { isSampled } from '../../../src/util/isSampled.ts';
 
 // Note Math.random generates a value from 0 (inclusive) to <1 (1 exclusive).
 const cases: [number, number, boolean][] = [

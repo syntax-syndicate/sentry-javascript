@@ -1,6 +1,6 @@
 const useV2 = process.env.REMIX_VERSION === '2';
 
-import { getFirstSentryEnvelopeRequest } from './utils/helpers';
+import { getFirstSentryEnvelopeRequest } from './utils/helpers.ts';
 import { test, expect } from '@playwright/test';
 import { Event } from '@sentry/types';
 

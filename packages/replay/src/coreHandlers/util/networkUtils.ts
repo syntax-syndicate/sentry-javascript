@@ -1,7 +1,7 @@
 import type { TextEncoderInternal } from '@sentry/types';
 import { dropUndefinedKeys, stringMatchesSomePattern } from '@sentry/utils';
 
-import { NETWORK_BODY_MAX_SIZE, WINDOW } from '../../constants';
+import { NETWORK_BODY_MAX_SIZE, WINDOW } from '../../constants.ts';
 import type {
   NetworkBody,
   NetworkMetaWarning,
@@ -9,8 +9,8 @@ import type {
   ReplayNetworkRequestData,
   ReplayNetworkRequestOrResponse,
   ReplayPerformanceEntry,
-} from '../../types';
-import { fixJson } from '../../util/truncateJson/fixJson';
+} from '../../types.ts';
+import { fixJson } from '../../util/truncateJson/fixJson.ts';
 
 /** Get the size of a body. */
 export function getBodySize(

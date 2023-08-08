@@ -1,5 +1,5 @@
-import { mockSdk } from '../mocks/mockSdk';
-import { useFakeTimers } from '../utils/use-fake-timers';
+import { mockSdk } from '../mocks/mockSdk.ts';
+import { useFakeTimers } from '../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

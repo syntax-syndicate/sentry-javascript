@@ -25,7 +25,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import { hash } from './hash';
+import { hash } from './hash.ts';
 
 /**
  * Build the cache key for a given request

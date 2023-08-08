@@ -1,4 +1,4 @@
-import type { DataCategory } from './datacategory';
+import type { DataCategory } from './datacategory.ts';
 
 export type EventDropReason =
   | 'before_send'

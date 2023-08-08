@@ -1,7 +1,7 @@
 import type { Breadcrumb, Scope } from '@sentry/types';
 
-import { CONSOLE_ARG_MAX_SIZE } from '../../../src/constants';
-import * as HandleScope from '../../../src/coreHandlers/handleScope';
+import { CONSOLE_ARG_MAX_SIZE } from '../../../src/constants.ts';
+import * as HandleScope from '../../../src/coreHandlers/handleScope.ts';
 
 describe('Unit | coreHandlers | handleScope', () => {
   let mockHandleScope: jest.SpyInstance;

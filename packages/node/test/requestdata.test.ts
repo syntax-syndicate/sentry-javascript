@@ -5,14 +5,14 @@
 import type { Event, PolymorphicRequest, TransactionSource, User } from '@sentry/types';
 import type * as net from 'net';
 
-import type { AddRequestDataToEventOptions } from '../src/requestdata';
+import type { AddRequestDataToEventOptions } from '../src/requestdata.ts';
 import {
   addRequestDataToEvent,
   extractPathForTransaction,
   extractRequestData as newExtractRequestData,
-} from '../src/requestdata';
-import type { ExpressRequest } from '../src/requestDataDeprecated';
-import { extractRequestData as oldExtractRequestData, parseRequest } from '../src/requestDataDeprecated';
+} from '../src/requestdata.ts';
+import type { ExpressRequest } from '../src/requestDataDeprecated.ts';
+import { extractRequestData as oldExtractRequestData, parseRequest } from '../src/requestDataDeprecated.ts';
 
 // TODO (v8 / #5257): Remove `describe.each` wrapper, remove `formatArgs` wrapper, reformat args in tests, and use only
 // `addRequestDataToEvent`

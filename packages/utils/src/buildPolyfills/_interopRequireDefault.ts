@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import type { RequireResult } from './types';
+import type { RequireResult } from './types.ts';
 
 /**
  * Wraps modules which aren't the result of transpiling an ESM module in an object under the key `default`

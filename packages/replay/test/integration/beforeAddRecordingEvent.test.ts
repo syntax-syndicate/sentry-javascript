@@ -2,14 +2,14 @@ import * as SentryCore from '@sentry/core';
 import type { Transport } from '@sentry/types';
 import * as SentryUtils from '@sentry/utils';
 
-import type { Replay } from '../../src';
-import type { ReplayContainer } from '../../src/replay';
-import { clearSession } from '../../src/session/clearSession';
-import { createPerformanceEntries } from '../../src/util/createPerformanceEntries';
-import { createPerformanceSpans } from '../../src/util/createPerformanceSpans';
-import * as SendReplayRequest from '../../src/util/sendReplayRequest';
-import { BASE_TIMESTAMP, mockRrweb, mockSdk } from '../index';
-import { useFakeTimers } from '../utils/use-fake-timers';
+import type { Replay } from '../../src.ts';
+import type { ReplayContainer } from '../../src/replay.ts';
+import { clearSession } from '../../src/session/clearSession.ts';
+import { createPerformanceEntries } from '../../src/util/createPerformanceEntries.ts';
+import { createPerformanceSpans } from '../../src/util/createPerformanceSpans.ts';
+import * as SendReplayRequest from '../../src/util/sendReplayRequest.ts';
+import { BASE_TIMESTAMP, mockRrweb, mockSdk } from '../index.ts';
+import { useFakeTimers } from '../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

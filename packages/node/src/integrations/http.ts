@@ -18,10 +18,10 @@ import type * as http from 'http';
 import type * as https from 'https';
 import { LRUMap } from 'lru_map';
 
-import type { NodeClient } from '../client';
-import { NODE_VERSION } from '../nodeVersion';
-import type { RequestMethod, RequestMethodArgs, RequestOptions } from './utils/http';
-import { cleanSpanDescription, extractRawUrl, extractUrl, isSentryRequest, normalizeRequestArgs } from './utils/http';
+import type { NodeClient } from '../client.ts';
+import { NODE_VERSION } from '../nodeVersion.ts';
+import type { RequestMethod, RequestMethodArgs, RequestOptions } from './utils/http.ts';
+import { cleanSpanDescription, extractRawUrl, extractUrl, isSentryRequest, normalizeRequestArgs } from './utils/http.ts';
 
 interface TracingOptions {
   /**
@@ -104,7 +104,7 @@ export class Http implements Integration {
 
     // Do not auto-instrument for other instrumenter
     if (clientOptions && clientOptions.instrumenter !== 'sentry') {
-      __DEBUG_BUILD__ && logger.log('HTTP Integration is skipped because of instrumenter configuration.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('HTTP Integration is skipped because of instrumenter configuration.');
       return;
     }
 
@@ -268,7 +268,7 @@ function _createWrappedRequestMethodFactory(
           addHeadersToRequestOptions(requestOptions, requestUrl, sentryTraceHeader, dynamicSamplingContext);
         }
       } else {
-        __DEBUG_BUILD__ &&
+        typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
           logger.log(
             `[Tracing] Not adding sentry-trace header to outgoing request (${requestUrl}) due to mismatching tracePropagationTargets option.`,
           );
@@ -320,7 +320,7 @@ function addHeadersToRequestOptions(
     return;
   }
 
-  __DEBUG_BUILD__ &&
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
     logger.log(`[Tracing] Adding sentry-trace header ${sentryTraceHeader} to outgoing request to "${requestUrl}": `);
   const sentryBaggage = dynamicSamplingContextToSentryBaggageHeader(dynamicSamplingContext);
   const sentryBaggageHeader =

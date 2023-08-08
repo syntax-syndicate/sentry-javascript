@@ -1,8 +1,8 @@
 import type { Event } from '@sentry/types';
 
-import { UNABLE_TO_SEND_REPLAY } from '../../constants';
-import type { ReplayContainer } from '../../types';
-import { isSampled } from '../../util/isSampled';
+import { UNABLE_TO_SEND_REPLAY } from '../../constants.ts';
+import type { ReplayContainer } from '../../types.ts';
+import { isSampled } from '../../util/isSampled.ts';
 
 /**
  * Determine if event should be sampled (only applies in buffer mode).

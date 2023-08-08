@@ -1,4 +1,4 @@
-import { WINDOW } from '../constants';
+import { WINDOW } from '../constants.ts';
 
 /** If sessionStorage is available. */
 export function hasSessionStorage(): boolean {

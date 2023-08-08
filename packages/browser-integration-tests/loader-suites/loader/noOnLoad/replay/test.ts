@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getReplayEvent, shouldSkipReplayTest, waitForReplayRequest } from '../../../../utils/replayHelpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getReplayEvent, shouldSkipReplayTest, waitForReplayRequest } from '../../../../utils/replayHelpers.ts';
 
 sentryTest('should capture a replay', async ({ getLocalTestUrl, page }) => {
   if (shouldSkipReplayTest()) {

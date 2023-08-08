@@ -2,7 +2,7 @@ import type { Event } from '@sentry/node';
 import * as childProcess from 'child_process';
 import * as path from 'path';
 
-import { conditionalTest } from '../../../utils';
+import { conditionalTest } from '../../../utils.ts';
 
 conditionalTest({ min: 18 })('LocalVariables integration', () => {
   test('Should not include local variables by default', done => {

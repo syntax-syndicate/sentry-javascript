@@ -1,7 +1,7 @@
 import type * as playwright from 'playwright';
 import type { Protocol } from 'playwright-core/types/protocol';
 
-import type { JsonObject } from '../util/json';
+import type { JsonObject } from '../util/json.ts';
 
 export type PerfMetricsConsumer = (metrics: PerfMetrics) => Promise<void>;
 export type TimestampSeconds = number;

@@ -2,7 +2,7 @@
 import type { ConsoleMessage } from '@playwright/test';
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
+import { sentryTest } from '../../../../utils/fixtures.ts';
 
 // Regression test against https://github.com/getsentry/sentry-javascript/issues/4558
 sentryTest('should not change console output', async ({ getLocalTestPath, page }) => {

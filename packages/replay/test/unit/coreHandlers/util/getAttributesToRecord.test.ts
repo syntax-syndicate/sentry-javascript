@@ -1,4 +1,4 @@
-import { getAttributesToRecord } from '../../../../src/coreHandlers/util/getAttributesToRecord';
+import { getAttributesToRecord } from '../../../../src/coreHandlers/util/getAttributesToRecord.ts';
 
 it('records only included attributes', function () {
   expect(

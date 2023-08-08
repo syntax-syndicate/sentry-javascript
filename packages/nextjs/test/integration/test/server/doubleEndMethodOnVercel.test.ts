@@ -1,4 +1,4 @@
-import { NextTestEnv } from './utils/helpers';
+import { NextTestEnv } from './utils/helpers.ts';
 
 // This test asserts that our wrapping of `res.end` doesn't break API routes on Vercel if people call `res.json` or
 // `res.send` multiple times in one request handler.

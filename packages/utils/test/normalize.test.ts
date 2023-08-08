@@ -2,10 +2,10 @@
  * @jest-environment jsdom
  */
 
-import * as isModule from '../src/is';
-import { normalize } from '../src/normalize';
-import { addNonEnumerableProperty } from '../src/object';
-import * as stacktraceModule from '../src/stacktrace';
+import * as isModule from '../src/is.ts';
+import { normalize } from '../src/normalize.ts';
+import { addNonEnumerableProperty } from '../src/object.ts';
+import * as stacktraceModule from '../src/stacktrace.ts';
 
 describe('normalize()', () => {
   describe('acts as a pass-through for simple-cases', () => {

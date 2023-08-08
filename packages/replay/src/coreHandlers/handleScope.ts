@@ -1,12 +1,12 @@
 import type { Breadcrumb, Scope } from '@sentry/types';
 import { normalize } from '@sentry/utils';
 
-import { CONSOLE_ARG_MAX_SIZE } from '../constants';
-import type { ReplayContainer } from '../types';
-import type { ReplayFrame } from '../types/replayFrame';
-import { createBreadcrumb } from '../util/createBreadcrumb';
-import { fixJson } from '../util/truncateJson/fixJson';
-import { addBreadcrumbEvent } from './util/addBreadcrumbEvent';
+import { CONSOLE_ARG_MAX_SIZE } from '../constants.ts';
+import type { ReplayContainer } from '../types.ts';
+import type { ReplayFrame } from '../types/replayFrame.ts';
+import { createBreadcrumb } from '../util/createBreadcrumb.ts';
+import { fixJson } from '../util/truncateJson/fixJson.ts';
+import { addBreadcrumbEvent } from './util/addBreadcrumbEvent.ts';
 
 let _LAST_BREADCRUMB: null | Breadcrumb = null;
 

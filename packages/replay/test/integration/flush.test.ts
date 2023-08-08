@@ -1,15 +1,15 @@
 import * as SentryUtils from '@sentry/utils';
 
-import { DEFAULT_FLUSH_MIN_DELAY, WINDOW } from '../../src/constants';
-import type { ReplayContainer } from '../../src/replay';
-import { clearSession } from '../../src/session/clearSession';
-import type { EventBuffer } from '../../src/types';
-import * as AddMemoryEntry from '../../src/util/addMemoryEntry';
-import { createPerformanceEntries } from '../../src/util/createPerformanceEntries';
-import { createPerformanceSpans } from '../../src/util/createPerformanceSpans';
-import * as SendReplay from '../../src/util/sendReplay';
-import { BASE_TIMESTAMP, mockRrweb, mockSdk } from '../index';
-import { useFakeTimers } from '../utils/use-fake-timers';
+import { DEFAULT_FLUSH_MIN_DELAY, WINDOW } from '../../src/constants.ts';
+import type { ReplayContainer } from '../../src/replay.ts';
+import { clearSession } from '../../src/session/clearSession.ts';
+import type { EventBuffer } from '../../src/types.ts';
+import * as AddMemoryEntry from '../../src/util/addMemoryEntry.ts';
+import { createPerformanceEntries } from '../../src/util/createPerformanceEntries.ts';
+import { createPerformanceSpans } from '../../src/util/createPerformanceSpans.ts';
+import * as SendReplay from '../../src/util/sendReplay.ts';
+import { BASE_TIMESTAMP, mockRrweb, mockSdk } from '../index.ts';
+import { useFakeTimers } from '../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

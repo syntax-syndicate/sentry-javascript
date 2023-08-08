@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { envelopeRequestParser } from '../../../../utils/helpers';
-import { getReplaySnapshot, isReplayEvent, shouldSkipReplayTest } from '../../../../utils/replayHelpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { envelopeRequestParser } from '../../../../utils/helpers.ts';
+import { getReplaySnapshot, isReplayEvent, shouldSkipReplayTest } from '../../../../utils/replayHelpers.ts';
 
 sentryTest(
   '[error-mode] should not start recording if an error occurred when the error was dropped',

@@ -7,7 +7,7 @@ import { timestampInSeconds } from '@sentry/utils';
 import hoistNonReactStatics from 'hoist-non-react-statics';
 import * as React from 'react';
 
-import { REACT_MOUNT_OP, REACT_RENDER_OP, REACT_UPDATE_OP } from './constants';
+import { REACT_MOUNT_OP, REACT_RENDER_OP, REACT_UPDATE_OP } from './constants.ts';
 
 export const UNKNOWN_COMPONENT = 'unknown';
 

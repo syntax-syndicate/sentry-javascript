@@ -1,4 +1,4 @@
-import type { LoaderThis } from './types';
+import type { LoaderThis } from './types.ts';
 
 type LoaderOptions = {
   importTarget: string;

@@ -1,4 +1,4 @@
-import workerString from './worker';
+import workerString from './worker.ts';
 
 /**
  * Get the URL for a web worker.

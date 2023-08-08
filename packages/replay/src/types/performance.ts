@@ -1,4 +1,4 @@
-import type { ReplayNetworkRequestOrResponse } from './request';
+import type { ReplayNetworkRequestOrResponse } from './request.ts';
 
 export type AllPerformanceEntry = PerformancePaintTiming | PerformanceResourceTiming | PerformanceNavigationTiming;
 

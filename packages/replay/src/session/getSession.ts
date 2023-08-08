@@ -1,9 +1,9 @@
-import type { Session, SessionOptions, Timeouts } from '../types';
-import { isSessionExpired } from '../util/isSessionExpired';
-import { logInfo } from '../util/log';
-import { createSession } from './createSession';
-import { fetchSession } from './fetchSession';
-import { makeSession } from './Session';
+import type { Session, SessionOptions, Timeouts } from '../types.ts';
+import { isSessionExpired } from '../util/isSessionExpired.ts';
+import { logInfo } from '../util/log.ts';
+import { createSession } from './createSession.ts';
+import { fetchSession } from './fetchSession.ts';
+import { makeSession } from './Session.ts';
 
 interface GetSessionParams extends SessionOptions {
   timeouts: Timeouts;

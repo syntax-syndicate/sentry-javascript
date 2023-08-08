@@ -1,6 +1,6 @@
 import type { Event } from '@sentry/node';
 
-import { assertSentryEvent, TestEnv } from '../../../../utils';
+import { assertSentryEvent, TestEnv } from '../../../../utils.ts';
 
 test('should unset user', async () => {
   const env = await TestEnv.init(__dirname);

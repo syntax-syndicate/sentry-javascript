@@ -1,6 +1,6 @@
-import { _nullishCoalesce } from '../../src/buildPolyfills';
-import type { Value } from '../../src/buildPolyfills/types';
-import { _nullishCoalesce as _nullishCoalesceOrig } from './originals';
+import { _nullishCoalesce } from '../../src/buildPolyfills.ts';
+import type { Value } from '../../src/buildPolyfills/types.ts';s';
+import { _nullishCoalesce as _nullishCoalesceOrig } from './originals.ts';
 
 const dogStr = 'dogs are great!';
 const dogFunc = () => dogStr;

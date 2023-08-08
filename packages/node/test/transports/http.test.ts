@@ -5,7 +5,7 @@ import * as http from 'http';
 import { TextEncoder } from 'util';
 import { createGunzip } from 'zlib';
 
-import { makeNodeTransport } from '../../src/transports';
+import { makeNodeTransport } from '../../src/transports.ts';
 
 const textEncoder = new TextEncoder();
 

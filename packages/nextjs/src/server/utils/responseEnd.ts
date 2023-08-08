@@ -3,7 +3,7 @@ import type { Transaction } from '@sentry/types';
 import { fill, logger } from '@sentry/utils';
 import type { ServerResponse } from 'http';
 
-import type { ResponseEndMethod, WrappedResponseEndMethod } from '../types';
+import type { ResponseEndMethod, WrappedResponseEndMethod } from '../types.ts';
 
 /**
  * Wrap `res.end()` so that it closes the transaction and flushes events before letting the request finish.
@@ -59,10 +59,10 @@ export async function finishTransaction(transaction: Transaction | undefined, re
 /** Flush the event queue to ensure that events get sent to Sentry before the response is finished and the lambda ends */
 export async function flushQueue(): Promise<void> {
   try {
-    __DEBUG_BUILD__ && logger.log('Flushing events...');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Flushing events...');
     await flush(2000);
-    __DEBUG_BUILD__ && logger.log('Done flushing events');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Done flushing events');
   } catch (e) {
-    __DEBUG_BUILD__ && logger.log('Error while flushing events:\n', e);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Error while flushing events:\n', e);
   }
 }

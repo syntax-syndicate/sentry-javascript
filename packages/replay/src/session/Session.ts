@@ -1,6 +1,6 @@
 import { uuid4 } from '@sentry/utils';
 
-import type { Sampled, Session } from '../types';
+import type { Sampled, Session } from '../types.ts';
 
 /**
  * Get a session with defaults & applied sampling.

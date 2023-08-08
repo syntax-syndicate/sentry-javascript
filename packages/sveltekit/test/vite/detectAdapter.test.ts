@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 
-import { detectAdapter } from '../../src/vite/detectAdapter';
+import { detectAdapter } from '../../src/vite/detectAdapter.ts';
 
 let existsFile = true;
 const pkgJson = {

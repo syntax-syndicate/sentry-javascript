@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { WrappedFunction } from '@sentry/types';
 
-import { htmlTreeAsString } from './browser';
-import { isElement, isError, isEvent, isInstanceOf, isPlainObject, isPrimitive } from './is';
-import { truncate } from './string';
+import { htmlTreeAsString } from './browser.ts';
+import { isElement, isError, isEvent, isInstanceOf, isPlainObject, isPrimitive } from './is.ts';
+import { truncate } from './string.ts';
 
 /**
  * Replace a method in an object with a wrapped version of itself.

@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 import { SDK_VERSION } from '@sentry/browser';
 
-import { sentryTest } from '../../../utils/fixtures';
-import { getReplayEvent, shouldSkipReplayTest, waitForReplayRequest } from '../../../utils/replayHelpers';
+import { sentryTest } from '../../../utils/fixtures.ts';
+import { getReplayEvent, shouldSkipReplayTest, waitForReplayRequest } from '../../../utils/replayHelpers.ts';
 
 sentryTest('should capture replays (@sentry/browser export)', async ({ getLocalTestPath, page }) => {
   if (shouldSkipReplayTest()) {

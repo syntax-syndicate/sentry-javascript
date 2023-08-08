@@ -33,7 +33,7 @@ import {
   uuid4,
 } from '@sentry/utils';
 
-import { updateSession } from './session';
+import { updateSession } from './session.ts';
 
 /**
  * Default value for maximum number of breadcrumbs added to an event.
@@ -563,7 +563,7 @@ export class Scope implements ScopeInterface {
       } else {
         const result = processor({ ...event }, hint) as Event | null;
 
-        __DEBUG_BUILD__ &&
+        typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
           processor.id &&
           result === null &&
           logger.log(`Event processor "${processor.id}" dropped event`);

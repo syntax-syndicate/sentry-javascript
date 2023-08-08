@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { Metric, ReportCallback } from '../types';
+import type { Metric, ReportCallback } from '../types.ts';
 
 export const bindReporter = (
   callback: ReportCallback,

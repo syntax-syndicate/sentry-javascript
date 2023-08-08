@@ -2,7 +2,7 @@ import type { Instrumentation } from '@opentelemetry/instrumentation';
 import { GraphQLInstrumentation } from '@opentelemetry/instrumentation-graphql';
 import type { Integration } from '@sentry/types';
 
-import { NodePerformanceIntegration } from './NodePerformanceIntegration';
+import { NodePerformanceIntegration } from './NodePerformanceIntegration.ts';
 
 /**
  * GraphQL integration

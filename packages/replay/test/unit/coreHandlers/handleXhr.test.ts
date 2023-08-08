@@ -1,7 +1,7 @@
 import type { HandlerDataXhr, SentryWrappedXMLHttpRequest, SentryXhrData } from '@sentry/types';
 import { SENTRY_XHR_DATA_KEY } from '@sentry/utils';
 
-import { handleXhr } from '../../../src/coreHandlers/handleXhr';
+import { handleXhr } from '../../../src/coreHandlers/handleXhr.ts';
 
 const DEFAULT_DATA: HandlerDataXhr = {
   args: ['GET', '/api/0/organizations/sentry/'],

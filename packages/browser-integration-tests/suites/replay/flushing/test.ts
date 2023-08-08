@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../utils/fixtures';
-import { getExpectedReplayEvent } from '../../../utils/replayEventTemplates';
-import { getReplayEvent, shouldSkipReplayTest, waitForReplayRequest } from '../../../utils/replayHelpers';
+import { sentryTest } from '../../../utils/fixtures.ts';
+import { getExpectedReplayEvent } from '../../../utils/replayEventTemplates.ts';
+import { getReplayEvent, shouldSkipReplayTest, waitForReplayRequest } from '../../../utils/replayHelpers.ts';
 
 /*
  * In this test we're explicitly not forcing a flush by triggering a visibility change.

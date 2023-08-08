@@ -1,4 +1,4 @@
-import type { JsonToken } from './constants';
+import type { JsonToken } from './constants.ts';
 import {
   ARR,
   ARR_VAL,
@@ -10,7 +10,7 @@ import {
   OBJ_VAL,
   OBJ_VAL_COMPLETED,
   OBJ_VAL_STR,
-} from './constants';
+} from './constants.ts';
 
 /**
  * Evaluate an (incomplete) JSON string.

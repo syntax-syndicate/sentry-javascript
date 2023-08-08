@@ -16,7 +16,7 @@ const MaybeGlobalAsyncLocalStorage = (GLOBAL_OBJ as any).AsyncLocalStorage;
  */
 export function setAsyncLocalStorageAsyncContextStrategy(): void {
   if (!MaybeGlobalAsyncLocalStorage) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn(
         "Tried to register AsyncLocalStorage async context strategy in a runtime that doesn't support AsyncLocalStorage.",
       );

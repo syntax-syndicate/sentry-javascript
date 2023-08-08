@@ -10,11 +10,11 @@ import * as path from 'path';
 import * as sorcery from 'sorcery';
 import type { Plugin } from 'vite';
 
-import { WRAPPED_MODULE_SUFFIX } from './autoInstrument';
-import type { SupportedSvelteKitAdapters } from './detectAdapter';
-import type { GlobalSentryValues } from './injectGlobalValues';
-import { getGlobalValueInjectionCode, VIRTUAL_GLOBAL_VALUES_FILE } from './injectGlobalValues';
-import { getAdapterOutputDir, getHooksFileName, loadSvelteConfig } from './svelteConfig';
+import { WRAPPED_MODULE_SUFFIX } from './autoInstrument.ts';
+import type { SupportedSvelteKitAdapters } from './detectAdapter.ts';
+import type { GlobalSentryValues } from './injectGlobalValues.ts';
+import { getGlobalValueInjectionCode, VIRTUAL_GLOBAL_VALUES_FILE } from './injectGlobalValues.ts';
+import { getAdapterOutputDir, getHooksFileName, loadSvelteConfig } from './svelteConfig.ts';
 
 // sorcery has no types, so these are some basic type definitions:
 type Chain = {

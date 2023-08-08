@@ -1,4 +1,4 @@
-import { hasTracingEnabled } from '../../../src';
+import { hasTracingEnabled } from '../../../src.ts';
 
 describe('hasTracingEnabled', () => {
   const tracesSampler = () => 1;

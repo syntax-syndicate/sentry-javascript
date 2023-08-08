@@ -1,4 +1,4 @@
-import { getMultipleSentryEnvelopeRequests, countEnvelopes } from './utils/helpers';
+import { getMultipleSentryEnvelopeRequests, countEnvelopes } from './utils/helpers.ts';
 import { test, expect } from '@playwright/test';
 import { Transaction } from '@sentry/types';
 

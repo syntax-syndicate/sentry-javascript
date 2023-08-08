@@ -4,7 +4,7 @@ import HtmlWebpackPlugin, { createHtmlTagObject } from 'html-webpack-plugin';
 import path from 'path';
 import type { Compiler } from 'webpack';
 
-import { addStaticAsset, addStaticAssetSymlink } from './staticAssets';
+import { addStaticAsset, addStaticAssetSymlink } from './staticAssets.ts';
 
 const LOADER_TEMPLATE = fs.readFileSync(path.join(__dirname, '../fixtures/loader.js'), 'utf-8');
 const PACKAGES_DIR = '../../packages';

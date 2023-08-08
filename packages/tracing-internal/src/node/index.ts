@@ -1,3 +1,3 @@
-export * from '../exports';
+export * from '../exports.ts';
 
-export * from './integrations';
+export * from './integrations.ts';

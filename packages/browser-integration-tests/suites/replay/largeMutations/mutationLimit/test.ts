@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
+import { sentryTest } from '../../../../utils/fixtures.ts';
 import {
   getReplayRecordingContent,
   getReplaySnapshot,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../../utils/replayHelpers';
+} from '../../../../utils/replayHelpers.ts';
 
 sentryTest(
   'handles large mutations by stopping replay when `mutationLimit` configured',

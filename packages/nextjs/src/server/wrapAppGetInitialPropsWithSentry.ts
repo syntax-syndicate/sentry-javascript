@@ -3,12 +3,12 @@ import { getCurrentHub } from '@sentry/node';
 import { dynamicSamplingContextToSentryBaggageHeader } from '@sentry/utils';
 import type App from 'next/app';
 
-import { isBuild } from './utils/isBuild';
+import { isBuild } from './utils/isBuild.ts';
 import {
   getTransactionFromRequest,
   withErrorInstrumentation,
   withTracedServerSideDataFetcher,
-} from './utils/wrapperUtils';
+} from './utils/wrapperUtils.ts';
 
 type AppGetInitialProps = (typeof App)['getInitialProps'];
 

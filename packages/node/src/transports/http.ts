@@ -13,7 +13,7 @@ import { Readable } from 'stream';
 import { URL } from 'url';
 import { createGzip } from 'zlib';
 
-import type { HTTPModule } from './http-module';
+import type { HTTPModule } from './http-module.ts';
 
 export interface NodeTransportOptions extends BaseTransportOptions {
   /** Define custom headers */

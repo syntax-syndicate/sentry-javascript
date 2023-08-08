@@ -1,4 +1,4 @@
-import { assertSentryEvent, TestEnv } from '../../../../utils';
+import { assertSentryEvent, TestEnv } from '../../../../utils.ts';
 
 test('should add a simple breadcrumb', async () => {
   const env = await TestEnv.init(__dirname);

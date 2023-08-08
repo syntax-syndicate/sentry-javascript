@@ -17,7 +17,7 @@ import {
 import { NodeClient } from '@sentry/node';
 import { resolvedSyncPromise } from '@sentry/utils';
 
-import { SENTRY_SPAN_PROCESSOR_MAP, SentrySpanProcessor } from '../src/spanprocessor';
+import { SENTRY_SPAN_PROCESSOR_MAP, SentrySpanProcessor } from '../src/spanprocessor.ts';
 
 const SENTRY_DSN = 'https://0@0.ingest.sentry.io/0';
 

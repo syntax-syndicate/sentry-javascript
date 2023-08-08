@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Event, Exception, Mechanism, StackFrame } from '@sentry/types';
 
-import { addNonEnumerableProperty } from './object';
-import { snipLine } from './string';
-import { GLOBAL_OBJ } from './worldwide';
+import { addNonEnumerableProperty } from './object.ts';
+import { snipLine } from './string.ts';
+import { GLOBAL_OBJ } from './worldwide.ts';
 
 interface CryptoInternal {
   getRandomValues(array: Uint8Array): Uint8Array;

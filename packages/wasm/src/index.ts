@@ -1,7 +1,7 @@
 import type { Event, EventProcessor, Hub, Integration, StackFrame } from '@sentry/types';
 
-import { patchWebAssembly } from './patchWebAssembly';
-import { getImage, getImages } from './registry';
+import { patchWebAssembly } from './patchWebAssembly.ts';
+import { getImage, getImages } from './registry.ts';
 
 /** plz don't */
 function patchFrames(frames: Array<StackFrame>): boolean {

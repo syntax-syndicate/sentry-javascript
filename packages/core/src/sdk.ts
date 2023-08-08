@@ -1,7 +1,7 @@
 import type { Client, ClientOptions } from '@sentry/types';
 import { logger } from '@sentry/utils';
 
-import { getCurrentHub } from './hub';
+import { getCurrentHub } from './hub.ts';
 
 /** A class object that can instantiate Client objects. */
 export type ClientClass<F extends Client, O extends ClientOptions> = new (options: O) => F;
@@ -18,7 +18,7 @@ export function initAndBind<F extends Client, O extends ClientOptions>(
   options: O,
 ): void {
   if (options.debug === true) {
-    if (__DEBUG_BUILD__) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
       logger.enable();
     } else {
       // use `console.warn` rather than `logger.warn` since by non-debug bundles have all `logger.x` statements stripped

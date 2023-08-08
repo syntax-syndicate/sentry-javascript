@@ -3,12 +3,12 @@ import { getCurrentHub } from '@sentry/node';
 import { dynamicSamplingContextToSentryBaggageHeader } from '@sentry/utils';
 import type { GetServerSideProps } from 'next';
 
-import { isBuild } from './utils/isBuild';
+import { isBuild } from './utils/isBuild.ts';
 import {
   getTransactionFromRequest,
   withErrorInstrumentation,
   withTracedServerSideDataFetcher,
-} from './utils/wrapperUtils';
+} from './utils/wrapperUtils.ts';
 
 /**
  * Create a wrapped version of the user's exported `getServerSideProps` function

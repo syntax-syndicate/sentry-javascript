@@ -2,8 +2,8 @@ import { Scope, SessionFlusher } from '@sentry/core';
 import type { Event, EventHint } from '@sentry/types';
 import * as os from 'os';
 
-import { NodeClient } from '../src';
-import { getDefaultNodeClientOptions } from './helper/node-client-options';
+import { NodeClient } from '../src.ts';
+import { getDefaultNodeClientOptions } from './helper/node-client-options.ts';
 
 const PUBLIC_DSN = 'https://username@domain/123';
 

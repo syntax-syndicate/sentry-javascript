@@ -1,4 +1,4 @@
-import type { Event } from './event';
+import type { Event } from './event.ts';
 
 /**
  * NOTE: These types are still considered Beta and subject to change.

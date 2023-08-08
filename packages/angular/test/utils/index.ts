@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import type { Transaction } from '@sentry/types';
 
-import { instrumentAngularRouting, TraceService } from '../../src';
+import { instrumentAngularRouting, TraceService } from '../../src.ts';
 
 @Component({
   template: '<router-outlet></router-outlet>',

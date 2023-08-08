@@ -1,6 +1,6 @@
 import type { record as rrwebRecord } from '@sentry-internal/rrweb';
 
-import type { RecordingEvent } from '../../src/types';
+import type { RecordingEvent } from '../../src/types.ts';
 
 type RecordAdditionalProperties = {
   takeFullSnapshot: jest.Mock;

@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
 import type { EventEnvelopeHeaders } from '@sentry/types';
 
-import { sentryTest } from '../../../utils/fixtures';
+import { sentryTest } from '../../../utils/fixtures.ts';
 import {
   envelopeHeaderRequestParser,
   getFirstSentryEnvelopeRequest,
   shouldSkipTracingTest,
-} from '../../../utils/helpers';
+} from '../../../utils/helpers.ts';
 
 sentryTest(
   'should only include transaction name if source is better than an unparameterized URL',

@@ -1,13 +1,13 @@
 import type { Event } from '@sentry/types';
 
-import type { Replay as ReplayIntegration } from '../../../src';
-import { REPLAY_EVENT_NAME } from '../../../src/constants';
-import { handleGlobalEventListener } from '../../../src/coreHandlers/handleGlobalEvent';
-import type { ReplayContainer } from '../../../src/replay';
-import { Error } from '../../fixtures/error';
-import { Transaction } from '../../fixtures/transaction';
-import { resetSdkMock } from '../../mocks/resetSdkMock';
-import { useFakeTimers } from '../../utils/use-fake-timers';
+import type { Replay as ReplayIntegration } from '../../../src.ts';
+import { REPLAY_EVENT_NAME } from '../../../src/constants.ts';
+import { handleGlobalEventListener } from '../../../src/coreHandlers/handleGlobalEvent.ts';
+import type { ReplayContainer } from '../../../src/replay.ts';
+import { Error } from '../../fixtures/error.ts';
+import { Transaction } from '../../fixtures/transaction.ts';
+import { resetSdkMock } from '../../mocks/resetSdkMock.ts';
+import { useFakeTimers } from '../../utils/use-fake-timers.ts';
 
 useFakeTimers();
 let replay: ReplayContainer;

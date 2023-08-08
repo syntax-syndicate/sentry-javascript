@@ -1,4 +1,4 @@
-import { formatComponentName } from '../../src/vendor/components';
+import { formatComponentName } from '../../src/vendor/components.ts';
 
 describe('formatComponentName', () => {
   describe('when the vm is not defined', () => {

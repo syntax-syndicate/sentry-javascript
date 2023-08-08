@@ -1,6 +1,6 @@
 import * as os from 'os';
 
-import { getDeviceContext } from '../../src/integrations/context';
+import { getDeviceContext } from '../../src/integrations/context.ts';
 
 describe('Context', () => {
   describe('getDeviceContext', () => {

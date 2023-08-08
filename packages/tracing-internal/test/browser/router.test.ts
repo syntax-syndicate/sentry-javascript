@@ -1,8 +1,8 @@
 import type { InstrumentHandlerCallback, InstrumentHandlerType } from '@sentry/utils';
 import { JSDOM } from 'jsdom';
 
-import { conditionalTest } from '../../../tracing/test/testutils';
-import { instrumentRoutingWithDefaults } from '../../src/browser/router';
+import { conditionalTest } from '../../../tracing/test/testutils.ts';
+import { instrumentRoutingWithDefaults } from '../../src/browser/router.ts';
 
 let mockChangeHistory: ({ to, from }: { to: string; from?: string }) => void = () => undefined;
 let addInstrumentationHandlerType: string = '';

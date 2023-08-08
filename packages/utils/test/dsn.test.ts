@@ -1,5 +1,5 @@
-import { dsnToString, makeDsn } from '../src/dsn';
-import { logger } from '../src/logger';
+import { dsnToString, makeDsn } from '../src/dsn.ts';
+import { logger } from '../src/logger.ts';
 
 function testIf(condition: boolean): jest.It {
   return condition ? test : test.skip;

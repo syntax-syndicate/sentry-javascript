@@ -2,8 +2,8 @@ import type { Request } from '@playwright/test';
 import { expect } from '@playwright/test';
 import type { Event } from '@sentry/types';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getMultipleSentryEnvelopeRequests, shouldSkipTracingTest } from '../../../../utils/helpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getMultipleSentryEnvelopeRequests, shouldSkipTracingTest } from '../../../../utils/helpers.ts';
 
 sentryTest('should create spans for multiple fetch requests', async ({ getLocalTestPath, page }) => {
   if (shouldSkipTracingTest()) {

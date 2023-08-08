@@ -2,9 +2,9 @@ import { expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 
-import { sentryTest, TEST_HOST } from '../../../../utils/fixtures';
-import { LOADER_CONFIGS } from '../../../../utils/generatePlugin';
-import { envelopeRequestParser, waitForErrorRequestOnUrl } from '../../../../utils/helpers';
+import { sentryTest, TEST_HOST } from '../../../../utils/fixtures.ts';
+import { LOADER_CONFIGS } from '../../../../utils/generatePlugin.ts';
+import { envelopeRequestParser, waitForErrorRequestOnUrl } from '../../../../utils/helpers.ts';
 
 const bundle = process.env.PW_BUNDLE || '';
 const isLazy = LOADER_CONFIGS[bundle]?.lazy;

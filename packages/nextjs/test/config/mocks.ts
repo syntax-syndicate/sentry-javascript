@@ -6,7 +6,7 @@ import * as os from 'os';
 import * as path from 'path';
 import * as rimraf from 'rimraf';
 
-import { CLIENT_SDK_CONFIG_FILE, EDGE_SDK_CONFIG_FILE, SERVER_SDK_CONFIG_FILE } from './fixtures';
+import { CLIENT_SDK_CONFIG_FILE, EDGE_SDK_CONFIG_FILE, SERVER_SDK_CONFIG_FILE } from './fixtures.ts';
 
 // We use `fs.existsSync()` in `getUserConfigFile()`. When we're not testing `getUserConfigFile()` specifically, all we
 // need is for it to give us any valid answer, so make it always find what it's looking for. Since this is a core node

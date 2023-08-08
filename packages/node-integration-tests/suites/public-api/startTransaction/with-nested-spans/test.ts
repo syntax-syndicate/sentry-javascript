@@ -1,4 +1,4 @@
-import { assertSentryTransaction, TestEnv } from '../../../../utils';
+import { assertSentryTransaction, TestEnv } from '../../../../utils.ts';
 
 test('should report finished spans as children of the root transaction.', async () => {
   const env = await TestEnv.init(__dirname);

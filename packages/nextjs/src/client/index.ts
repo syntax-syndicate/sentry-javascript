@@ -11,15 +11,15 @@ import {
 import type { EventProcessor } from '@sentry/types';
 import { addOrUpdateIntegration } from '@sentry/utils';
 
-import { devErrorSymbolicationEventProcessor } from '../common/devErrorSymbolicationEventProcessor';
-import { getVercelEnv } from '../common/getVercelEnv';
-import { buildMetadata } from '../common/metadata';
-import { nextRouterInstrumentation } from './performance';
-import { applyTunnelRouteOption } from './tunnelRoute';
+import { devErrorSymbolicationEventProcessor } from '../common/devErrorSymbolicationEventProcessor.ts';
+import { getVercelEnv } from '../common/getVercelEnv.ts';
+import { buildMetadata } from '../common/metadata.ts';
+import { nextRouterInstrumentation } from './performance.ts';
+import { applyTunnelRouteOption } from './tunnelRoute.ts';
 
 export * from '@sentry/react';
-export { nextRouterInstrumentation } from './performance';
-export { captureUnderscoreErrorException } from '../common/_error';
+export { nextRouterInstrumentation } from './performance.ts';
+export { captureUnderscoreErrorException } from '../common/_error.ts';
 
 export { Integrations };
 
@@ -134,34 +134,34 @@ export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryServerSideGetInitialProps,
   wrapGetInitialPropsWithSentry,
-} from './wrapGetInitialPropsWithSentry';
+} from './wrapGetInitialPropsWithSentry.ts';
 
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryServerSideAppGetInitialProps,
   wrapAppGetInitialPropsWithSentry,
-} from './wrapAppGetInitialPropsWithSentry';
+} from './wrapAppGetInitialPropsWithSentry.ts';
 
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryServerSideDocumentGetInitialProps,
   wrapDocumentGetInitialPropsWithSentry,
-} from './wrapDocumentGetInitialPropsWithSentry';
+} from './wrapDocumentGetInitialPropsWithSentry.ts';
 
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryServerSideErrorGetInitialProps,
   wrapErrorGetInitialPropsWithSentry,
-} from './wrapErrorGetInitialPropsWithSentry';
+} from './wrapErrorGetInitialPropsWithSentry.ts';
 
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryGetServerSideProps,
   wrapGetServerSidePropsWithSentry,
-} from './wrapGetServerSidePropsWithSentry';
+} from './wrapGetServerSidePropsWithSentry.ts';
 
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryGetStaticProps,
   wrapGetStaticPropsWithSentry,
-} from './wrapGetStaticPropsWithSentry';
+} from './wrapGetStaticPropsWithSentry.ts';

@@ -1,4 +1,4 @@
-import { assertSentryEvent, TestEnv } from '../../../utils/index';
+import { assertSentryEvent, TestEnv } from '../../../utils/index.ts';
 
 test('should capture and send Express controller error.', async () => {
   const env = await TestEnv.init(__dirname, `${__dirname}/server.ts`);

@@ -11,8 +11,8 @@ import { addOtelSpanData } from '@sentry/opentelemetry-node';
 import type { EventProcessor, Hub, Integration } from '@sentry/types';
 import type { ClientRequest, IncomingMessage, ServerResponse } from 'http';
 
-import type { NodeExperimentalClient } from '../sdk/client';
-import { getRequestSpanData } from '../utils/getRequestSpanData';
+import type { NodeExperimentalClient } from '../sdk/client.ts';
+import { getRequestSpanData } from '../utils/getRequestSpanData.ts';
 
 interface TracingOptions {
   /**

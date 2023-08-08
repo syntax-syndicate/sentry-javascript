@@ -1,7 +1,7 @@
 import { createTransport } from '@sentry/core';
 import { resolvedSyncPromise } from '@sentry/utils';
 
-import type { NodeExperimentalClientOptions } from '../../src/types';
+import type { NodeExperimentalClientOptions } from '../../src/types.ts';
 
 export function getDefaultNodeExperimentalClientOptions(
   options: Partial<NodeExperimentalClientOptions> = {},

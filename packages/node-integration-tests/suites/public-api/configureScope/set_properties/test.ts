@@ -1,4 +1,4 @@
-import { assertSentryEvent, TestEnv } from '../../../../utils';
+import { assertSentryEvent, TestEnv } from '../../../../utils.ts';
 
 test('should set different properties of a scope', async () => {
   const env = await TestEnv.init(__dirname);

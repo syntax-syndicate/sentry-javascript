@@ -1,4 +1,4 @@
-import { getModuleFromFilename } from '../src/module';
+import { getModuleFromFilename } from '../src/module.ts';
 
 function withFilename(fn: () => void, filename: string) {
   const prevFilename = require.main?.filename;

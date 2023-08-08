@@ -2,8 +2,8 @@ import type { EventEnvelope, EventItem } from '@sentry/types';
 import { createEnvelope, serializeEnvelope } from '@sentry/utils';
 import { TextEncoder } from 'util';
 
-import type { BrowserTransportOptions } from '../../../src/transports/types';
-import { makeXHRTransport } from '../../../src/transports/xhr';
+import type { BrowserTransportOptions } from '../../../src/transports/types.ts';
+import { makeXHRTransport } from '../../../src/transports/xhr.ts';
 
 const DEFAULT_XHR_TRANSPORT_OPTIONS: BrowserTransportOptions = {
   url: 'https://sentry.io/api/42/store/?sentry_key=123&sentry_version=7',

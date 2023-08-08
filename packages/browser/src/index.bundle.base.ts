@@ -1,10 +1,10 @@
-export * from './exports';
+export * from './exports.ts';
 
 import { Integrations as CoreIntegrations } from '@sentry/core';
 import type { Integration } from '@sentry/types';
 
-import { WINDOW } from './helpers';
-import * as BrowserIntegrations from './integrations';
+import { WINDOW } from './helpers.ts';
+import * as BrowserIntegrations from './integrations.ts';
 
 let windowIntegrations = {};
 

@@ -6,7 +6,7 @@ export const START_DELAY = 5_000; // 5 seconds
 const MAX_DELAY = 3.6e6; // 1 hour
 
 function log(msg: string, error?: Error): void {
-  __DEBUG_BUILD__ && logger.info(`[Offline]: ${msg}`, error);
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.info(`[Offline]: ${msg}`, error);
 }
 
 export interface OfflineStore {

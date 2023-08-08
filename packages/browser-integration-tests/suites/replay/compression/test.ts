@@ -1,13 +1,13 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../utils/fixtures';
-import { getExpectedReplayEvent } from '../../../utils/replayEventTemplates';
+import { sentryTest } from '../../../utils/fixtures.ts';
+import { getExpectedReplayEvent } from '../../../utils/replayEventTemplates.ts';
 import {
   getFullRecordingSnapshots,
   getReplayEvent,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../utils/replayHelpers';
+} from '../../../utils/replayHelpers.ts';
 
 sentryTest('replay recording should be compressed by default', async ({ getLocalTestPath, page }) => {
   if (shouldSkipReplayTest()) {

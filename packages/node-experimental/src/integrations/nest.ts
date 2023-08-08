@@ -2,7 +2,7 @@ import type { Instrumentation } from '@opentelemetry/instrumentation';
 import { NestInstrumentation } from '@opentelemetry/instrumentation-nestjs-core';
 import type { Integration } from '@sentry/types';
 
-import { NodePerformanceIntegration } from './NodePerformanceIntegration';
+import { NodePerformanceIntegration } from './NodePerformanceIntegration.ts';
 
 /**
  * Nest framework integration

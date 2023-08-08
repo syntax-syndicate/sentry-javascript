@@ -7,13 +7,13 @@ import type { IntegrationWithExclusionOption } from '@sentry/utils';
 import { addOrUpdateIntegration, escapeStringForRegex, logger } from '@sentry/utils';
 import * as path from 'path';
 
-import { devErrorSymbolicationEventProcessor } from '../common/devErrorSymbolicationEventProcessor';
-import { getVercelEnv } from '../common/getVercelEnv';
-import { buildMetadata } from '../common/metadata';
-import { isBuild } from './utils/isBuild';
+import { devErrorSymbolicationEventProcessor } from '../common/devErrorSymbolicationEventProcessor.ts';
+import { getVercelEnv } from '../common/getVercelEnv.ts';
+import { buildMetadata } from '../common/metadata.ts';
+import { isBuild } from './utils/isBuild.ts';
 
 export * from '@sentry/node';
-export { captureUnderscoreErrorException } from '../common/_error';
+export { captureUnderscoreErrorException } from '../common/_error.ts';
 
 /**
  * A passthrough error boundary for the server that doesn't depend on any react. Error boundaries don't catch SSR errors
@@ -63,14 +63,14 @@ const IS_VERCEL = !!process.env.VERCEL;
 
 /** Inits the Sentry NextJS SDK on node. */
 export function init(options: NodeOptions): void {
-  if (__DEBUG_BUILD__ && options.debug) {
+  if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && options.debug) {
     logger.enable();
   }
 
-  __DEBUG_BUILD__ && logger.log('Initializing SDK...');
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Initializing SDK...');
 
   if (sdkAlreadyInitialized()) {
-    __DEBUG_BUILD__ && logger.log('SDK already initialized');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('SDK already initialized');
     return;
   }
 
@@ -104,7 +104,7 @@ export function init(options: NodeOptions): void {
     }
   });
 
-  __DEBUG_BUILD__ && logger.log('SDK successfully initialized');
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('SDK successfully initialized');
 }
 
 function sdkAlreadyInitialized(): boolean {
@@ -157,41 +157,41 @@ const deprecatedIsBuild = (): boolean => isBuild();
 // eslint-disable-next-line deprecation/deprecation
 export { deprecatedIsBuild as isBuild };
 
-export { wrapApiHandlerWithSentryVercelCrons } from '../common/wrapApiHandlerWithSentryVercelCrons';
+export { wrapApiHandlerWithSentryVercelCrons } from '../common/wrapApiHandlerWithSentryVercelCrons.ts';
 
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryGetStaticProps,
   wrapGetStaticPropsWithSentry,
-} from './wrapGetStaticPropsWithSentry';
+} from './wrapGetStaticPropsWithSentry.ts';
 
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryServerSideGetInitialProps,
   wrapGetInitialPropsWithSentry,
-} from './wrapGetInitialPropsWithSentry';
+} from './wrapGetInitialPropsWithSentry.ts';
 
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryServerSideAppGetInitialProps,
   wrapAppGetInitialPropsWithSentry,
-} from './wrapAppGetInitialPropsWithSentry';
+} from './wrapAppGetInitialPropsWithSentry.ts';
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryServerSideDocumentGetInitialProps,
   wrapDocumentGetInitialPropsWithSentry,
-} from './wrapDocumentGetInitialPropsWithSentry';
+} from './wrapDocumentGetInitialPropsWithSentry.ts';
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryServerSideErrorGetInitialProps,
   wrapErrorGetInitialPropsWithSentry,
-} from './wrapErrorGetInitialPropsWithSentry';
+} from './wrapErrorGetInitialPropsWithSentry.ts';
 
 export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryGetServerSideProps,
   wrapGetServerSidePropsWithSentry,
-} from './wrapGetServerSidePropsWithSentry';
+} from './wrapGetServerSidePropsWithSentry.ts';
 
 export {
   // eslint-disable-next-line deprecation/deprecation
@@ -199,6 +199,6 @@ export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryAPI,
   wrapApiHandlerWithSentry,
-} from './wrapApiHandlerWithSentry';
+} from './wrapApiHandlerWithSentry.ts';
 
-export { wrapServerComponentWithSentry } from './wrapServerComponentWithSentry';
+export { wrapServerComponentWithSentry } from './wrapServerComponentWithSentry.ts';

@@ -1,7 +1,7 @@
 import { createStackParser } from '@sentry/utils';
 
-import { exceptionFromError } from '../../../src/eventbuilder';
-import { defaultStackParser, opera10StackLineParser, opera11StackLineParser } from '../../../src/stack-parsers';
+import { exceptionFromError } from '../../../src/eventbuilder.ts';
+import { defaultStackParser, opera10StackLineParser, opera11StackLineParser } from '../../../src/stack-parsers.ts';
 
 const operaParser = createStackParser(opera10StackLineParser, opera11StackLineParser);
 const chromiumParser = defaultStackParser;

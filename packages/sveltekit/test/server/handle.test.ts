@@ -5,8 +5,8 @@ import type { Handle } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
 import { vi } from 'vitest';
 
-import { sentryHandle, transformPageChunk } from '../../src/server/handle';
-import { getDefaultNodeClientOptions } from '../utils';
+import { sentryHandle, transformPageChunk } from '../../src/server/handle.ts';
+import { getDefaultNodeClientOptions } from '../utils.ts';
 
 const mockCaptureException = vi.fn();
 let mockScope = new Scope();

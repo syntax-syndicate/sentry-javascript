@@ -15,9 +15,9 @@ import {
   SENTRY_DYNAMIC_SAMPLING_CONTEXT_KEY,
   SENTRY_TRACE_HEADER,
   SENTRY_TRACE_PARENT_CONTEXT_KEY,
-} from '../src/constants';
-import { SentryPropagator } from '../src/propagator';
-import { SENTRY_SPAN_PROCESSOR_MAP } from '../src/spanprocessor';
+} from '../src/constants.ts';
+import { SentryPropagator } from '../src/propagator.ts';
+import { SENTRY_SPAN_PROCESSOR_MAP } from '../src/spanprocessor.ts';
 
 beforeAll(() => {
   addTracingExtensions();

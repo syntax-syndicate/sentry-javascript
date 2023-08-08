@@ -38,7 +38,7 @@ export class Dedupe implements Integration {
         // Juuust in case something goes wrong
         try {
           if (_shouldDropEvent(currentEvent, self._previousEvent)) {
-            __DEBUG_BUILD__ && logger.warn('Event dropped due to being a duplicate of previously captured event.');
+            typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Event dropped due to being a duplicate of previously captured event.');
             return null;
           }
         } catch (_oO) {

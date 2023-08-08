@@ -5,8 +5,8 @@ import type { DebugImage, Envelope, Event, StackFrame, StackParser } from '@sent
 import type { Profile, ThreadCpuProfile } from '@sentry/types/src/profiling';
 import { browserPerformanceTimeOrigin, forEachEnvelopeItem, GLOBAL_OBJ, logger, uuid4 } from '@sentry/utils';
 
-import { WINDOW } from '../helpers';
-import type { JSSelfProfile, JSSelfProfileStack } from './jsSelfProfiling';
+import { WINDOW } from '../helpers.ts';
+import type { JSSelfProfile, JSSelfProfileStack } from './jsSelfProfiling.ts';
 
 const MS_TO_NS = 1e6;
 // Use 0 as main thread id which is identical to threadId in node:worker_threads
@@ -95,7 +95,7 @@ function getTraceId(event: Event): string {
   // All profiles and transactions are rejected if this is the case and we want to
   // warn users that this is happening if they enable debug flag
   if (typeof traceId === 'string' && traceId.length !== 32) {
-    if (__DEBUG_BUILD__) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
       logger.log(`[Profiling] Invalid traceId: ${traceId} on profiled event`);
     }
   }
@@ -402,7 +402,7 @@ export function applyDebugMetadata(resource_paths: ReadonlyArray<string>): Debug
 export function isValidSampleRate(rate: unknown): boolean {
   // we need to check NaN explicitly because it's of type 'number' and therefore wouldn't get caught by this typecheck
   if ((typeof rate !== 'number' && typeof rate !== 'boolean') || (typeof rate === 'number' && isNaN(rate))) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn(
         `[Profiling] Invalid sample rate. Sample rate must be a boolean or a number between 0 and 1. Got ${JSON.stringify(
           rate,
@@ -418,7 +418,7 @@ export function isValidSampleRate(rate: unknown): boolean {
 
   // in case sampleRate is a boolean, it will get automatically cast to 1 if it's true and 0 if it's false
   if (rate < 0 || rate > 1) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       logger.warn(`[Profiling] Invalid sample rate. Sample rate must be between 0 and 1. Got ${rate}.`);
     return false;
   }
@@ -427,7 +427,7 @@ export function isValidSampleRate(rate: unknown): boolean {
 
 function isValidProfile(profile: JSSelfProfile): profile is JSSelfProfile & { profile_id: string } {
   if (profile.samples.length < 2) {
-    if (__DEBUG_BUILD__) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
       // Log a warning if the profile has less than 2 samples so users can know why
       // they are not seeing any profiling data and we cant avoid the back and forth
       // of asking them to provide us with a dump of the profile data.
@@ -437,7 +437,7 @@ function isValidProfile(profile: JSSelfProfile): profile is JSSelfProfile & { pr
   }
 
   if (!profile.frames.length) {
-    if (__DEBUG_BUILD__) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
       logger.log('[Profiling] Discarding profile because it contains no frames');
     }
     return false;

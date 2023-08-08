@@ -4,17 +4,17 @@ import { addTracingExtensions, getActiveTransaction, startIdleTransaction, TRACI
 import type { EventProcessor, Integration, Transaction, TransactionContext, TransactionSource } from '@sentry/types';
 import { getDomElement, logger, tracingContextFromHeaders } from '@sentry/utils';
 
-import { registerBackgroundTabDetection } from './backgroundtab';
+import { registerBackgroundTabDetection } from './backgroundtab.ts';
 import {
   addPerformanceEntries,
   startTrackingInteractions,
   startTrackingLongTasks,
   startTrackingWebVitals,
-} from './metrics';
-import type { RequestInstrumentationOptions } from './request';
-import { defaultRequestInstrumentationOptions, instrumentOutgoingRequests } from './request';
-import { instrumentRoutingWithDefaults } from './router';
-import { WINDOW } from './types';
+} from './metrics.ts';
+import type { RequestInstrumentationOptions } from './request.ts';
+import { defaultRequestInstrumentationOptions, instrumentOutgoingRequests } from './request.ts';
+import { instrumentRoutingWithDefaults } from './router.ts';
+import { WINDOW } from './types.ts';
 
 export const BROWSER_TRACING_INTEGRATION_ID = 'BrowserTracing';
 
@@ -179,7 +179,7 @@ export class BrowserTracing implements Integration {
 
     addTracingExtensions();
 
-    if (__DEBUG_BUILD__) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
       this._hasSetTracePropagationTargets = !!(
         _options &&
         // eslint-disable-next-line deprecation/deprecation
@@ -249,7 +249,7 @@ export class BrowserTracing implements Integration {
     //
     // If both 1 and either one of 2 or 3 are set (from above), we log out a warning.
     const tracePropagationTargets = clientOptionsTracePropagationTargets || this.options.tracePropagationTargets;
-    if (__DEBUG_BUILD__ && this._hasSetTracePropagationTargets && clientOptionsTracePropagationTargets) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && this._hasSetTracePropagationTargets && clientOptionsTracePropagationTargets) {
       logger.warn(
         '[Tracing] The `tracePropagationTargets` option was set in the BrowserTracing integration and top level `Sentry.init`. The top level `Sentry.init` value is being used.',
       );
@@ -288,7 +288,7 @@ export class BrowserTracing implements Integration {
   /** Create routing idle transaction. */
   private _createRouteTransaction(context: TransactionContext): Transaction | undefined {
     if (!this._getCurrentHub) {
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
         logger.warn(`[Tracing] Did not create ${context.op} transaction because _getCurrentHub is invalid.`);
       return undefined;
     }
@@ -332,11 +332,11 @@ export class BrowserTracing implements Integration {
     this._latestRouteSource = finalContext.metadata && finalContext.metadata.source;
 
     if (finalContext.sampled === false) {
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
         logger.log(`[Tracing] Will not send ${finalContext.op} transaction because of beforeNavigate.`);
     }
 
-    __DEBUG_BUILD__ && logger.log(`[Tracing] Starting ${finalContext.op} transaction on scope`);
+    typeof __DEBUG_BUILD__ !== 'undefined' && typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(`[Tracing] Starting ${finalContext.op} transaction on scope`);
 
     const { location } = WINDOW;
 
@@ -384,7 +384,7 @@ export class BrowserTracing implements Integration {
 
       const currentTransaction = getActiveTransaction();
       if (currentTransaction && currentTransaction.op && ['navigation', 'pageload'].includes(currentTransaction.op)) {
-        __DEBUG_BUILD__ &&
+        typeof __DEBUG_BUILD__ !== 'undefined' && typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
           logger.warn(
             `[Tracing] Did not create ${op} transaction because a pageload or navigation transaction is in progress.`,
           );
@@ -398,12 +398,12 @@ export class BrowserTracing implements Integration {
       }
 
       if (!this._getCurrentHub) {
-        __DEBUG_BUILD__ && logger.warn(`[Tracing] Did not create ${op} transaction because _getCurrentHub is invalid.`);
+        typeof __DEBUG_BUILD__ !== 'undefined' && typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn(`[Tracing] Did not create ${op} transaction because _getCurrentHub is invalid.`);
         return undefined;
       }
 
       if (!this._latestRouteName) {
-        __DEBUG_BUILD__ &&
+        typeof __DEBUG_BUILD__ !== 'undefined' && typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
           logger.warn(`[Tracing] Did not create ${op} transaction because _latestRouteName is missing.`);
         return undefined;
       }

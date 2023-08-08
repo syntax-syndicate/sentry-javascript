@@ -2,8 +2,8 @@ import type { Hub } from '@sentry/core';
 import type { EventProcessor, SpanContext } from '@sentry/types';
 import { fill, isThenable, loadModule, logger } from '@sentry/utils';
 
-import type { LazyLoadedIntegration } from './lazy';
-import { shouldDisableAutoInstrumentation } from './utils/node-utils';
+import type { LazyLoadedIntegration } from './lazy.ts';
+import { shouldDisableAutoInstrumentation } from './utils/node-utils.ts';
 
 // This allows us to use the same array for both defaults options and the type itself.
 // (note `as const` at the end to make it a union of string literal types (i.e. "a" | "b" | ... )
@@ -140,7 +140,7 @@ export class Mongo implements LazyLoadedIntegration<MongoModule> {
    */
   public setupOnce(_: (callback: EventProcessor) => void, getCurrentHub: () => Hub): void {
     if (shouldDisableAutoInstrumentation(getCurrentHub)) {
-      __DEBUG_BUILD__ && logger.log('Mongo Integration is skipped because of instrumenter configuration.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Mongo Integration is skipped because of instrumenter configuration.');
       return;
     }
 
@@ -148,7 +148,7 @@ export class Mongo implements LazyLoadedIntegration<MongoModule> {
 
     if (!pkg) {
       const moduleName = this._useMongoose ? 'mongoose' : 'mongodb';
-      __DEBUG_BUILD__ && logger.error(`Mongo Integration was unable to require \`${moduleName}\` package.`);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error(`Mongo Integration was unable to require \`${moduleName}\` package.`);
       return;
     }
 

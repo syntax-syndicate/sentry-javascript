@@ -7,11 +7,11 @@ import {
   DEFAULT_FLUSH_MIN_DELAY,
   MIN_REPLAY_DURATION,
   MIN_REPLAY_DURATION_LIMIT,
-} from './constants';
-import { ReplayContainer } from './replay';
-import type { RecordingOptions, ReplayConfiguration, ReplayPluginOptions, SendBufferedReplayOptions } from './types';
-import { getPrivacyOptions } from './util/getPrivacyOptions';
-import { isBrowser } from './util/isBrowser';
+} from './constants.ts';
+import { ReplayContainer } from './replay.ts';
+import type { RecordingOptions, ReplayConfiguration, ReplayPluginOptions, SendBufferedReplayOptions } from './types.ts';
+import { getPrivacyOptions } from './util/getPrivacyOptions.ts';
+import { isBrowser } from './util/isBrowser.ts';
 
 const MEDIA_SELECTORS =
   'img,image,svg,video,object,picture,embed,map,audio,link[rel="icon"],link[rel="apple-touch-icon"]';

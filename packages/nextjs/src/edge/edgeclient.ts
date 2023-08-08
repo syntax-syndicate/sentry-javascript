@@ -20,8 +20,8 @@ import type {
 } from '@sentry/types';
 import { logger, uuid4 } from '@sentry/utils';
 
-import { eventFromMessage, eventFromUnknownInput } from './eventbuilder';
-import type { EdgeTransportOptions } from './transport';
+import { eventFromMessage, eventFromUnknownInput } from './eventbuilder.ts';
+import type { EdgeTransportOptions } from './transport.ts';
 
 export type EdgeClientOptions = ClientOptions<EdgeTransportOptions>;
 
@@ -83,7 +83,7 @@ export class EdgeClient extends BaseClient<EdgeClientOptions> {
   public captureCheckIn(checkIn: CheckIn, monitorConfig?: MonitorConfig, scope?: Scope): string {
     const id = checkIn.status !== 'in_progress' && checkIn.checkInId ? checkIn.checkInId : uuid4();
     if (!this._isEnabled()) {
-      __DEBUG_BUILD__ && logger.warn('SDK not enabled, will not capture checkin.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('SDK not enabled, will not capture checkin.');
       return id;
     }
 
@@ -126,7 +126,7 @@ export class EdgeClient extends BaseClient<EdgeClientOptions> {
       this.getDsn(),
     );
 
-    __DEBUG_BUILD__ && logger.info('Sending checkin:', checkIn.monitorSlug, checkIn.status);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.info('Sending checkin:', checkIn.monitorSlug, checkIn.status);
     void this._sendEnvelope(envelope);
     return id;
   }

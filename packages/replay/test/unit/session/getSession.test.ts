@@ -3,12 +3,12 @@ import {
   SESSION_IDLE_EXPIRE_DURATION,
   SESSION_IDLE_PAUSE_DURATION,
   WINDOW,
-} from '../../../src/constants';
-import * as CreateSession from '../../../src/session/createSession';
-import * as FetchSession from '../../../src/session/fetchSession';
-import { getSession } from '../../../src/session/getSession';
-import { saveSession } from '../../../src/session/saveSession';
-import { makeSession } from '../../../src/session/Session';
+} from '../../../src/constants.ts';
+import * as CreateSession from '../../../src/session/createSession.ts';
+import * as FetchSession from '../../../src/session/fetchSession.ts';
+import { getSession } from '../../../src/session/getSession.ts';
+import { saveSession } from '../../../src/session/saveSession.ts';
+import { makeSession } from '../../../src/session/Session.ts';
 
 jest.mock('@sentry/utils', () => {
   return {

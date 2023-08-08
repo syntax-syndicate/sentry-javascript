@@ -2,8 +2,8 @@ import type { StackFrame } from '@sentry/types';
 import { basename, escapeStringForRegex, GLOBAL_OBJ, join, tracingContextFromHeaders } from '@sentry/utils';
 import type { RequestEvent } from '@sveltejs/kit';
 
-import { WRAPPED_MODULE_SUFFIX } from '../vite/autoInstrument';
-import type { GlobalWithSentryValues } from '../vite/injectGlobalValues';
+import { WRAPPED_MODULE_SUFFIX } from '../vite/autoInstrument.ts';
+import type { GlobalWithSentryValues } from '../vite/injectGlobalValues.ts';
 
 /**
  * Takes a request event and extracts traceparent and DSC data

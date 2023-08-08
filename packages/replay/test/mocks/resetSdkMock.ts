@@ -1,10 +1,10 @@
-import type { Replay as ReplayIntegration } from '../../src';
-import type { ReplayContainer } from '../../src/replay';
+import type { Replay as ReplayIntegration } from '../../src.ts';
+import type { ReplayContainer } from '../../src/replay.ts';
 import type { RecordMock } from './../index';
 import { BASE_TIMESTAMP } from './../index';
 import type { DomHandler } from './../types';
-import type { MockSdkParams } from './mockSdk';
-import { mockSdk } from './mockSdk';
+import type { MockSdkParams } from './mockSdk.ts';
+import { mockSdk } from './mockSdk.ts';
 
 export async function resetSdkMock({ replayOptions, sentryOptions, autoStart }: MockSdkParams): Promise<{
   domHandler: DomHandler;

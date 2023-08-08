@@ -16,8 +16,8 @@ import {
   tracingContextFromHeaders,
 } from '@sentry/utils';
 
-import { setNodeAsyncContextStrategy } from './async';
-import { NodeClient } from './client';
+import { setNodeAsyncContextStrategy } from './async.ts';
+import { NodeClient } from './client.ts';
 import {
   Console,
   Context,
@@ -30,10 +30,10 @@ import {
   OnUnhandledRejection,
   RequestData,
   Undici,
-} from './integrations';
-import { getModuleFromFilename } from './module';
-import { makeNodeTransport } from './transports';
-import type { NodeClientOptions, NodeOptions } from './types';
+} from './integrations.ts';
+import { getModuleFromFilename } from './module.ts';
+import { makeNodeTransport } from './transports.ts';
+import type { NodeClientOptions, NodeOptions } from './types.ts';
 
 export const defaultIntegrations = [
   // Common
@@ -199,7 +199,7 @@ export async function flush(timeout?: number): Promise<boolean> {
   if (client) {
     return client.flush(timeout);
   }
-  __DEBUG_BUILD__ && logger.warn('Cannot flush events. No client defined.');
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Cannot flush events. No client defined.');
   return Promise.resolve(false);
 }
 
@@ -216,7 +216,7 @@ export async function close(timeout?: number): Promise<boolean> {
   if (client) {
     return client.close(timeout);
   }
-  __DEBUG_BUILD__ && logger.warn('Cannot flush events and disable SDK. No client defined.');
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Cannot flush events and disable SDK. No client defined.');
   return Promise.resolve(false);
 }
 

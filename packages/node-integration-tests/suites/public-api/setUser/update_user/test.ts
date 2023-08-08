@@ -1,4 +1,4 @@
-import { assertSentryEvent, TestEnv } from '../../../../utils';
+import { assertSentryEvent, TestEnv } from '../../../../utils.ts';
 
 test('should update user', async () => {
   const env = await TestEnv.init(__dirname);

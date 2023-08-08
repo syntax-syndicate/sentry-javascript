@@ -5,10 +5,10 @@ import type { Event, PropagationContext } from '@sentry/types';
 import { SentryError } from '@sentry/utils';
 import * as http from 'http';
 
-import { NodeClient } from '../src/client';
-import { errorHandler, requestHandler, tracingHandler } from '../src/handlers';
-import * as SDK from '../src/sdk';
-import { getDefaultNodeClientOptions } from './helper/node-client-options';
+import { NodeClient } from '../src/client.ts';
+import { errorHandler, requestHandler, tracingHandler } from '../src/handlers.ts';
+import * as SDK from '../src/sdk.ts';
+import { getDefaultNodeClientOptions } from './helper/node-client-options.ts';
 
 function mockAsyncContextStrategy(getHub: () => Hub): void {
   function getCurrentHub(): Hub | undefined {

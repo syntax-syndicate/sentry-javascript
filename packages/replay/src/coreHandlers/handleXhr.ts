@@ -1,8 +1,8 @@
 import type { HandlerDataXhr } from '@sentry/types';
 import { SENTRY_XHR_DATA_KEY } from '@sentry/utils';
 
-import type { NetworkRequestData, ReplayContainer, ReplayPerformanceEntry } from '../types';
-import { addNetworkBreadcrumb } from './util/addNetworkBreadcrumb';
+import type { NetworkRequestData, ReplayContainer, ReplayPerformanceEntry } from '../types.ts';
+import { addNetworkBreadcrumb } from './util/addNetworkBreadcrumb.ts';
 
 /** only exported for tests */
 export function handleXhr(handlerData: HandlerDataXhr): ReplayPerformanceEntry<NetworkRequestData> | null {

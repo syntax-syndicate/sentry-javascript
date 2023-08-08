@@ -10,9 +10,9 @@ import {
   tracingContextFromHeaders,
 } from '@sentry/utils';
 
-import type { AugmentedNextApiRequest, AugmentedNextApiResponse, NextApiHandler } from './types';
-import { platformSupportsStreaming } from './utils/platformSupportsStreaming';
-import { autoEndTransactionOnResponseEnd, finishTransaction, flushQueue } from './utils/responseEnd';
+import type { AugmentedNextApiRequest, AugmentedNextApiResponse, NextApiHandler } from './types.ts';
+import { platformSupportsStreaming } from './utils/platformSupportsStreaming.ts';
+import { autoEndTransactionOnResponseEnd, finishTransaction, flushQueue } from './utils/responseEnd.ts';
 
 /**
  * Wrap the given API route handler for tracing and error capturing. Thin wrapper around `withSentry`, which only
@@ -81,7 +81,7 @@ export function withSentry(apiHandler: NextApiHandler, parameterizedRoute?: stri
               );
               hub.getScope().setPropagationContext(propagationContext);
 
-              if (__DEBUG_BUILD__ && traceparentData) {
+              if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && traceparentData) {
                 logger.log(`[Tracing] Continuing trace ${traceparentData.traceId}.`);
               }
 

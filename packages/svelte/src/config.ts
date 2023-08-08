@@ -1,7 +1,7 @@
 import type { PreprocessorGroup } from 'svelte/types/compiler/preprocess';
 
-import { componentTrackingPreprocessor, defaultComponentTrackingOptions } from './preprocessors';
-import type { SentryPreprocessorGroup, SentrySvelteConfigOptions, SvelteConfig } from './types';
+import { componentTrackingPreprocessor, defaultComponentTrackingOptions } from './preprocessors.ts';
+import type { SentryPreprocessorGroup, SentrySvelteConfigOptions, SvelteConfig } from './types.ts';
 
 const DEFAULT_SENTRY_OPTIONS: SentrySvelteConfigOptions = {
   componentTracking: defaultComponentTrackingOptions,

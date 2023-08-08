@@ -1,8 +1,8 @@
 import type { Breadcrumb } from '@sentry/types';
 
 import { BASE_TIMESTAMP } from '../..';
-import { ClickDetector, ignoreElement } from '../../../src/coreHandlers/handleClick';
-import type { ReplayContainer } from '../../../src/types';
+import { ClickDetector, ignoreElement } from '../../../src/coreHandlers/handleClick.ts';
+import type { ReplayContainer } from '../../../src/types.ts';
 
 jest.useFakeTimers();
 

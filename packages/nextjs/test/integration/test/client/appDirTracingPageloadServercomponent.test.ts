@@ -1,4 +1,4 @@
-import { getMultipleSentryEnvelopeRequests, countEnvelopes } from './utils/helpers';
+import { getMultipleSentryEnvelopeRequests, countEnvelopes } from './utils/helpers.ts';
 import { test, expect } from '@playwright/test';
 
 test('should create a pageload transaction when the `app` directory is used with a server component.', async ({

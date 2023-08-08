@@ -1,4 +1,4 @@
-import { isMatchingPattern, stringMatchesSomePattern, truncate } from '../src/string';
+import { isMatchingPattern, stringMatchesSomePattern, truncate } from '../src/string.ts';
 
 describe('truncate()', () => {
   test('it works as expected', () => {

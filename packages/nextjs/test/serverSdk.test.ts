@@ -4,7 +4,7 @@ import { getCurrentHub, NodeClient } from '@sentry/node';
 import type { Integration } from '@sentry/types';
 import { GLOBAL_OBJ, logger } from '@sentry/utils';
 
-import { init } from '../src/server';
+import { init } from '../src/server.ts';
 
 const { Integrations } = SentryNode;
 

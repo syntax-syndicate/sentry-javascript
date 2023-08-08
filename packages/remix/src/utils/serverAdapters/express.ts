@@ -10,7 +10,7 @@ import {
   instrumentBuild,
   isRequestHandlerWrapped,
   startRequestHandlerTransaction,
-} from '../instrumentServer';
+} from '../instrumentServer.ts';
 import type {
   ExpressCreateRequestHandler,
   ExpressCreateRequestHandlerOptions,
@@ -20,7 +20,7 @@ import type {
   ExpressResponse,
   ReactRouterDomPkg,
   ServerBuild,
-} from '../vendor/types';
+} from '../vendor/types.ts';
 
 let pkg: ReactRouterDomPkg;
 
@@ -48,7 +48,7 @@ function wrapExpressRequestHandler(
         pkg = await import(`${cwd()}/node_modules/react-router-dom`);
       } finally {
         if (!pkg) {
-          __DEBUG_BUILD__ && logger.error('Could not find `react-router-dom` package.');
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('Could not find `react-router-dom` package.');
         }
       }
     }
@@ -153,10 +153,10 @@ async function finishSentryProcessing(res: AugmentedExpressResponse): Promise<vo
   // Flush the event queue to ensure that events get sent to Sentry before the response is finished and the lambda
   // ends. If there was an error, rethrow it so that the normal exception-handling mechanisms can apply.
   try {
-    __DEBUG_BUILD__ && logger.log('Flushing events...');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Flushing events...');
     await flush(2000);
-    __DEBUG_BUILD__ && logger.log('Done flushing events');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Done flushing events');
   } catch (e) {
-    __DEBUG_BUILD__ && logger.log('Error while flushing events:\n', e);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Error while flushing events:\n', e);
   }
 }

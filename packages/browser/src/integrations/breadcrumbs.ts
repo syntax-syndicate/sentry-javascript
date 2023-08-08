@@ -19,7 +19,7 @@ import {
   severityLevelFromString,
 } from '@sentry/utils';
 
-import { WINDOW } from '../helpers';
+import { WINDOW } from '../helpers.ts';
 
 type HandlerData = Record<string, unknown>;
 
@@ -138,7 +138,7 @@ function _domBreadcrumb(dom: BreadcrumbsOptions['dom']): (handlerData: HandlerDa
     let maxStringLength =
       typeof dom === 'object' && typeof dom.maxStringLength === 'number' ? dom.maxStringLength : undefined;
     if (maxStringLength && maxStringLength > MAX_ALLOWED_STRING_LENGTH) {
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
         logger.warn(
           `\`dom.maxStringLength\` cannot exceed ${MAX_ALLOWED_STRING_LENGTH}, but a value of ${maxStringLength} was configured. Sentry will use ${MAX_ALLOWED_STRING_LENGTH} instead.`,
         );

@@ -1,6 +1,6 @@
 import { getCurrentHub } from '@sentry/core';
 
-import * as HandleScope from '../../../src/coreHandlers/handleScope';
+import * as HandleScope from '../../../src/coreHandlers/handleScope.ts';
 import { mockSdk } from './../../index';
 
 jest.useFakeTimers();

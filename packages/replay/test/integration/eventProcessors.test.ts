@@ -2,8 +2,8 @@ import { getCurrentHub } from '@sentry/core';
 import type { Event, Hub, Scope } from '@sentry/types';
 
 import { BASE_TIMESTAMP } from '..';
-import { resetSdkMock } from '../mocks/resetSdkMock';
-import { useFakeTimers } from '../utils/use-fake-timers';
+import { resetSdkMock } from '../mocks/resetSdkMock.ts';
+import { useFakeTimers } from '../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

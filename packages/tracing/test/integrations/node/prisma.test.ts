@@ -2,8 +2,8 @@
 import * as sentryCore from '@sentry/core';
 import { Hub } from '@sentry/core';
 
-import { Integrations } from '../../../src';
-import { getTestClient } from '../../testutils';
+import { Integrations } from '../../../src.ts';
+import { getTestClient } from '../../testutils.ts';
 
 const mockTrace = jest.fn();
 

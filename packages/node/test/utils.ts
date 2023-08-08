@@ -1,4 +1,4 @@
-import { NODE_VERSION } from '../src/nodeVersion';
+import { NODE_VERSION } from '../src/nodeVersion.ts';
 
 /**
  * Returns`describe` or `describe.skip` depending on allowed major versions of Node.

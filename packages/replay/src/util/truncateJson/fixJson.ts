@@ -1,7 +1,7 @@
 /* eslint-disable max-lines */
 
-import { completeJson } from './completeJson';
-import { evaluateJson } from './evaluateJson';
+import { completeJson } from './completeJson.ts';
+import { evaluateJson } from './evaluateJson.ts';
 
 /**
  * Takes an incomplete JSON string, and returns a hopefully valid JSON string.

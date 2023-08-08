@@ -1,6 +1,6 @@
 import * as ss from 'simple-statistics';
 
-import type { Metrics } from '../collector';
+import type { Metrics } from '../collector.ts';
 
 export type NumberProvider = (metrics: Metrics) => number | undefined;
 export type AnalyticsFunction = (items: Metrics[], dataProvider: NumberProvider) => number | undefined;

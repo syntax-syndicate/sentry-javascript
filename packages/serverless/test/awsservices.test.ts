@@ -2,7 +2,7 @@ import * as SentryNode from '@sentry/node';
 import * as AWS from 'aws-sdk';
 import * as nock from 'nock';
 
-import { AWSServices } from '../src/awsservices';
+import { AWSServices } from '../src/awsservices.ts';
 
 /**
  * Why @ts-ignore some Sentry.X calls

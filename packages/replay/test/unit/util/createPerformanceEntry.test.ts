@@ -5,10 +5,10 @@ jest.mock('@sentry/utils', () => ({
   browserPerformanceTimeOrigin: Date.now(),
 }));
 
-import { WINDOW } from '../../../src/constants';
-import { createPerformanceEntries } from '../../../src/util/createPerformanceEntries';
-import { PerformanceEntryLcp } from '../../fixtures/performanceEntry/lcp';
-import { PerformanceEntryNavigation } from '../../fixtures/performanceEntry/navigation';
+import { WINDOW } from '../../../src/constants.ts';
+import { createPerformanceEntries } from '../../../src/util/createPerformanceEntries.ts';
+import { PerformanceEntryLcp } from '../../fixtures/performanceEntry/lcp.ts';
+import { PerformanceEntryNavigation } from '../../fixtures/performanceEntry/navigation.ts';
 
 describe('Unit | util | createPerformanceEntries', () => {
   beforeEach(function () {

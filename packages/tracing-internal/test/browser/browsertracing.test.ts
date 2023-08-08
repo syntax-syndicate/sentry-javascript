@@ -5,15 +5,15 @@ import type { BaseTransportOptions, ClientOptions, DsnComponents } from '@sentry
 import type { InstrumentHandlerCallback, InstrumentHandlerType } from '@sentry/utils';
 import { JSDOM } from 'jsdom';
 
-import type { IdleTransaction } from '../../../tracing/src';
-import { getActiveTransaction } from '../../../tracing/src';
-import { conditionalTest, getDefaultBrowserClientOptions } from '../../../tracing/test/testutils';
-import type { BrowserTracingOptions } from '../../src/browser/browsertracing';
-import { BrowserTracing, getMetaContent } from '../../src/browser/browsertracing';
-import { defaultRequestInstrumentationOptions } from '../../src/browser/request';
-import { instrumentRoutingWithDefaults } from '../../src/browser/router';
-import { WINDOW } from '../../src/browser/types';
-import { TestClient } from '../utils/TestClient';
+import type { IdleTransaction } from '../../../tracing/src.ts';
+import { getActiveTransaction } from '../../../tracing/src.ts';
+import { conditionalTest, getDefaultBrowserClientOptions } from '../../../tracing/test/testutils.ts';
+import type { BrowserTracingOptions } from '../../src/browser/browsertracing.ts';
+import { BrowserTracing, getMetaContent } from '../../src/browser/browsertracing.ts';
+import { defaultRequestInstrumentationOptions } from '../../src/browser/request.ts';
+import { instrumentRoutingWithDefaults } from '../../src/browser/router.ts';
+import { WINDOW } from '../../src/browser/types.ts';
+import { TestClient } from '../utils/TestClient.ts';
 
 let mockChangeHistory: ({ to, from }: { to: string; from?: string }) => void = () => undefined;
 

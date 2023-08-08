@@ -121,7 +121,7 @@ export class ExtraErrorData implements Integration {
 
       return extraErrorInfo;
     } catch (oO) {
-      __DEBUG_BUILD__ && logger.error('Unable to extract extra data from the Error object:', oO);
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('Unable to extract extra data from the Error object:', oO);
     }
 
     return null;

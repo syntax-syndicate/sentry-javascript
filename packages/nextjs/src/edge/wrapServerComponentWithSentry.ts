@@ -1,6 +1,6 @@
 import { captureException } from '@sentry/core';
 
-import type { ServerComponentContext } from '../common/types';
+import type { ServerComponentContext } from '../common/types.ts';
 
 /**
  * Wraps an `app` directory server component with Sentry error instrumentation.

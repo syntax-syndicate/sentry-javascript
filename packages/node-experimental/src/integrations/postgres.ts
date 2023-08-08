@@ -2,7 +2,7 @@ import type { Instrumentation } from '@opentelemetry/instrumentation';
 import { PgInstrumentation } from '@opentelemetry/instrumentation-pg';
 import type { Integration } from '@sentry/types';
 
-import { NodePerformanceIntegration } from './NodePerformanceIntegration';
+import { NodePerformanceIntegration } from './NodePerformanceIntegration.ts';
 
 /**
  * Postgres integration

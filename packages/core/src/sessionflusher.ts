@@ -7,7 +7,7 @@ import type {
 } from '@sentry/types';
 import { dropUndefinedKeys } from '@sentry/utils';
 
-import { getCurrentHub } from './hub';
+import { getCurrentHub } from './hub.ts';
 
 type ReleaseHealthAttributes = {
   environment?: string;

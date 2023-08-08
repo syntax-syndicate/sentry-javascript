@@ -15,9 +15,9 @@ import {
 } from '@sentry/utils';
 import type { LoadEvent } from '@sveltejs/kit';
 
-import type { SentryWrappedFlag } from '../common/utils';
-import { isRedirect } from '../common/utils';
-import { isRequestCached } from './vendor/lookUpCache';
+import type { SentryWrappedFlag } from '../common/utils.ts';
+import { isRedirect } from '../common/utils.ts';
+import { isRequestCached } from './vendor/lookUpCache.ts';
 
 type PatchedLoadEvent = LoadEvent & Partial<SentryWrappedFlag>;
 

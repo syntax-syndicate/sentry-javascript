@@ -1,4 +1,4 @@
-import * as Sentry from './index';
+import * as Sentry from './index.ts';
 
 const lambdaTaskRoot = process.env.LAMBDA_TASK_ROOT;
 if (lambdaTaskRoot) {

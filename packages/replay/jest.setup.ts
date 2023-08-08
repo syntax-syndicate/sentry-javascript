@@ -3,7 +3,7 @@ import { getCurrentHub } from '@sentry/core';
 import type { ReplayRecordingData, Transport } from '@sentry/types';
 import { TextEncoder } from 'util';
 
-import type { ReplayContainer, Session } from './src/types';
+import type { ReplayContainer, Session } from './src/types.ts';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (global as any).TextEncoder = TextEncoder;

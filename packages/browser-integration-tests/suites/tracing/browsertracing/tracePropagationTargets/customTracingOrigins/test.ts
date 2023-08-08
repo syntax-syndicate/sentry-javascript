@@ -1,8 +1,8 @@
 import type { Request } from '@playwright/test';
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../../utils/fixtures';
-import { shouldSkipTracingTest } from '../../../../../utils/helpers';
+import { sentryTest } from '../../../../../utils/fixtures.ts';
+import { shouldSkipTracingTest } from '../../../../../utils/helpers.ts';
 
 sentryTest(
   '[pre-v8] should attach `sentry-trace` and `baggage` header to request matching tracingOrigins',

@@ -1,4 +1,4 @@
-import { debounce } from '../../../src/util/debounce';
+import { debounce } from '../../../src/util/debounce.ts';
 
 describe('Unit | util | debounce', () => {
   jest.useFakeTimers();

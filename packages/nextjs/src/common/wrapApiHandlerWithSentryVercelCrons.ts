@@ -1,7 +1,7 @@
 import { captureCheckIn, runWithAsyncContext } from '@sentry/core';
 import type { NextApiRequest } from 'next';
 
-import type { VercelCronsConfig } from './types';
+import type { VercelCronsConfig } from './types.ts';
 
 type EdgeRequest = {
   nextUrl: URL;

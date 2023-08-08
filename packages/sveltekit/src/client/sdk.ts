@@ -3,8 +3,8 @@ import type { BrowserOptions } from '@sentry/svelte';
 import { BrowserTracing, configureScope, init as initSvelteSdk } from '@sentry/svelte';
 import { addOrUpdateIntegration } from '@sentry/utils';
 
-import { applySdkMetadata } from '../common/metadata';
-import { svelteKitRoutingInstrumentation } from './router';
+import { applySdkMetadata } from '../common/metadata.ts';
+import { svelteKitRoutingInstrumentation } from './router.ts';
 
 // Treeshakable guard to remove all code related to tracing
 declare const __SENTRY_TRACING__: boolean;

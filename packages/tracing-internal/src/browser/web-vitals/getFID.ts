@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { bindReporter } from './lib/bindReporter';
-import { getVisibilityWatcher } from './lib/getVisibilityWatcher';
-import { initMetric } from './lib/initMetric';
-import { observe } from './lib/observe';
-import { onHidden } from './lib/onHidden';
-import type { FIDMetric, PerformanceEventTiming, ReportCallback } from './types';
+import { bindReporter } from './lib/bindReporter.ts';
+import { getVisibilityWatcher } from './lib/getVisibilityWatcher.ts';
+import { initMetric } from './lib/initMetric.ts';
+import { observe } from './lib/observe.ts';
+import { onHidden } from './lib/onHidden.ts';
+import type { FIDMetric, PerformanceEventTiming, ReportCallback } from './types.ts';
 
 /**
  * Calculates the [FID](https://web.dev/fid/) value for the current page and

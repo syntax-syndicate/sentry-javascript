@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { bindReporter } from './lib/bindReporter';
-import { initMetric } from './lib/initMetric';
-import { observe } from './lib/observe';
-import { onHidden } from './lib/onHidden';
-import type { CLSMetric, ReportCallback, StopListening } from './types';
+import { bindReporter } from './lib/bindReporter.ts';
+import { initMetric } from './lib/initMetric.ts';
+import { observe } from './lib/observe.ts';
+import { onHidden } from './lib/onHidden.ts';
+import type { CLSMetric, ReportCallback, StopListening } from './types.ts';
 
 /**
  * Calculates the [CLS](https://web.dev/cls/) value for the current page and

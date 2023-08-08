@@ -1,12 +1,12 @@
 import { TextEncoder } from 'util';
 
-import { NETWORK_BODY_MAX_SIZE } from '../../../../src/constants';
+import { NETWORK_BODY_MAX_SIZE } from '../../../../src/constants.ts';
 import {
   buildNetworkRequestOrResponse,
   getBodySize,
   getFullUrl,
   parseContentLengthHeader,
-} from '../../../../src/coreHandlers/util/networkUtils';
+} from '../../../../src/coreHandlers/util/networkUtils.ts';
 
 jest.useFakeTimers();
 

@@ -2,8 +2,8 @@ import type { Hub } from '@sentry/core';
 import type { EventProcessor } from '@sentry/types';
 import { fill, loadModule, logger } from '@sentry/utils';
 
-import type { LazyLoadedIntegration } from './lazy';
-import { shouldDisableAutoInstrumentation } from './utils/node-utils';
+import type { LazyLoadedIntegration } from './lazy.ts';
+import { shouldDisableAutoInstrumentation } from './utils/node-utils.ts';
 
 interface MysqlConnection {
   createQuery: () => void;
@@ -37,14 +37,14 @@ export class Mysql implements LazyLoadedIntegration<MysqlConnection> {
    */
   public setupOnce(_: (callback: EventProcessor) => void, getCurrentHub: () => Hub): void {
     if (shouldDisableAutoInstrumentation(getCurrentHub)) {
-      __DEBUG_BUILD__ && logger.log('Mysql Integration is skipped because of instrumenter configuration.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Mysql Integration is skipped because of instrumenter configuration.');
       return;
     }
 
     const pkg = this.loadDependency();
 
     if (!pkg) {
-      __DEBUG_BUILD__ && logger.error('Mysql Integration was unable to require `mysql` package.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('Mysql Integration was unable to require `mysql` package.');
       return;
     }
 

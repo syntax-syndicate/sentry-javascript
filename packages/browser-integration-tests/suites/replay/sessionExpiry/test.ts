@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../utils/fixtures';
-import { getExpectedReplayEvent } from '../../../utils/replayEventTemplates';
+import { sentryTest } from '../../../utils/fixtures.ts';
+import { getExpectedReplayEvent } from '../../../utils/replayEventTemplates.ts';
 import {
   getFullRecordingSnapshots,
   getReplayEvent,
@@ -9,7 +9,7 @@ import {
   normalize,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../utils/replayHelpers';
+} from '../../../utils/replayHelpers.ts';
 
 // Session should expire after 2s - keep in sync with init.js
 const SESSION_TIMEOUT = 2000;

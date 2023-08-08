@@ -1,6 +1,6 @@
 import { EventType } from '@sentry-internal/rrweb';
 
-import type { AddEventResult, AllEntryData, ReplayContainer, ReplayPerformanceEntry } from '../types';
+import type { AddEventResult, AllEntryData, ReplayContainer, ReplayPerformanceEntry } from '../types.ts';
 
 /**
  * Create a "span" for each performance entry.

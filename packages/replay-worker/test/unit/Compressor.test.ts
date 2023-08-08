@@ -1,6 +1,6 @@
 import pako from 'pako';
 
-import { Compressor } from '../../src/Compressor';
+import { Compressor } from '../../src/Compressor.ts';
 
 describe('Compressor', () => {
   it('compresses multiple events', () => {

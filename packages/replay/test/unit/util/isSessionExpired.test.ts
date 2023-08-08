@@ -1,6 +1,6 @@
-import { MAX_SESSION_LIFE, SESSION_IDLE_PAUSE_DURATION } from '../../../src/constants';
-import { makeSession } from '../../../src/session/Session';
-import { isSessionExpired } from '../../../src/util/isSessionExpired';
+import { MAX_SESSION_LIFE, SESSION_IDLE_PAUSE_DURATION } from '../../../src/constants.ts';
+import { makeSession } from '../../../src/session/Session.ts';
+import { isSessionExpired } from '../../../src/util/isSessionExpired.ts';
 
 function createSession(extra?: Record<string, any>) {
   return makeSession({

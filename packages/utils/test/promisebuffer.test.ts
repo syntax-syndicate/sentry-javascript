@@ -1,5 +1,5 @@
-import { makePromiseBuffer } from '../src/promisebuffer';
-import { SyncPromise } from '../src/syncpromise';
+import { makePromiseBuffer } from '../src/promisebuffer.ts';
+import { SyncPromise } from '../src/syncpromise.ts';
 
 describe('PromiseBuffer', () => {
   describe('add()', () => {

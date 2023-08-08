@@ -1,11 +1,11 @@
 import type { Breadcrumb } from '@sentry/types';
 
-import { WINDOW } from '../constants';
-import type { MultiClickFrame, ReplayClickDetector, ReplayContainer, SlowClickConfig, SlowClickFrame } from '../types';
-import { timestampToS } from '../util/timestamp';
-import { addBreadcrumbEvent } from './util/addBreadcrumbEvent';
-import { getClickTargetNode } from './util/domUtils';
-import { onWindowOpen } from './util/onWindowOpen';
+import { WINDOW } from '../constants.ts';
+import type { MultiClickFrame, ReplayClickDetector, ReplayContainer, SlowClickConfig, SlowClickFrame } from '../types.ts';
+import { timestampToS } from '../util/timestamp.ts';
+import { addBreadcrumbEvent } from './util/addBreadcrumbEvent.ts';
+import { getClickTargetNode } from './util/domUtils.ts';
+import { onWindowOpen } from './util/onWindowOpen.ts';
 
 type ClickBreadcrumb = Breadcrumb & {
   timestamp: number;

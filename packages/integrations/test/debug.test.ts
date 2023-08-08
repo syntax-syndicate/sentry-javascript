@@ -1,6 +1,6 @@
 import type { EventProcessor, Integration } from '@sentry/types';
 
-import { Debug } from '../src/debug';
+import { Debug } from '../src/debug.ts';
 
 const mockGetCurrentHub = (getIntegrationResult: Integration) => ({
   getIntegration: jest.fn(() => getIntegrationResult),

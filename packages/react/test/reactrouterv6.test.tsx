@@ -14,8 +14,8 @@ import {
   useRoutes,
 } from 'react-router-6';
 
-import { reactRouterV6Instrumentation } from '../src';
-import { withSentryReactRouterV6Routing, wrapUseRoutes } from '../src/reactrouterv6';
+import { reactRouterV6Instrumentation } from '../src.ts';
+import { withSentryReactRouterV6Routing, wrapUseRoutes } from '../src/reactrouterv6.ts';
 
 describe('React Router v6', () => {
   function createInstrumentation(_opts?: {

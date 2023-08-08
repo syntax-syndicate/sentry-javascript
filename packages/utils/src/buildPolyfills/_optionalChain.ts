@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import type { GenericFunction } from './types';
+import type { GenericFunction } from './types.ts';
 
 /**
  * Polyfill for the optional chain operator, `?.`, given previous conversion of the expression into an array of values,

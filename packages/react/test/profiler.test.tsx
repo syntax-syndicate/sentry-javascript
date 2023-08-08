@@ -3,8 +3,8 @@ import { render } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import * as React from 'react';
 
-import { REACT_MOUNT_OP, REACT_RENDER_OP, REACT_UPDATE_OP } from '../src/constants';
-import { UNKNOWN_COMPONENT, useProfiler, withProfiler } from '../src/profiler';
+import { REACT_MOUNT_OP, REACT_RENDER_OP, REACT_UPDATE_OP } from '../src/constants.ts';
+import { UNKNOWN_COMPONENT, useProfiler, withProfiler } from '../src/profiler.ts';
 
 const mockStartChild = jest.fn((spanArgs: SpanContext) => ({ ...spanArgs }));
 const mockFinish = jest.fn();

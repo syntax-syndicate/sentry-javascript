@@ -1,4 +1,4 @@
-import { isExpired } from '../../../src/util/isExpired';
+import { isExpired } from '../../../src/util/isExpired.ts';
 
 describe('Unit | util | isExpired', () => {
   it('is expired', function () {

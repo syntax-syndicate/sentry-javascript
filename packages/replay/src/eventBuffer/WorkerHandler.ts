@@ -1,7 +1,7 @@
 import { logger } from '@sentry/utils';
 
-import type { WorkerRequest, WorkerResponse } from '../types';
-import { logInfo } from '../util/log';
+import type { WorkerRequest, WorkerResponse } from '../types.ts';
+import { logInfo } from '../util/log.ts';
 
 /**
  * Event buffer that uses a web worker to compress events.
@@ -84,7 +84,7 @@ export class WorkerHandler {
 
         if (!response.success) {
           // TODO: Do some error handling, not sure what
-          __DEBUG_BUILD__ && logger.error('[Replay]', response.response);
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('[Replay]', response.response);
 
           reject(new Error('Error in compression worker'));
           return;

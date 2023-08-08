@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { envelopeRequestParser, waitForErrorRequestOnUrl } from '../../../../utils/helpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { envelopeRequestParser, waitForErrorRequestOnUrl } from '../../../../utils/helpers.ts';
 
 sentryTest('captureException works inside of onLoad', async ({ getLocalTestUrl, page }) => {
   const url = await getLocalTestUrl({ testDir: __dirname });

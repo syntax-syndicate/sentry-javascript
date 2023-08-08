@@ -1,19 +1,19 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { envelopeRequestParser, waitForErrorRequest } from '../../../../utils/helpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { envelopeRequestParser, waitForErrorRequest } from '../../../../utils/helpers.ts';
 import {
   expectedClickBreadcrumb,
   expectedConsoleBreadcrumb,
   getExpectedReplayEvent,
-} from '../../../../utils/replayEventTemplates';
+} from '../../../../utils/replayEventTemplates.ts';
 import {
   getReplayEvent,
   getReplayRecordingContent,
   isReplayEvent,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../../utils/replayHelpers';
+} from '../../../../utils/replayHelpers.ts';
 
 sentryTest(
   '[error-mode] should start recording and switch to session mode once an error is thrown',

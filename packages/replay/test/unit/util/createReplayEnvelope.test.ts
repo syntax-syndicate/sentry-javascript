@@ -1,7 +1,7 @@
 import type { ReplayEvent } from '@sentry/types';
 import { makeDsn } from '@sentry/utils';
 
-import { createReplayEnvelope } from '../../../src/util/createReplayEnvelope';
+import { createReplayEnvelope } from '../../../src/util/createReplayEnvelope.ts';
 
 describe('Unit | util | createReplayEnvelope', () => {
   const REPLAY_ID = 'MY_REPLAY_ID';

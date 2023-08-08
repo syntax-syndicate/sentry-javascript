@@ -1,7 +1,7 @@
 import type { Client } from '@sentry/types';
 
-import { defaultStackParser } from '../../src';
-import { eventFromPlainObject } from '../../src/eventbuilder';
+import { defaultStackParser } from '../../src.ts';
+import { eventFromPlainObject } from '../../src/eventbuilder.ts';s';
 
 jest.mock('@sentry/core', () => {
   const original = jest.requireActual('@sentry/core');

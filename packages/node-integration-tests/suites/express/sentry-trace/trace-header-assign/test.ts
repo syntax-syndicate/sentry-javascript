@@ -1,8 +1,8 @@
 import { TRACEPARENT_REGEXP } from '@sentry/utils';
 import * as path from 'path';
 
-import { TestEnv } from '../../../../utils/index';
-import type { TestAPIResponse } from '../server';
+import { TestEnv } from '../../../../utils/index.ts';
+import type { TestAPIResponse } from '../server.ts';
 
 test('Should assign `sentry-trace` header which sets parent trace id of an outgoing request.', async () => {
   const env = await TestEnv.init(__dirname, `${path.resolve(__dirname, '..')}/server.ts`);

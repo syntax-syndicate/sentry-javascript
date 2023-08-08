@@ -3,8 +3,8 @@ import { createMemoryHistory } from 'history-4';
 import * as React from 'react';
 import { matchPath, Route, Router, Switch } from 'react-router-5';
 
-import { reactRouterV5Instrumentation, withSentryRouting } from '../src';
-import type { RouteConfig } from '../src/reactrouter';
+import { reactRouterV5Instrumentation, withSentryRouting } from '../src.ts';
+import type { RouteConfig } from '../src/reactrouter.ts';
 
 describe('React Router v5', () => {
   function createInstrumentation(_opts?: {

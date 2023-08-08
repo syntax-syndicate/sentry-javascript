@@ -22,8 +22,8 @@ import { logger, resolvedSyncPromise, uuid4 } from '@sentry/utils';
 import * as os from 'os';
 import { TextEncoder } from 'util';
 
-import { eventFromMessage, eventFromUnknownInput } from './eventbuilder';
-import type { NodeClientOptions } from './types';
+import { eventFromMessage, eventFromUnknownInput } from './eventbuilder.ts';
+import type { NodeClientOptions } from './types.ts';
 
 /**
  * The Sentry Node SDK Client.
@@ -124,7 +124,7 @@ export class NodeClient extends BaseClient<NodeClientOptions> {
   public initSessionFlusher(): void {
     const { release, environment } = this._options;
     if (!release) {
-      __DEBUG_BUILD__ && logger.warn('Cannot initialise an instance of SessionFlusher if no release is provided!');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Cannot initialise an instance of SessionFlusher if no release is provided!');
     } else {
       this._sessionFlusher = new SessionFlusher(this, {
         release,
@@ -166,7 +166,7 @@ export class NodeClient extends BaseClient<NodeClientOptions> {
   public captureCheckIn(checkIn: CheckIn, monitorConfig?: MonitorConfig, scope?: Scope): string {
     const id = checkIn.status !== 'in_progress' && checkIn.checkInId ? checkIn.checkInId : uuid4();
     if (!this._isEnabled()) {
-      __DEBUG_BUILD__ && logger.warn('SDK not enabled, will not capture checkin.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('SDK not enabled, will not capture checkin.');
       return id;
     }
 
@@ -209,7 +209,7 @@ export class NodeClient extends BaseClient<NodeClientOptions> {
       this.getDsn(),
     );
 
-    __DEBUG_BUILD__ && logger.info('Sending checkin:', checkIn.monitorSlug, checkIn.status);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.info('Sending checkin:', checkIn.monitorSlug, checkIn.status);
     void this._sendEnvelope(envelope);
     return id;
   }
@@ -237,7 +237,7 @@ export class NodeClient extends BaseClient<NodeClientOptions> {
    */
   protected _captureRequestSession(): void {
     if (!this._sessionFlusher) {
-      __DEBUG_BUILD__ && logger.warn('Discarded request mode session because autoSessionTracking option was disabled');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Discarded request mode session because autoSessionTracking option was disabled');
     } else {
       this._sessionFlusher.incrementSessionStatusCount();
     }

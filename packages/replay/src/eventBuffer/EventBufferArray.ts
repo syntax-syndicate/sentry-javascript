@@ -1,7 +1,7 @@
-import { REPLAY_MAX_EVENT_BUFFER_SIZE } from '../constants';
-import type { AddEventResult, EventBuffer, EventBufferType, RecordingEvent } from '../types';
-import { timestampToMs } from '../util/timestamp';
-import { EventBufferSizeExceededError } from './error';
+import { REPLAY_MAX_EVENT_BUFFER_SIZE } from '../constants.ts';
+import type { AddEventResult, EventBuffer, EventBufferType, RecordingEvent } from '../types.ts';
+import { timestampToMs } from '../util/timestamp.ts';
+import { EventBufferSizeExceededError } from './error.ts';
 
 /**
  * A basic event buffer that does not do any compression.

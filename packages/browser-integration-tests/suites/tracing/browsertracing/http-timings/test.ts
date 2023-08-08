@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 import type { Event } from '@sentry/types';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getMultipleSentryEnvelopeRequests, shouldSkipTracingTest } from '../../../../utils/helpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getMultipleSentryEnvelopeRequests, shouldSkipTracingTest } from '../../../../utils/helpers.ts';
 
 sentryTest('should create fetch spans with http timing @firefox', async ({ browserName, getLocalTestPath, page }) => {
   const supportedBrowsers = ['chromium', 'firefox'];

@@ -1,6 +1,6 @@
 import { redirect } from '@sveltejs/kit';
 
-import { isHttpError, isRedirect } from '../../src/common/utils';
+import { isHttpError, isRedirect } from '../../src/common/utils.ts';
 
 describe('isRedirect', () => {
   it.each([

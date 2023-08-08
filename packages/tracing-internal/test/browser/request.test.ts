@@ -3,18 +3,18 @@ import * as sentryCore from '@sentry/core';
 import * as utils from '@sentry/utils';
 import { SENTRY_XHR_DATA_KEY } from '@sentry/utils';
 
-import type { Transaction } from '../../../tracing/src';
-import { addExtensionMethods, Span, spanStatusfromHttpCode } from '../../../tracing/src';
-import { getDefaultBrowserClientOptions } from '../../../tracing/test/testutils';
-import type { FetchData, XHRData } from '../../src/browser/request';
+import type { Transaction } from '../../../tracing/src.ts';
+import { addExtensionMethods, Span, spanStatusfromHttpCode } from '../../../tracing/src.ts';
+import { getDefaultBrowserClientOptions } from '../../../tracing/test/testutils.ts';
+import type { FetchData, XHRData } from '../../src/browser/request.ts';
 import {
   extractNetworkProtocol,
   fetchCallback,
   instrumentOutgoingRequests,
   shouldAttachHeaders,
   xhrCallback,
-} from '../../src/browser/request';
-import { TestClient } from '../utils/TestClient';
+} from '../../src/browser/request.ts';
+import { TestClient } from '../utils/TestClient.ts';
 
 beforeAll(() => {
   addExtensionMethods();

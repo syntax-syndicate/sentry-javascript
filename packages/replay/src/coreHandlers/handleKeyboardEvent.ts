@@ -1,10 +1,10 @@
 import type { Breadcrumb } from '@sentry/types';
 import { htmlTreeAsString } from '@sentry/utils';
 
-import type { ReplayContainer } from '../types';
-import { createBreadcrumb } from '../util/createBreadcrumb';
-import { getBaseDomBreadcrumb } from './handleDom';
-import { addBreadcrumbEvent } from './util/addBreadcrumbEvent';
+import type { ReplayContainer } from '../types.ts';
+import { createBreadcrumb } from '../util/createBreadcrumb.ts';
+import { getBaseDomBreadcrumb } from './handleDom.ts';
+import { addBreadcrumbEvent } from './util/addBreadcrumbEvent.ts';
 
 /** Handle keyboard events & create breadcrumbs. */
 export function handleKeyboardEvent(replay: ReplayContainer, event: KeyboardEvent): void {

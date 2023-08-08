@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getReplaySnapshot, shouldSkipReplayTest, waitForReplayRequest } from '../../../../utils/replayHelpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getReplaySnapshot, shouldSkipReplayTest, waitForReplayRequest } from '../../../../utils/replayHelpers.ts';
 
 sentryTest(
   '[error-mode] should handle errors with custom transport',

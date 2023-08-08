@@ -4,8 +4,8 @@ import type { NodeOptions } from '@sentry/node';
 import { init as initNodeSdk } from '@sentry/node';
 import { addOrUpdateIntegration } from '@sentry/utils';
 
-import { applySdkMetadata } from '../common/metadata';
-import { rewriteFramesIteratee } from './utils';
+import { applySdkMetadata } from '../common/metadata.ts';
+import { rewriteFramesIteratee } from './utils.ts';
 
 /**
  *

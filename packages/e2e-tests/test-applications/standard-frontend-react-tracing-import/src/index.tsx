@@ -11,8 +11,8 @@ import {
   matchRoutes,
   Route,
 } from 'react-router-dom';
-import Index from './pages/Index';
-import User from './pages/User';
+import Index from './pages/Index.ts';
+import User from './pages/User.ts';
 
 Sentry.init({
   environment: 'qa', // dynamic sampling bias to keep transactions

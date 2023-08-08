@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../utils/fixtures';
+import { sentryTest } from '../../../utils/fixtures.ts';
 import {
   expectedClickBreadcrumb,
   expectedFCPPerformanceSpan,
@@ -9,15 +9,15 @@ import {
   expectedMemoryPerformanceSpan,
   expectedNavigationPerformanceSpan,
   getExpectedReplayEvent,
-} from '../../../utils/replayEventTemplates';
-import type { PerformanceSpan } from '../../../utils/replayHelpers';
+} from '../../../utils/replayEventTemplates.ts';
+import type { PerformanceSpan } from '../../../utils/replayHelpers.ts';
 import {
   getCustomRecordingEvents,
   getReplayEvent,
   getReplayRecordingContent,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../utils/replayHelpers';
+} from '../../../utils/replayHelpers.ts';
 
 sentryTest(
   'replay recording should contain default performance spans',

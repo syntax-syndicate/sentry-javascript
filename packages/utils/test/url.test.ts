@@ -1,4 +1,4 @@
-import { getNumberOfUrlSegments, getSanitizedUrlString, parseUrl, stripUrlQueryAndFragment } from '../src/url';
+import { getNumberOfUrlSegments, getSanitizedUrlString, parseUrl, stripUrlQueryAndFragment } from '../src/url.ts';
 
 describe('stripQueryStringAndFragment', () => {
   const urlString = 'http://dogs.are.great:1231/yay/';

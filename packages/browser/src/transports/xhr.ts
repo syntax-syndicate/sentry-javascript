@@ -2,7 +2,7 @@ import { createTransport } from '@sentry/core';
 import type { Transport, TransportMakeRequestResponse, TransportRequest } from '@sentry/types';
 import { SyncPromise } from '@sentry/utils';
 
-import type { BrowserTransportOptions } from './types';
+import type { BrowserTransportOptions } from './types.ts';
 
 /**
  * The DONE ready state for XmlHttpRequest

@@ -9,10 +9,10 @@ import type {
   SentryWebpackPluginOptions,
   WebpackConfigObject,
   WebpackConfigObjectWithModuleRules,
-} from '../../src/config/types';
-import { constructWebpackConfigFunction } from '../../src/config/webpack';
-import { withSentryConfig } from '../../src/config/withSentryConfig';
-import { defaultRuntimePhase, defaultsObject } from './fixtures';
+} from '../../src/config/types.ts';
+import { constructWebpackConfigFunction } from '../../src/config/webpack.ts';
+import { withSentryConfig } from '../../src/config/withSentryConfig.ts';
+import { defaultRuntimePhase, defaultsObject } from './fixtures.ts';
 
 /**
  * Derive the final values of all next config options, by first applying `withSentryConfig` and then, if it returns a

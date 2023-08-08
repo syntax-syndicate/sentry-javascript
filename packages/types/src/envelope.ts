@@ -1,12 +1,12 @@
-import type { SerializedCheckIn } from './checkin';
-import type { ClientReport } from './clientreport';
-import type { DsnComponents } from './dsn';
-import type { Event } from './event';
-import type { ReplayEvent, ReplayRecordingData } from './replay';
-import type { SdkInfo } from './sdkinfo';
-import type { SerializedSession, Session, SessionAggregates } from './session';
-import type { Transaction } from './transaction';
-import type { UserFeedback } from './user';
+import type { SerializedCheckIn } from './checkin.ts';
+import type { ClientReport } from './clientreport.ts';
+import type { DsnComponents } from './dsn.ts';
+import type { Event } from './event.ts';
+import type { ReplayEvent, ReplayRecordingData } from './replay.ts';
+import type { SdkInfo } from './sdkinfo.ts';
+import type { SerializedSession, Session, SessionAggregates } from './session.ts';
+import type { Transaction } from './transaction.ts';
+import type { UserFeedback } from './user.ts';
 
 // Based on: https://develop.sentry.dev/sdk/envelopes/
 

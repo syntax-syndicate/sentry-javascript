@@ -51,7 +51,7 @@ export * from '@sentry/node';
 
 // -------------------------
 // SvelteKit SDK exports:
-export { init } from './sdk';
-export { handleErrorWithSentry } from './handleError';
-export { wrapLoadWithSentry, wrapServerLoadWithSentry } from './load';
-export { sentryHandle } from './handle';
+export { init } from './sdk.ts';
+export { handleErrorWithSentry } from './handleError.ts';
+export { wrapLoadWithSentry, wrapServerLoadWithSentry } from './load.ts';
+export { sentryHandle } from './handle.ts';

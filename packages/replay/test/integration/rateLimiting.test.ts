@@ -1,13 +1,13 @@
 import { getCurrentHub } from '@sentry/core';
 import type { Transport } from '@sentry/types';
 
-import { DEFAULT_FLUSH_MIN_DELAY } from '../../src/constants';
-import type { ReplayContainer } from '../../src/replay';
-import { clearSession } from '../../src/session/clearSession';
-import * as SendReplayRequest from '../../src/util/sendReplayRequest';
-import { BASE_TIMESTAMP, mockSdk } from '../index';
-import { mockRrweb } from '../mocks/mockRrweb';
-import { useFakeTimers } from '../utils/use-fake-timers';
+import { DEFAULT_FLUSH_MIN_DELAY } from '../../src/constants.ts';
+import type { ReplayContainer } from '../../src/replay.ts';
+import { clearSession } from '../../src/session/clearSession.ts';
+import * as SendReplayRequest from '../../src/util/sendReplayRequest.ts';
+import { BASE_TIMESTAMP, mockSdk } from '../index.ts';
+import { mockRrweb } from '../mocks/mockRrweb.ts';
+import { useFakeTimers } from '../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

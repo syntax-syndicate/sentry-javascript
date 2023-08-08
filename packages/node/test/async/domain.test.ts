@@ -1,7 +1,7 @@
 import type { Hub } from '@sentry/core';
 import { getCurrentHub, runWithAsyncContext, setAsyncContextStrategy } from '@sentry/core';
 
-import { setDomainAsyncContextStrategy } from '../../src/async/domain';
+import { setDomainAsyncContextStrategy } from '../../src/async/domain.ts';
 
 describe('domains', () => {
   afterAll(() => {

@@ -1,6 +1,6 @@
 import { fill } from '@sentry/utils';
 
-import { WINDOW } from '../../constants';
+import { WINDOW } from '../../constants.ts';
 
 type WindowOpenHandler = () => void;
 

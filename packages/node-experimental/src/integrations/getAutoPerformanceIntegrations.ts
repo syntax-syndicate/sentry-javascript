@@ -1,16 +1,16 @@
 import type { Integration } from '@sentry/types';
 
-import { Express } from './express';
-import { Fastify } from './fastify';
-import { GraphQL } from './graphql';
-import { Mongo } from './mongo';
-import { Mongoose } from './mongoose';
-import { Mysql } from './mysql';
-import { Mysql2 } from './mysql2';
-import { Nest } from './nest';
-import type { NodePerformanceIntegration } from './NodePerformanceIntegration';
-import { Postgres } from './postgres';
-import { Prisma } from './prisma';
+import { Express } from './express.ts';
+import { Fastify } from './fastify.ts';
+import { GraphQL } from './graphql.ts';
+import { Mongo } from './mongo.ts';
+import { Mongoose } from './mongoose.ts';
+import { Mysql } from './mysql.ts';
+import { Mysql2 } from './mysql2.ts';
+import { Nest } from './nest.ts';
+import type { NodePerformanceIntegration } from './NodePerformanceIntegration.ts';
+import { Postgres } from './postgres.ts';
+import { Prisma } from './prisma.ts';
 
 const INTEGRATIONS: (() => NodePerformanceIntegration<unknown>)[] = [
   () => {

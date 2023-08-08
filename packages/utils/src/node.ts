@@ -3,7 +3,7 @@
  * you must either a) use `console.log` rather than the logger, or b) put your function elsewhere.
  */
 
-import { isBrowserBundle } from './env';
+import { isBrowserBundle } from './env.ts';
 
 /**
  * Checks whether we're in the Node.js or Browser environment

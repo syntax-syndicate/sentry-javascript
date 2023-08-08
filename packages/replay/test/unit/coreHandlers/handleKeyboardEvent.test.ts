@@ -1,4 +1,4 @@
-import { getKeyboardBreadcrumb } from '../../../src/coreHandlers/handleKeyboardEvent';
+import { getKeyboardBreadcrumb } from '../../../src/coreHandlers/handleKeyboardEvent.ts';
 
 describe('Unit | coreHandlers | handleKeyboardEvent', () => {
   describe('getKeyboardBreadcrumb', () => {

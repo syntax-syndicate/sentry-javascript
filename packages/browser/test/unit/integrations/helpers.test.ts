@@ -1,7 +1,7 @@
 import type { WrappedFunction } from '@sentry/types';
 import { spy } from 'sinon';
 
-import { wrap } from '../../../src/helpers';
+import { wrap } from '../../../src/helpers.ts';
 
 describe('internal wrap()', () => {
   it('should wrap only functions', () => {

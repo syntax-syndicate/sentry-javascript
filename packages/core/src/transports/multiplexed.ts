@@ -9,7 +9,7 @@ import type {
 } from '@sentry/types';
 import { dsnFromString, forEachEnvelopeItem } from '@sentry/utils';
 
-import { getEnvelopeEndpointWithUrlEncodedAuth } from '../api';
+import { getEnvelopeEndpointWithUrlEncodedAuth } from '../api.ts';
 
 interface MatchParam {
   /** The envelope to be sent */

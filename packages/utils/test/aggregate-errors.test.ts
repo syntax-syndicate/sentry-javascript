@@ -1,6 +1,6 @@
 import type { Event, EventHint, Exception, ExtendedError, StackParser } from '@sentry/types';
 
-import { applyAggregateErrorsToEvent, createStackParser } from '../src/index';
+import { applyAggregateErrorsToEvent, createStackParser } from '../src/index.ts';
 
 const stackParser = createStackParser([0, line => ({ filename: line })]);
 const exceptionFromError = (_stackParser: StackParser, ex: Error): Exception => {

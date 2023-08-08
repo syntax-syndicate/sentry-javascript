@@ -2,7 +2,7 @@ import type { Instrumentation } from '@opentelemetry/instrumentation';
 import { FastifyInstrumentation } from '@opentelemetry/instrumentation-fastify';
 import type { Integration } from '@sentry/types';
 
-import { NodePerformanceIntegration } from './NodePerformanceIntegration';
+import { NodePerformanceIntegration } from './NodePerformanceIntegration.ts';
 
 /**
  * Express integration

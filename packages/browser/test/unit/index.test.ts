@@ -1,7 +1,7 @@
 import { getReportDialogEndpoint, SDK_VERSION } from '@sentry/core';
 import * as utils from '@sentry/utils';
 
-import type { Event } from '../../src';
+import type { Event } from '../../src.ts';
 import {
   addBreadcrumb,
   BrowserClient,
@@ -16,9 +16,9 @@ import {
   Scope,
   showReportDialog,
   wrap,
-} from '../../src';
-import { getDefaultBrowserClientOptions } from './helper/browser-client-options';
-import { makeSimpleTransport } from './mocks/simpletransport';
+} from '../../src.ts';
+import { getDefaultBrowserClientOptions } from './helper/browser-client-options.ts';
+import { makeSimpleTransport } from './mocks/simpletransport.ts';
 
 const dsn = 'https://53039209a22b4ec1bcc296a3c9fdecd6@sentry.io/4291';
 

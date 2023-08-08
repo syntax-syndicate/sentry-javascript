@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 
-import { makeCustomSentryVitePlugin } from '../../src/vite/sourceMaps';
+import { makeCustomSentryVitePlugin } from '../../src/vite/sourceMaps.ts';
 
 const mockedSentryVitePlugin = {
   buildStart: vi.fn(),

@@ -1,9 +1,9 @@
 // https://medium.com/unsplash/named-namespace-imports-7345212bbffb
-import * as AWSLambda from './awslambda';
-import * as GCPFunction from './gcpfunction';
+import * as AWSLambda from './awslambda.ts';
+import * as GCPFunction from './gcpfunction.ts';
 export { AWSLambda, GCPFunction };
 
-export { AWSServices } from './awsservices';
+export { AWSServices } from './awsservices.ts';
 
 // TODO(v8): We have to explicitly export these because of the namespace exports
 // above. This is because just doing `export * from '@sentry/node'` will not

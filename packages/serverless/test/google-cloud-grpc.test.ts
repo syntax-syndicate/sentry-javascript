@@ -9,7 +9,7 @@ import * as http2 from 'http2';
 import * as nock from 'nock';
 import * as path from 'path';
 
-import { GoogleCloudGrpc } from '../src/google-cloud-grpc';
+import { GoogleCloudGrpc } from '../src/google-cloud-grpc.ts';
 
 /**
  * Why @ts-ignore some Sentry.X calls

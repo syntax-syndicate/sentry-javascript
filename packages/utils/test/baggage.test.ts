@@ -1,4 +1,4 @@
-import { baggageHeaderToDynamicSamplingContext, dynamicSamplingContextToSentryBaggageHeader } from '../src/baggage';
+import { baggageHeaderToDynamicSamplingContext, dynamicSamplingContextToSentryBaggageHeader } from '../src/baggage.ts';
 
 test.each([
   ['', undefined],

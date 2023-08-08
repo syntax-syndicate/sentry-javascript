@@ -1,14 +1,14 @@
 import * as SentryUtils from '@sentry/utils';
 
-import type { Replay } from '../../src';
-import { WINDOW } from '../../src/constants';
-import type { ReplayContainer } from '../../src/replay';
-import { clearSession } from '../../src/session/clearSession';
-import { addEvent } from '../../src/util/addEvent';
-import { createOptionsEvent } from '../../src/util/handleRecordingEmit';
+import type { Replay } from '../../src.ts';
+import { WINDOW } from '../../src/constants.ts';
+import type { ReplayContainer } from '../../src/replay.ts';
+import { clearSession } from '../../src/session/clearSession.ts';
+import { addEvent } from '../../src/util/addEvent.ts';
+import { createOptionsEvent } from '../../src/util/handleRecordingEmit.ts';
 // mock functions need to be imported first
-import { BASE_TIMESTAMP, mockRrweb, mockSdk } from '../index';
-import { useFakeTimers } from '../utils/use-fake-timers';
+import { BASE_TIMESTAMP, mockRrweb, mockSdk } from '../index.ts';
+import { useFakeTimers } from '../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

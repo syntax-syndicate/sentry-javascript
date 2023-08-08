@@ -1,14 +1,14 @@
-import type { Breadcrumb, BreadcrumbHint } from './breadcrumb';
-import type { Client } from './client';
-import type { Event, EventHint } from './event';
-import type { Extra, Extras } from './extra';
-import type { Integration, IntegrationClass } from './integration';
-import type { Primitive } from './misc';
-import type { Scope } from './scope';
-import type { Session } from './session';
-import type { Severity, SeverityLevel } from './severity';
-import type { CustomSamplingContext, Transaction, TransactionContext } from './transaction';
-import type { User } from './user';
+import type { Breadcrumb, BreadcrumbHint } from './breadcrumb.ts';
+import type { Client } from './client.ts';
+import type { Event, EventHint } from './event.ts';
+import type { Extra, Extras } from './extra.ts';
+import type { Integration, IntegrationClass } from './integration.ts';
+import type { Primitive } from './misc.ts';
+import type { Scope } from './scope.ts';
+import type { Session } from './session.ts';
+import type { Severity, SeverityLevel } from './severity.ts';
+import type { CustomSamplingContext, Transaction, TransactionContext } from './transaction.ts';
+import type { User } from './user.ts';
 
 /**
  * Internal class used to make sure we always have the latest internal functions

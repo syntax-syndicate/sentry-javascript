@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { TestEnv } from '../../../utils';
+import { TestEnv } from '../../../utils.ts';
 
 test('should aggregate successful, crashed and erroneous sessions', async () => {
   const env = await TestEnv.init(__dirname, `${path.resolve(__dirname, '..')}/server.ts`);

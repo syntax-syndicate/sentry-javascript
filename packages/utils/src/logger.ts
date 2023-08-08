@@ -1,6 +1,6 @@
 import type { WrappedFunction } from '@sentry/types';
 
-import { getGlobalSingleton, GLOBAL_OBJ } from './worldwide';
+import { getGlobalSingleton, GLOBAL_OBJ } from './worldwide.ts';
 
 /** Prefix for logging strings */
 const PREFIX = 'Sentry Logger ';
@@ -63,7 +63,7 @@ function makeLogger(): Logger {
     },
   };
 
-  if (__DEBUG_BUILD__) {
+  if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
     CONSOLE_LEVELS.forEach(name => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       logger[name] = (...args: any[]) => {
@@ -85,7 +85,7 @@ function makeLogger(): Logger {
 
 // Ensure we only have a single logger instance, even if multiple versions of @sentry/utils are being used
 let logger: Logger;
-if (__DEBUG_BUILD__) {
+if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__) {
   logger = getGlobalSingleton('logger', makeLogger);
 } else {
   logger = makeLogger();

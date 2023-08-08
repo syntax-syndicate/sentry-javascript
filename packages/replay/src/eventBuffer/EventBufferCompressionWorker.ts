@@ -1,10 +1,10 @@
 import type { ReplayRecordingData } from '@sentry/types';
 
-import { REPLAY_MAX_EVENT_BUFFER_SIZE } from '../constants';
-import type { AddEventResult, EventBuffer, EventBufferType, RecordingEvent } from '../types';
-import { timestampToMs } from '../util/timestamp';
-import { EventBufferSizeExceededError } from './error';
-import { WorkerHandler } from './WorkerHandler';
+import { REPLAY_MAX_EVENT_BUFFER_SIZE } from '../constants.ts';
+import type { AddEventResult, EventBuffer, EventBufferType, RecordingEvent } from '../types.ts';
+import { timestampToMs } from '../util/timestamp.ts';
+import { EventBufferSizeExceededError } from './error.ts';
+import { WorkerHandler } from './WorkerHandler.ts';
 
 /**
  * Event buffer that uses a web worker to compress events.

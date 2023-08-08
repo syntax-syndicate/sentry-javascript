@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
 import type { Event } from '@sentry/types';
 
-import { sentryTest } from '../../../../utils/fixtures';
-import { getMultipleSentryEnvelopeRequests } from '../../../../utils/helpers';
+import { sentryTest } from '../../../../utils/fixtures.ts';
+import { getMultipleSentryEnvelopeRequests } from '../../../../utils/helpers.ts';
 
 function delay(ms: number) {
   return new Promise(resolve => setTimeout(resolve, ms));

@@ -1,18 +1,18 @@
-import type { Breadcrumb, BreadcrumbHint } from './breadcrumb';
-import type { CheckIn, MonitorConfig } from './checkin';
-import type { EventDropReason } from './clientreport';
-import type { DataCategory } from './datacategory';
-import type { DsnComponents } from './dsn';
-import type { DynamicSamplingContext, Envelope } from './envelope';
-import type { Event, EventHint } from './event';
-import type { Integration, IntegrationClass } from './integration';
-import type { ClientOptions } from './options';
-import type { Scope } from './scope';
-import type { SdkMetadata } from './sdkmetadata';
-import type { Session, SessionAggregates } from './session';
-import type { Severity, SeverityLevel } from './severity';
-import type { Transaction } from './transaction';
-import type { Transport, TransportMakeRequestResponse } from './transport';
+import type { Breadcrumb, BreadcrumbHint } from './breadcrumb.ts';
+import type { CheckIn, MonitorConfig } from './checkin.ts';
+import type { EventDropReason } from './clientreport.ts';
+import type { DataCategory } from './datacategory.ts';
+import type { DsnComponents } from './dsn.ts';
+import type { DynamicSamplingContext, Envelope } from './envelope.ts';
+import type { Event, EventHint } from './event.ts';
+import type { Integration, IntegrationClass } from './integration.ts';
+import type { ClientOptions } from './options.ts';
+import type { Scope } from './scope.ts';
+import type { SdkMetadata } from './sdkmetadata.ts';
+import type { Session, SessionAggregates } from './session.ts';
+import type { Severity, SeverityLevel } from './severity.ts';
+import type { Transaction } from './transaction.ts';
+import type { Transport, TransportMakeRequestResponse } from './transport.ts';
 
 /**
  * User-Facing Sentry SDK Client.

@@ -1,4 +1,4 @@
-export * from './exports';
+export * from './exports.ts';
 
 export {
   Apollo,
@@ -9,8 +9,8 @@ export {
   Postgres,
   Prisma,
   lazyLoadedNodePerformanceMonitoringIntegrations,
-} from './node';
-export type { LazyLoadedIntegration } from './node';
+} from './node.ts';
+export type { LazyLoadedIntegration } from './node.ts';
 
 export {
   BrowserTracing,
@@ -18,8 +18,8 @@ export {
   instrumentOutgoingRequests,
   defaultRequestInstrumentationOptions,
   addTracingHeadersToFetchRequest,
-} from './browser';
+} from './browser.ts';
 
-export type { RequestInstrumentationOptions } from './browser';
+export type { RequestInstrumentationOptions } from './browser.ts';
 
-export { addExtensionMethods } from './extensions';
+export { addExtensionMethods } from './extensions.ts';

@@ -1,8 +1,8 @@
 import { captureException, flush, getCurrentHub } from '@sentry/node';
 import { isThenable, logger } from '@sentry/utils';
 
-import { domainify, proxyFunction } from '../utils';
-import type { CloudEventFunction, CloudEventFunctionWithCallback, WrapperOptions } from './general';
+import { domainify, proxyFunction } from '../utils.ts';
+import type { CloudEventFunction, CloudEventFunctionWithCallback, WrapperOptions } from './general.ts';
 
 export type CloudEventFunctionWrapperOptions = WrapperOptions;
 
@@ -55,7 +55,7 @@ function _wrapCloudEventFunction(
 
       void flush(options.flushTimeout)
         .then(null, e => {
-          __DEBUG_BUILD__ && logger.error(e);
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error(e);
         })
         .then(() => {
           callback(...args);

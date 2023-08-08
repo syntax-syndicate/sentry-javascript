@@ -1,8 +1,8 @@
 import type { Integration, Options } from '@sentry/types';
 import { arrayify, logger } from '@sentry/utils';
 
-import { getCurrentHub } from './hub';
-import { addGlobalEventProcessor } from './scope';
+import { getCurrentHub } from './hub.ts';
+import { addGlobalEventProcessor } from './scope.ts';
 
 declare module '@sentry/types' {
   interface Integration {
@@ -104,7 +104,7 @@ export function setupIntegration(integration: Integration, integrationIndex: Int
   if (installedIntegrations.indexOf(integration.name) === -1) {
     integration.setupOnce(addGlobalEventProcessor, getCurrentHub);
     installedIntegrations.push(integration.name);
-    __DEBUG_BUILD__ && logger.log(`Integration installed: ${integration.name}`);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(`Integration installed: ${integration.name}`);
   }
 }
 

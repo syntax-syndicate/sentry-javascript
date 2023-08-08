@@ -1,11 +1,11 @@
 import { hasTracingEnabled } from '@sentry/core';
 import { defaultIntegrations as defaultNodeIntegrations, init as initNode } from '@sentry/node';
 
-import { getAutoPerformanceIntegrations } from '../integrations/getAutoPerformanceIntegrations';
-import { Http } from '../integrations/http';
-import type { NodeExperimentalOptions } from '../types';
-import { NodeExperimentalClient } from './client';
-import { initOtel } from './initOtel';
+import { getAutoPerformanceIntegrations } from '../integrations/getAutoPerformanceIntegrations.ts';
+import { Http } from '../integrations/http.ts';
+import type { NodeExperimentalOptions } from '../types.ts';
+import { NodeExperimentalClient } from './client.ts';
+import { initOtel } from './initOtel.ts';
 
 const ignoredDefaultIntegrations = ['Http', 'Undici'];
 

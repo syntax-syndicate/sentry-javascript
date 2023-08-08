@@ -1,4 +1,4 @@
-import type { User } from './user';
+import type { User } from './user.ts';
 
 export interface RequestSession {
   status?: RequestSessionStatus;

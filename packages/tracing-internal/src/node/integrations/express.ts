@@ -8,7 +8,7 @@ import {
   stripUrlQueryAndFragment,
 } from '@sentry/utils';
 
-import { shouldDisableAutoInstrumentation } from './utils/node-utils';
+import { shouldDisableAutoInstrumentation } from './utils/node-utils.ts';
 
 type Method =
   | 'all'
@@ -116,12 +116,12 @@ export class Express implements Integration {
    */
   public setupOnce(_: unknown, getCurrentHub: () => Hub): void {
     if (!this._router) {
-      __DEBUG_BUILD__ && logger.error('ExpressIntegration is missing an Express instance');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('ExpressIntegration is missing an Express instance');
       return;
     }
 
     if (shouldDisableAutoInstrumentation(getCurrentHub)) {
-      __DEBUG_BUILD__ && logger.log('Express Integration is skipped because of instrumenter configuration.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Express Integration is skipped because of instrumenter configuration.');
       return;
     }
 
@@ -287,8 +287,8 @@ function instrumentRouter(appOrRouter: ExpressRouter): void {
 
     TODO: Proper Express 5 support
     */
-    __DEBUG_BUILD__ && logger.debug('Cannot instrument router for URL Parameterization (did not find a valid router).');
-    __DEBUG_BUILD__ && logger.debug('Routing instrumentation is currently only supported in Express 4.');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.debug('Cannot instrument router for URL Parameterization (did not find a valid router).');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.debug('Routing instrumentation is currently only supported in Express 4.');
     return;
   }
 

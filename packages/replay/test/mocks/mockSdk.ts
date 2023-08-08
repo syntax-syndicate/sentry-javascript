@@ -1,10 +1,10 @@
 import type { Envelope, Transport, TransportMakeRequestResponse } from '@sentry/types';
 
-import type { Replay as ReplayIntegration } from '../../src';
-import type { ReplayContainer } from '../../src/replay';
-import type { ReplayConfiguration } from '../../src/types';
-import type { TestClientOptions } from '../utils/TestClient';
-import { getDefaultClientOptions, init } from '../utils/TestClient';
+import type { Replay as ReplayIntegration } from '../../src.ts';
+import type { ReplayContainer } from '../../src/replay.ts';
+import type { ReplayConfiguration } from '../../src/types.ts';
+import type { TestClientOptions } from '../utils/TestClient.ts';
+import { getDefaultClientOptions, init } from '../utils/TestClient.ts';
 
 export interface MockSdkParams {
   replayOptions?: ReplayConfiguration;

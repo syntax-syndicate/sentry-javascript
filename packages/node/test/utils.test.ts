@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as os from 'os';
 import * as path from 'path';
 
-import { deepReadDirSync } from '../src/utils';
+import { deepReadDirSync } from '../src/utils.ts';
 
 // The parent directory for the new temporary directory
 

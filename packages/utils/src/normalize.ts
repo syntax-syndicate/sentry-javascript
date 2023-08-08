@@ -1,10 +1,10 @@
 import type { Primitive } from '@sentry/types';
 
-import { isNaN, isSyntheticEvent } from './is';
-import type { MemoFunc } from './memo';
-import { memoBuilder } from './memo';
-import { convertToPlainObject } from './object';
-import { getFunctionName } from './stacktrace';
+import { isNaN, isSyntheticEvent } from './is.ts';
+import type { MemoFunc } from './memo.ts';
+import { memoBuilder } from './memo.ts';
+import { convertToPlainObject } from './object.ts';
+import { getFunctionName } from './stacktrace.ts';
 
 type Prototype = { constructor: (...args: unknown[]) => unknown };
 // This is a hack to placate TS, relying on the fact that technically, arrays are objects with integer keys. Normally we

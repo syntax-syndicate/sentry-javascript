@@ -3,8 +3,8 @@ import type { Span, Transaction } from '@sentry/types';
 import { afterUpdate, beforeUpdate, onMount } from 'svelte';
 import { current_component } from 'svelte/internal';
 
-import { DEFAULT_COMPONENT_NAME, UI_SVELTE_INIT, UI_SVELTE_UPDATE } from './constants';
-import type { TrackComponentOptions } from './types';
+import { DEFAULT_COMPONENT_NAME, UI_SVELTE_INIT, UI_SVELTE_UPDATE } from './constants.ts';
+import type { TrackComponentOptions } from './types.ts';
 
 const defaultTrackComponentOptions: {
   trackInit: boolean;

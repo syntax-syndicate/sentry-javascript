@@ -1,8 +1,8 @@
 import { captureException, flush, getCurrentHub } from '@sentry/node';
 import { isThenable, logger } from '@sentry/utils';
 
-import { domainify, proxyFunction } from '../utils';
-import type { EventFunction, EventFunctionWithCallback, WrapperOptions } from './general';
+import { domainify, proxyFunction } from '../utils.ts';
+import type { EventFunction, EventFunctionWithCallback, WrapperOptions } from './general.ts';
 
 export type EventFunctionWrapperOptions = WrapperOptions;
 
@@ -57,7 +57,7 @@ function _wrapEventFunction<F extends EventFunction | EventFunctionWithCallback>
 
       void flush(options.flushTimeout)
         .then(null, e => {
-          __DEBUG_BUILD__ && logger.error(e);
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error(e);
         })
         .then(() => {
           if (typeof callback === 'function') {

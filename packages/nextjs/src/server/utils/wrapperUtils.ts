@@ -9,8 +9,8 @@ import type { Span, Transaction } from '@sentry/types';
 import { isString, tracingContextFromHeaders } from '@sentry/utils';
 import type { IncomingMessage, ServerResponse } from 'http';
 
-import { platformSupportsStreaming } from './platformSupportsStreaming';
-import { autoEndTransactionOnResponseEnd, flushQueue } from './responseEnd';
+import { platformSupportsStreaming } from './platformSupportsStreaming.ts';
+import { autoEndTransactionOnResponseEnd, flushQueue } from './responseEnd.ts';
 
 declare module 'http' {
   interface IncomingMessage {

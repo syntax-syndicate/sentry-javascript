@@ -1,9 +1,9 @@
 import { EventType } from '@sentry-internal/rrweb';
 
-import type { RecordingEvent } from '../../src/types';
-import { addEvent } from '../../src/util/addEvent';
-import { resetSdkMock } from '../mocks/resetSdkMock';
-import { useFakeTimers } from '../utils/use-fake-timers';
+import type { RecordingEvent } from '../../src/types.ts';
+import { addEvent } from '../../src/util/addEvent.ts';
+import { resetSdkMock } from '../mocks/resetSdkMock.ts';
+import { useFakeTimers } from '../utils/use-fake-timers.ts';
 
 useFakeTimers();
 

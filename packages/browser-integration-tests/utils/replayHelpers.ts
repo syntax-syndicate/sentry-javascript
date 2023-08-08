@@ -11,7 +11,7 @@ import type { Breadcrumb, Event, ReplayEvent, ReplayRecordingMode } from '@sentr
 import pako from 'pako';
 import type { Page, Request, Response } from 'playwright';
 
-import { envelopeRequestParser } from './helpers';
+import { envelopeRequestParser } from './helpers.ts';
 
 type CustomRecordingEvent = { tag: string; payload: Record<string, unknown> };
 export type PerformanceSpan = {

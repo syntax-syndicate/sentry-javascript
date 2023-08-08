@@ -1,13 +1,13 @@
 import * as Sentry from '@sentry/node';
 import type { Integration } from '@sentry/types';
 
-import { GoogleCloudGrpc } from '../google-cloud-grpc';
-import { GoogleCloudHttp } from '../google-cloud-http';
-import { serverlessEventProcessor } from '../utils';
+import { GoogleCloudGrpc } from '../google-cloud-grpc.ts';
+import { GoogleCloudHttp } from '../google-cloud-http.ts';
+import { serverlessEventProcessor } from '../utils.ts';
 
-export * from './http';
-export * from './events';
-export * from './cloud_events';
+export * from './http.ts';
+export * from './events.ts';
+export * from './cloud_events.ts';
 
 export const defaultIntegrations: Integration[] = [
   ...Sentry.defaultIntegrations,

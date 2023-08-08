@@ -192,7 +192,7 @@ export class Span implements SpanInterface {
 
     childSpan.transaction = this.transaction;
 
-    if (__DEBUG_BUILD__ && childSpan.transaction) {
+    if (typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && childSpan.transaction) {
       const opStr = (spanContext && spanContext.op) || '< unknown op >';
       const nameStr = childSpan.transaction.name || '< unknown name >';
       const idStr = childSpan.transaction.spanId;
@@ -255,7 +255,7 @@ export class Span implements SpanInterface {
    */
   public finish(endTimestamp?: number): void {
     if (
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
       // Don't call this for transactions
       this.transaction &&
       this.transaction.spanId !== this.spanId

@@ -3,7 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
 
 import webpackConfig from '../webpack.config';
-import SentryScenarioGenerationPlugin from './generatePlugin';
+import SentryScenarioGenerationPlugin from './generatePlugin.ts';
 
 export async function generatePage(
   initPath: string,

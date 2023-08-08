@@ -1,6 +1,6 @@
-import { REPLAY_SESSION_KEY, WINDOW } from '../constants';
-import type { Session } from '../types';
-import { hasSessionStorage } from '../util/hasSessionStorage';
+import { REPLAY_SESSION_KEY, WINDOW } from '../constants.ts';
+import type { Session } from '../types.ts';
+import { hasSessionStorage } from '../util/hasSessionStorage.ts';
 
 /**
  * Save a session to session storage.

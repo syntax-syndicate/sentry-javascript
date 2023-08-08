@@ -11,9 +11,9 @@ import {
   logger,
 } from '@sentry/utils';
 
-import type { BrowserClient } from '../client';
-import { eventFromUnknownInput } from '../eventbuilder';
-import { shouldIgnoreOnError } from '../helpers';
+import type { BrowserClient } from '../client.ts';
+import { eventFromUnknownInput } from '../eventbuilder.ts';
+import { shouldIgnoreOnError } from '../helpers.ts';
 
 type GlobalHandlersIntegrationsOptionKeys = 'onerror' | 'onunhandledrejection';
 
@@ -240,7 +240,7 @@ function _enhanceEventWithInitialFrame(event: Event, url: any, line: any, column
 }
 
 function globalHandlerLog(type: string): void {
-  __DEBUG_BUILD__ && logger.log(`Global Handler attached: ${type}`);
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(`Global Handler attached: ${type}`);
 }
 
 function addMechanismAndCapture(hub: Hub, error: EventHint['originalException'], event: Event, type: string): void {

@@ -3,13 +3,13 @@ import { NodeType } from '@sentry-internal/rrweb-snapshot';
 import type { Breadcrumb } from '@sentry/types';
 import { htmlTreeAsString } from '@sentry/utils';
 
-import type { ReplayContainer } from '../types';
-import { createBreadcrumb } from '../util/createBreadcrumb';
-import { handleClick } from './handleClick';
-import { addBreadcrumbEvent } from './util/addBreadcrumbEvent';
-import type { DomHandlerData } from './util/domUtils';
-import { getClickTargetNode, getTargetNode } from './util/domUtils';
-import { getAttributesToRecord } from './util/getAttributesToRecord';
+import type { ReplayContainer } from '../types.ts';
+import { createBreadcrumb } from '../util/createBreadcrumb.ts';
+import { handleClick } from './handleClick.ts';
+import { addBreadcrumbEvent } from './util/addBreadcrumbEvent.ts';
+import type { DomHandlerData } from './util/domUtils.ts';
+import { getClickTargetNode, getTargetNode } from './util/domUtils.ts';
+import { getAttributesToRecord } from './util/getAttributesToRecord.ts';
 
 export const handleDomListener: (replay: ReplayContainer) => (handlerData: DomHandlerData) => void = (
   replay: ReplayContainer,

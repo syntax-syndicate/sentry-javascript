@@ -1,5 +1,5 @@
-import type { AllPerformanceEntry, ReplayContainer } from '../types';
-import { dedupePerformanceEntries } from '../util/dedupePerformanceEntries';
+import type { AllPerformanceEntry, ReplayContainer } from '../types.ts';
+import { dedupePerformanceEntries } from '../util/dedupePerformanceEntries.ts';
 
 /**
  * Sets up a PerformanceObserver to listen to all performance entry types.

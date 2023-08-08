@@ -1,9 +1,9 @@
 import { BrowserTracing, init, SDK_VERSION } from '@sentry/react';
 import type { Integration } from '@sentry/types';
 
-import { init as gatsbyInit } from '../src/sdk';
-import type { UserIntegrations } from '../src/utils/integrations';
-import type { GatsbyOptions } from '../src/utils/types';
+import { init as gatsbyInit } from '../src/sdk.ts';
+import type { UserIntegrations } from '../src/utils/integrations.ts';
+import type { GatsbyOptions } from '../src/utils/types.ts';
 
 jest.mock('@sentry/react', () => {
   const actual = jest.requireActual('@sentry/react');

@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
 import type { Event, EventEnvelopeHeaders } from '@sentry/types';
 
-import { sentryTest } from '../../../../utils/fixtures';
+import { sentryTest } from '../../../../utils/fixtures.ts';
 import {
   envelopeHeaderRequestParser,
   getFirstSentryEnvelopeRequest,
   shouldSkipTracingTest,
-} from '../../../../utils/helpers';
+} from '../../../../utils/helpers.ts';
 
 sentryTest(
   'should create a pageload transaction based on `sentry-trace` <meta>',

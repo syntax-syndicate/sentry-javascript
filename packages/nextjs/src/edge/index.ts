@@ -8,10 +8,10 @@ import {
   stackParserFromStackParserOptions,
 } from '@sentry/utils';
 
-import { getVercelEnv } from '../common/getVercelEnv';
-import { setAsyncLocalStorageAsyncContextStrategy } from './asyncLocalStorageAsyncContextStrategy';
-import { EdgeClient } from './edgeclient';
-import { makeEdgeTransport } from './transport';
+import { getVercelEnv } from '../common/getVercelEnv.ts';
+import { setAsyncLocalStorageAsyncContextStrategy } from './asyncLocalStorageAsyncContextStrategy.ts';
+import { EdgeClient } from './edgeclient.ts';
+import { makeEdgeTransport } from './transport.ts';
 
 const nodeStackParser = createStackParser(nodeStackLineParser());
 
@@ -116,7 +116,7 @@ export async function close(timeout?: number): Promise<boolean> {
   if (client) {
     return client.close(timeout);
   }
-  __DEBUG_BUILD__ && logger.warn('Cannot flush events and disable SDK. No client defined.');
+  typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Cannot flush events and disable SDK. No client defined.');
   return Promise.resolve(false);
 }
 
@@ -136,7 +136,7 @@ export function withSentryConfig<T>(exportedUserNextConfig: T): T {
   return exportedUserNextConfig;
 }
 
-export { flush } from './utils/flush';
+export { flush } from './utils/flush.ts';
 
 export * from '@sentry/core';
 
@@ -144,10 +144,10 @@ export {
   // eslint-disable-next-line deprecation/deprecation
   withSentryAPI,
   wrapApiHandlerWithSentry,
-} from './wrapApiHandlerWithSentry';
+} from './wrapApiHandlerWithSentry.ts';
 
-export { wrapApiHandlerWithSentryVercelCrons } from '../common/wrapApiHandlerWithSentryVercelCrons';
+export { wrapApiHandlerWithSentryVercelCrons } from '../common/wrapApiHandlerWithSentryVercelCrons.ts';
 
-export { wrapMiddlewareWithSentry } from './wrapMiddlewareWithSentry';
+export { wrapMiddlewareWithSentry } from './wrapMiddlewareWithSentry.ts';
 
-export { wrapServerComponentWithSentry } from './wrapServerComponentWithSentry';
+export { wrapServerComponentWithSentry } from './wrapServerComponentWithSentry.ts';

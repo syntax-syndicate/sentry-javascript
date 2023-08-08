@@ -1,5 +1,5 @@
-import { exceptionFromError } from '../../../src/eventbuilder';
-import { defaultStackParser as parser } from '../../../src/stack-parsers';
+import { exceptionFromError } from '../../../src/eventbuilder.ts';
+import { defaultStackParser as parser } from '../../../src/stack-parsers.ts';
 
 describe('Tracekit - Chrome Tests', () => {
   it('should parse Chrome error with no location', () => {

@@ -2,8 +2,8 @@ import type { Route } from '@playwright/test';
 import { expect } from '@playwright/test';
 import type { SessionContext } from '@sentry/types';
 
-import { sentryTest } from '../../../utils/fixtures';
-import { getFirstSentryEnvelopeRequest } from '../../../utils/helpers';
+import { sentryTest } from '../../../utils/fixtures.ts';
+import { getFirstSentryEnvelopeRequest } from '../../../utils/helpers.ts';
 
 sentryTest('should start a new session on pageload.', async ({ getLocalTestPath, page }) => {
   const url = await getLocalTestPath({ testDir: __dirname });

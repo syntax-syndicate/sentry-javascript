@@ -2,10 +2,10 @@ import { init as browserInit, SDK_VERSION } from '@sentry/browser';
 import { hasTracingEnabled } from '@sentry/core';
 import { arrayify, GLOBAL_OBJ } from '@sentry/utils';
 
-import { DEFAULT_HOOKS } from './constants';
-import { attachErrorHandler } from './errorhandler';
-import { createTracingMixins } from './tracing';
-import type { Options, TracingOptions, Vue } from './types';
+import { DEFAULT_HOOKS } from './constants.ts';
+import { attachErrorHandler } from './errorhandler.ts';
+import { createTracingMixins } from './tracing.ts';
+import type { Options, TracingOptions, Vue } from './types.ts';
 
 const globalWithVue = GLOBAL_OBJ as typeof GLOBAL_OBJ & { Vue: Vue };
 

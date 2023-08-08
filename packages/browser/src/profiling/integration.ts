@@ -3,14 +3,14 @@ import type { Profile } from '@sentry/types/src/profiling';
 import { logger } from '@sentry/utils';
 
 import type { BrowserClient } from './../client';
-import { wrapTransactionWithProfiling } from './hubextensions';
-import type { ProfiledEvent } from './utils';
+import { wrapTransactionWithProfiling } from './hubextensions.ts';
+import type { ProfiledEvent } from './utils.ts';
 import {
   addProfilesToEnvelope,
   createProfilingEvent,
   findProfiledTransactionsFromEnvelope,
   PROFILE_MAP,
-} from './utils';
+} from './utils.ts';
 
 /**
  * Browser profiling integration. Stores any event that has contexts["profile"]["profile_id"]
@@ -62,7 +62,7 @@ export class BrowserProfilingIntegration implements Integration {
           const profile_id = context && context['profile'] && (context['profile']['profile_id'] as string);
 
           if (!profile_id) {
-            __DEBUG_BUILD__ &&
+            typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
               logger.log('[Profiling] cannot find profile for a transaction without a profile context');
             continue;
           }
@@ -74,7 +74,7 @@ export class BrowserProfilingIntegration implements Integration {
 
           const profile = PROFILE_MAP.get(profile_id);
           if (!profile) {
-            __DEBUG_BUILD__ && logger.log(`[Profiling] Could not retrieve profile for transaction: ${profile_id}`);
+            typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log(`[Profiling] Could not retrieve profile for transaction: ${profile_id}`);
             continue;
           }
 

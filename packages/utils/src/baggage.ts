@@ -1,7 +1,7 @@
 import type { DynamicSamplingContext } from '@sentry/types';
 
-import { isString } from './is';
-import { logger } from './logger';
+import { isString } from './is.ts';
+import { logger } from './logger.ts';
 
 export const BAGGAGE_HEADER_NAME = 'baggage';
 
@@ -136,7 +136,7 @@ function objectToBaggageHeader(object: Record<string, string>): string | undefin
     const baggageEntry = `${encodeURIComponent(objectKey)}=${encodeURIComponent(objectValue)}`;
     const newBaggageHeader = currentIndex === 0 ? baggageEntry : `${baggageHeader},${baggageEntry}`;
     if (newBaggageHeader.length > MAX_BAGGAGE_STRING_LENGTH) {
-      __DEBUG_BUILD__ &&
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
         logger.warn(
           `Not adding key: ${objectKey} with val: ${objectValue} to baggage header due to exceeding baggage size limits.`,
         );

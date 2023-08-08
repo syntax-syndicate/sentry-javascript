@@ -1,7 +1,7 @@
 import { SpanKind } from '@opentelemetry/api';
 import { SemanticAttributes } from '@opentelemetry/semantic-conventions';
 
-import { getSanitizedUrl } from '../../src/utils/parseOtelSpanDescription';
+import { getSanitizedUrl } from '../../src/utils/parseOtelSpanDescription.ts';
 
 describe('getSanitizedUrl', () => {
   it.each([

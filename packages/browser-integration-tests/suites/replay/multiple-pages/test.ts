@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../utils/fixtures';
+import { sentryTest } from '../../../utils/fixtures.ts';
 import {
   expectedClickBreadcrumb,
   expectedFCPPerformanceSpan,
@@ -12,14 +12,14 @@ import {
   expectedNavigationPushPerformanceSpan,
   expectedReloadPerformanceSpan,
   getExpectedReplayEvent,
-} from '../../../utils/replayEventTemplates';
+} from '../../../utils/replayEventTemplates.ts';
 import {
   getReplayEvent,
   getReplayRecordingContent,
   normalize,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../utils/replayHelpers';
+} from '../../../utils/replayHelpers.ts';
 
 /*
 This is a quite complex test with the goal to ensure correct recording across multiple pages,

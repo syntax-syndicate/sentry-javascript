@@ -1,3 +1,3 @@
-export type { NodeTransportOptions } from './http';
+export type { NodeTransportOptions } from './http.ts';
 
-export { makeNodeTransport } from './http';
+export { makeNodeTransport } from './http.ts';

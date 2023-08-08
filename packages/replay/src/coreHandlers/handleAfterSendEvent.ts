@@ -1,8 +1,8 @@
 import { getCurrentHub } from '@sentry/core';
 import type { ErrorEvent, Event, TransactionEvent, Transport, TransportMakeRequestResponse } from '@sentry/types';
 
-import type { ReplayContainer } from '../types';
-import { isErrorEvent, isTransactionEvent } from '../util/eventUtils';
+import type { ReplayContainer } from '../types.ts';
+import { isErrorEvent, isTransactionEvent } from '../util/eventUtils.ts';
 
 type AfterSendEventCallback = (event: Event, sendResponse: TransportMakeRequestResponse | void) => void;
 

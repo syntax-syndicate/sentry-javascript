@@ -3,8 +3,8 @@ import { getCurrentHub } from '@sentry/core';
 import type { Integration } from '@sentry/types';
 import { logger } from '@sentry/utils';
 
-import type { NodeClient } from '../client';
-import { logAndExitProcess } from './utils/errorhandling';
+import type { NodeClient } from '../client.ts';
+import { logAndExitProcess } from './utils/errorhandling.ts';
 
 type OnFatalErrorHandler = (firstError: Error, secondError?: Error) => void;
 
@@ -148,7 +148,7 @@ export class OnUncaughtException implements Integration {
         if (shouldApplyFatalHandlingLogic) {
           if (calledFatalError) {
             // we hit an error *after* calling onFatalError - pretty boned at this point, just shut it down
-            __DEBUG_BUILD__ &&
+            typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
               logger.warn(
                 'uncaught exception after calling fatal error shutdown callback - this is bad! forcing shutdown',
               );

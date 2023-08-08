@@ -22,7 +22,7 @@ import type {
   UseLocation,
   UseNavigationType,
   UseRoutes,
-} from './types';
+} from './types.ts';
 
 let activeTransaction: Transaction | undefined;
 
@@ -170,7 +170,9 @@ export function withSentryReactRouterV6Routing<P extends Record<string, any>, R 
     !_matchRoutes ||
     !_customStartTransaction
   ) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' &&
+      typeof __DEBUG_BUILD__ !== 'undefined' &&
+      __DEBUG_BUILD__ &&
       logger.warn(`reactRouterV6Instrumentation was unable to wrap Routes because of one or more missing parameters.
       useEffect: ${_useEffect}. useLocation: ${_useLocation}. useNavigationType: ${_useNavigationType}.
       createRoutesFromChildren: ${_createRoutesFromChildren}. matchRoutes: ${_matchRoutes}. customStartTransaction: ${_customStartTransaction}.`);
@@ -214,7 +216,9 @@ export function withSentryReactRouterV6Routing<P extends Record<string, any>, R 
 
 export function wrapUseRoutes(origUseRoutes: UseRoutes): UseRoutes {
   if (!_useEffect || !_useLocation || !_useNavigationType || !_matchRoutes || !_customStartTransaction) {
-    __DEBUG_BUILD__ &&
+    typeof __DEBUG_BUILD__ !== 'undefined' &&
+      typeof __DEBUG_BUILD__ !== 'undefined' &&
+      __DEBUG_BUILD__ &&
       logger.warn(
         'reactRouterV6Instrumentation was unable to wrap `useRoutes` because of one or more missing parameters.',
       );

@@ -2,7 +2,7 @@ import { hasTracingEnabled } from '@sentry/core';
 import { BrowserTracing } from '@sentry/react';
 import type { Integration } from '@sentry/types';
 
-import type { GatsbyOptions } from './types';
+import type { GatsbyOptions } from './types.ts';
 
 type UserFnIntegrations = (integrations: Integration[]) => Integration[];
 export type UserIntegrations = Integration[] | UserFnIntegrations;

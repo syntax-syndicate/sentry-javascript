@@ -1,6 +1,6 @@
 /* eslint-disable deprecation/deprecation */
 
-import type { Scope } from '../src';
+import type { Scope } from '../src.ts';
 import {
   captureEvent,
   captureException,
@@ -15,7 +15,7 @@ import {
   setTags,
   setUser,
   withScope,
-} from '../src';
+} from '../src.ts';
 
 export class TestClient {
   public static instance?: TestClient;

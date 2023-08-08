@@ -1,4 +1,4 @@
-import { assertSentryTransaction, TestEnv } from '../../../../utils';
+import { assertSentryTransaction, TestEnv } from '../../../../utils.ts';
 
 class PgClient {
   // https://node-postgres.com/api/client#clientquery

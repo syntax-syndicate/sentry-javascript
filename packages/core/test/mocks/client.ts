@@ -11,9 +11,9 @@ import type {
 import { resolvedSyncPromise } from '@sentry/utils';
 import { TextEncoder } from 'util';
 
-import { BaseClient } from '../../src/baseclient';
-import { initAndBind } from '../../src/sdk';
-import { createTransport } from '../../src/transports/base';
+import { BaseClient } from '../../src/baseclient.ts';
+import { initAndBind } from '../../src/sdk.ts';s';
+import { createTransport } from '../../src/transports/base.ts';s';
 
 export function getDefaultTestClientOptions(options: Partial<TestClientOptions> = {}): TestClientOptions {
   return {

@@ -1,6 +1,6 @@
 import type { Event as SentryEvent, EventProcessor, Exception, Hub, StackFrame, Stacktrace } from '@sentry/types';
 
-import { _shouldDropEvent, Dedupe } from '../src/dedupe';
+import { _shouldDropEvent, Dedupe } from '../src/dedupe.ts';
 
 type EventWithException = SentryEvent & {
   exception: {

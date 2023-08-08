@@ -1,6 +1,6 @@
 import type { Hub, Integration } from '@sentry/types';
 
-import { ReportingObserver } from '../src/reportingobserver';
+import { ReportingObserver } from '../src/reportingobserver.ts';
 
 const mockScope = {
   setExtra: jest.fn(),

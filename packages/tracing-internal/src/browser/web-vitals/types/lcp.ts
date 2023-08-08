@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import type { Metric, ReportCallback } from './base';
-import type { NavigationTimingPolyfillEntry } from './polyfills';
+import type { Metric, ReportCallback } from './base.ts';
+import type { NavigationTimingPolyfillEntry } from './polyfills.ts';
 
 /**
  * An LCP-specific version of the Metric object.

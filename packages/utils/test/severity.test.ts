@@ -1,4 +1,4 @@
-import { severityLevelFromString, validSeverityLevels } from '../src/severity';
+import { severityLevelFromString, validSeverityLevels } from '../src/severity.ts';
 
 describe('severityLevelFromString()', () => {
   test("converts 'warn' to 'warning'", () => {

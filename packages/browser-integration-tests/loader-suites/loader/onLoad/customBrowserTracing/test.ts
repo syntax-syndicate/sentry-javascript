@@ -1,11 +1,11 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../../utils/fixtures';
+import { sentryTest } from '../../../../utils/fixtures.ts';
 import {
   envelopeRequestParser,
   shouldSkipTracingTest,
   waitForTransactionRequestOnUrl,
-} from '../../../../utils/helpers';
+} from '../../../../utils/helpers.ts';
 
 sentryTest('should handle custom added BrowserTracing integration', async ({ getLocalTestUrl, page }) => {
   if (shouldSkipTracingTest()) {

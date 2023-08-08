@@ -2,9 +2,9 @@
 import { configureScope, getCurrentHub, init as nodeInit } from '@sentry/node';
 import { logger } from '@sentry/utils';
 
-import { instrumentServer } from './utils/instrumentServer';
-import { buildMetadata } from './utils/metadata';
-import type { RemixOptions } from './utils/remixOptions';
+import { instrumentServer } from './utils/instrumentServer.ts';
+import { buildMetadata } from './utils/metadata.ts';
+import type { RemixOptions } from './utils/remixOptions.ts';
 
 // We need to explicitly export @sentry/node as they end up under `default` in ESM builds
 // See: https://github.com/getsentry/sentry-javascript/issues/8474
@@ -54,11 +54,11 @@ export {
 // Keeping the `*` exports for backwards compatibility and types
 export * from '@sentry/node';
 
-export { captureRemixServerException } from './utils/instrumentServer';
+export { captureRemixServerException } from './utils/instrumentServer.ts';
 export { ErrorBoundary, withErrorBoundary } from '@sentry/react';
-export { remixRouterInstrumentation, withSentry } from './client/performance';
-export { captureRemixErrorBoundaryError } from './client/errors';
-export { wrapExpressCreateRequestHandler } from './utils/serverAdapters/express';
+export { remixRouterInstrumentation, withSentry } from './client/performance.ts';
+export { captureRemixErrorBoundaryError } from './client/errors.ts';
+export { wrapExpressCreateRequestHandler } from './utils/serverAdapters/express.ts';
 
 function sdkAlreadyInitialized(): boolean {
   const hub = getCurrentHub();
@@ -70,7 +70,7 @@ export function init(options: RemixOptions): void {
   buildMetadata(options, ['remix', 'node']);
 
   if (sdkAlreadyInitialized()) {
-    __DEBUG_BUILD__ && logger.log('SDK already initialized');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('SDK already initialized');
 
     return;
   }

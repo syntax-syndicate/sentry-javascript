@@ -13,8 +13,8 @@ import {
   tracingContextFromHeaders,
 } from '@sentry/utils';
 
-import { getFutureFlagsServer } from './futureFlags';
-import { extractData, getRequestMatch, isDeferredData, isResponse, json, matchServerRoutes } from './vendor/response';
+import { getFutureFlagsServer } from './futureFlags.ts';
+import { extractData, getRequestMatch, isDeferredData, isResponse, json, matchServerRoutes } from './vendor/response.ts';
 import type {
   AppData,
   CreateRequestHandlerFunction,
@@ -29,8 +29,8 @@ import type {
   ServerBuild,
   ServerRoute,
   ServerRouteManifest,
-} from './vendor/types';
-import { normalizeRemixRequest } from './web-fetch';
+} from './vendor/types.ts';
+import { normalizeRemixRequest } from './web-fetch.ts';
 
 let FUTURE_FLAGS: FutureConfig | undefined;
 
@@ -83,7 +83,7 @@ export async function captureRemixServerException(err: unknown, name: string, re
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     normalizedRequest = normalizeRemixRequest(request as unknown as any);
   } catch (e) {
-    __DEBUG_BUILD__ && logger.warn('Failed to normalize Remix request');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Failed to normalize Remix request');
   }
 
   captureException(isResponse(err) ? await extractResponseError(err) : err, scope => {
@@ -260,7 +260,7 @@ function makeWrappedRootLoader(origLoader: DataFunction): DataFunction {
       // We skip injection of trace and baggage in those cases.
       // For `redirect`, a valid internal redirection target will have the trace and baggage injected.
       if (isRedirectResponse(res) || isCatchResponse(res)) {
-        __DEBUG_BUILD__ && logger.warn('Skipping injection of trace and baggage as the response does not have a body');
+        typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Skipping injection of trace and baggage as the response does not have a body');
         return res;
       } else {
         const data = await extractData(res);
@@ -271,7 +271,7 @@ function makeWrappedRootLoader(origLoader: DataFunction): DataFunction {
             { headers: res.headers, statusText: res.statusText, status: res.status },
           );
         } else {
-          __DEBUG_BUILD__ &&
+          typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ &&
             logger.warn('Skipping injection of trace and baggage as the response body is not an object');
           return res;
         }
@@ -367,7 +367,7 @@ function wrapRequestHandler(origRequestHandler: RequestHandler, build: ServerBui
       try {
         normalizedRequest = normalizeRemixRequest(request);
       } catch (e) {
-        __DEBUG_BUILD__ && logger.warn('Failed to normalize Remix request');
+        typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Failed to normalize Remix request');
       }
 
       const url = new URL(request.url);
@@ -474,7 +474,7 @@ export function instrumentServer(): void {
   const pkg = loadModule<{ createRequestHandler: CreateRequestHandlerFunction }>('@remix-run/server-runtime');
 
   if (!pkg) {
-    __DEBUG_BUILD__ && logger.warn('Remix SDK was unable to require `@remix-run/server-runtime` package.');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Remix SDK was unable to require `@remix-run/server-runtime` package.');
 
     return;
   }

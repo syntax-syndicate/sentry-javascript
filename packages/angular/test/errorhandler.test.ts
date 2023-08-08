@@ -4,7 +4,7 @@ import { Scope } from '@sentry/browser';
 import type { Event } from '@sentry/types';
 import * as SentryUtils from '@sentry/utils';
 
-import { createErrorHandler, SentryErrorHandler } from '../src/errorhandler';
+import { createErrorHandler, SentryErrorHandler } from '../src/errorhandler.ts';
 
 const FakeScope = new Scope();
 

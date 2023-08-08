@@ -1,5 +1,5 @@
-import { getSessionSampleType } from '../../../src/session/createSession';
-import { makeSession } from '../../../src/session/Session';
+import { getSessionSampleType } from '../../../src/session/createSession.ts';
+import { makeSession } from '../../../src/session/Session.ts';
 
 describe('Unit | session | sessionSampling', () => {
   it('does not sample', function () {

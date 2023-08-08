@@ -1,7 +1,7 @@
 import nock from 'nock';
 import path from 'path';
 
-import { TestEnv } from '../../../utils';
+import { TestEnv } from '../../../utils.ts';
 
 test('should aggregate successful sessions', async () => {
   const env = await TestEnv.init(__dirname, `${path.resolve(__dirname, '..')}/server.ts`);

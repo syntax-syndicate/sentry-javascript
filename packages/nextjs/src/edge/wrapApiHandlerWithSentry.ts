@@ -1,7 +1,7 @@
 import { getCurrentHub } from '@sentry/core';
 
-import type { EdgeRouteHandler } from './types';
-import { withEdgeWrapping } from './utils/edgeWrapperUtils';
+import type { EdgeRouteHandler } from './types.ts';
+import { withEdgeWrapping } from './utils/edgeWrapperUtils.ts';
 
 /**
  * Wraps a Next.js edge route handler with Sentry error and performance instrumentation.

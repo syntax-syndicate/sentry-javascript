@@ -1,7 +1,7 @@
 import type { Integration } from '@sentry/types';
 
-import { init } from '../src/sdk';
-import * as sdk from '../src/sdk';
+import { init } from '../src/sdk.ts';
+import * as sdk from '../src/sdk.ts';
 
 // eslint-disable-next-line no-var
 declare var global: any;

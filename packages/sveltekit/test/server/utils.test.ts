@@ -2,8 +2,8 @@ import { RewriteFrames } from '@sentry/integrations';
 import type { StackFrame } from '@sentry/types';
 import { basename } from '@sentry/utils';
 
-import type { GlobalWithSentryValues } from '../../src/server/utils';
-import { getTracePropagationData, rewriteFramesIteratee } from '../../src/server/utils';
+import type { GlobalWithSentryValues } from '../../src/server/utils.ts';
+import { getTracePropagationData, rewriteFramesIteratee } from '../../src/server/utils.ts';
 
 const MOCK_REQUEST_EVENT: any = {
   request: {

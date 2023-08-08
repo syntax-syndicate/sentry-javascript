@@ -3,7 +3,7 @@ import type * as http from 'http';
 import type * as https from 'https';
 import { URL } from 'url';
 
-import { NODE_VERSION } from '../../nodeVersion';
+import { NODE_VERSION } from '../../nodeVersion.ts';
 
 /**
  * Checks whether given url points to Sentry server

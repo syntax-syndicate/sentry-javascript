@@ -1,6 +1,6 @@
 import type { HandlerDataFetch } from '@sentry/types';
 
-import { handleFetch } from '../../../src/coreHandlers/handleFetch';
+import { handleFetch } from '../../../src/coreHandlers/handleFetch.ts';
 
 const DEFAULT_DATA: HandlerDataFetch = {
   args: ['/api/0/organizations/sentry/', { method: 'GET', headers: {}, credentials: 'include' }] as Parameters<

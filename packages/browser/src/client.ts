@@ -13,12 +13,12 @@ import type {
 } from '@sentry/types';
 import { createClientReportEnvelope, dsnToString, getSDKSource, logger } from '@sentry/utils';
 
-import { eventFromException, eventFromMessage } from './eventbuilder';
-import { WINDOW } from './helpers';
-import type { Breadcrumbs } from './integrations';
-import { BREADCRUMB_INTEGRATION_ID } from './integrations/breadcrumbs';
-import type { BrowserTransportOptions } from './transports/types';
-import { createUserFeedbackEnvelope } from './userfeedback';
+import { eventFromException, eventFromMessage } from './eventbuilder.ts';
+import { WINDOW } from './helpers.ts';
+import type { Breadcrumbs } from './integrations.ts';
+import { BREADCRUMB_INTEGRATION_ID } from './integrations/breadcrumbs.ts';
+import type { BrowserTransportOptions } from './transports/types.ts';
+import { createUserFeedbackEnvelope } from './userfeedback.ts';
 
 /**
  * Configuration options for the Sentry Browser SDK.
@@ -116,7 +116,7 @@ export class BrowserClient extends BaseClient<BrowserClientOptions> {
    */
   public captureUserFeedback(feedback: UserFeedback): void {
     if (!this._isEnabled()) {
-      __DEBUG_BUILD__ && logger.warn('SDK not enabled, will not capture user feedback.');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('SDK not enabled, will not capture user feedback.');
       return;
     }
 
@@ -143,16 +143,16 @@ export class BrowserClient extends BaseClient<BrowserClientOptions> {
     const outcomes = this._clearOutcomes();
 
     if (outcomes.length === 0) {
-      __DEBUG_BUILD__ && logger.log('No outcomes to send');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('No outcomes to send');
       return;
     }
 
     if (!this._dsn) {
-      __DEBUG_BUILD__ && logger.log('No dsn provided, will not send outcomes');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('No dsn provided, will not send outcomes');
       return;
     }
 
-    __DEBUG_BUILD__ && logger.log('Sending outcomes:', outcomes);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.log('Sending outcomes:', outcomes);
 
     const envelope = createClientReportEnvelope(outcomes, this._options.tunnel && dsnToString(this._dsn));
     void this._sendEnvelope(envelope);

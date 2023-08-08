@@ -1,7 +1,7 @@
 import { JSDOM } from 'jsdom';
 import { vi } from 'vitest';
 
-import { isRequestCached } from '../../../src/client/vendor/lookUpCache';
+import { isRequestCached } from '../../../src/client/vendor/lookUpCache.ts';
 
 globalThis.document = new JSDOM().window.document;
 

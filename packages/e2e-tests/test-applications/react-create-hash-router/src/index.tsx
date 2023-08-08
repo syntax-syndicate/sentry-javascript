@@ -9,8 +9,8 @@ import {
   RouterProvider,
   createHashRouter,
 } from 'react-router-dom';
-import Index from './pages/Index';
-import User from './pages/User';
+import Index from './pages/Index.ts';
+import User from './pages/User.ts';
 
 const replay = new Sentry.Replay();
 

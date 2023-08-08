@@ -2,8 +2,8 @@ import { hasTracingEnabled } from '@sentry/core';
 import { getCurrentHub } from '@sentry/node';
 import type Document from 'next/document';
 
-import { isBuild } from './utils/isBuild';
-import { withErrorInstrumentation, withTracedServerSideDataFetcher } from './utils/wrapperUtils';
+import { isBuild } from './utils/isBuild.ts';
+import { withErrorInstrumentation, withTracedServerSideDataFetcher } from './utils/wrapperUtils.ts';
 
 type DocumentGetInitialProps = typeof Document.getInitialProps;
 

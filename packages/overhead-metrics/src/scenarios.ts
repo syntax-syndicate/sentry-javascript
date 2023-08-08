@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import path from 'path';
 import type * as playwright from 'playwright';
 
-import type { Metrics } from './collector';
+import type { Metrics } from './collector.ts';
 
 // A testing scenario we want to collect metrics for.
 export interface Scenario {

@@ -1,8 +1,8 @@
 import type { Event, EventHint, EventProcessor, Hub, Integration } from '@sentry/types';
 import { applyAggregateErrorsToEvent } from '@sentry/utils';
 
-import { exceptionFromError } from '../eventbuilder';
-import { ContextLines } from './contextlines';
+import { exceptionFromError } from '../eventbuilder.ts';
+import { ContextLines } from './contextlines.ts';
 
 const DEFAULT_KEY = 'cause';
 const DEFAULT_LIMIT = 5;

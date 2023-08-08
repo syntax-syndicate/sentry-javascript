@@ -10,8 +10,8 @@
  * @license MIT
  */
 
-import { parseStackFrames } from '../src/eventbuilder';
-import { defaultStackParser as stackParser } from '../src/sdk';
+import { parseStackFrames } from '../src/eventbuilder.ts';
+import { defaultStackParser as stackParser } from '../src/sdk.ts';
 
 function testBasic() {
   return new Error('something went wrong');

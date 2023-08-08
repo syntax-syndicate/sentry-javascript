@@ -20,8 +20,8 @@ export type {
 } from '@sentry/types';
 export type { AddRequestDataToEventOptions } from '@sentry/utils';
 
-export type { TransactionNamingScheme } from './requestdata';
-export type { NodeOptions } from './types';
+export type { TransactionNamingScheme } from './requestdata.ts';
+export type { NodeOptions } from './types.ts';
 
 export {
   addGlobalEventProcessor,
@@ -53,20 +53,20 @@ export {
   captureCheckIn,
 } from '@sentry/core';
 export type { SpanStatusType } from '@sentry/core';
-export { autoDiscoverNodePerformanceMonitoringIntegrations } from './tracing';
+export { autoDiscoverNodePerformanceMonitoringIntegrations } from './tracing.ts';
 
-export { NodeClient } from './client';
-export { makeNodeTransport } from './transports';
-export { defaultIntegrations, init, defaultStackParser, lastEventId, flush, close, getSentryRelease } from './sdk';
-export { addRequestDataToEvent, DEFAULT_USER_INCLUDES, extractRequestData } from './requestdata';
-export { deepReadDirSync } from './utils';
-export { getModuleFromFilename } from './module';
+export { NodeClient } from './client.ts';
+export { makeNodeTransport } from './transports.ts';
+export { defaultIntegrations, init, defaultStackParser, lastEventId, flush, close, getSentryRelease } from './sdk.ts';
+export { addRequestDataToEvent, DEFAULT_USER_INCLUDES, extractRequestData } from './requestdata.ts';
+export { deepReadDirSync } from './utils.ts';
+export { getModuleFromFilename } from './module.ts';
 
 import { Integrations as CoreIntegrations } from '@sentry/core';
 
-import * as Handlers from './handlers';
-import * as NodeIntegrations from './integrations';
-import * as TracingIntegrations from './tracing/integrations';
+import * as Handlers from './handlers.ts';
+import * as NodeIntegrations from './integrations.ts';
+import * as TracingIntegrations from './tracing/integrations.ts';
 
 const INTEGRATIONS = {
   ...CoreIntegrations,

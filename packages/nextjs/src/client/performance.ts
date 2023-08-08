@@ -57,7 +57,7 @@ function extractNextDataTagInformation(): NextDataTagInfo {
     try {
       nextData = JSON.parse(nextDataTag.innerHTML);
     } catch (e) {
-      __DEBUG_BUILD__ && logger.warn('Could not extract __NEXT_DATA__');
+      typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Could not extract __NEXT_DATA__');
     }
   }
 

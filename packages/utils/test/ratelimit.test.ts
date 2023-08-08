@@ -1,11 +1,11 @@
-import type { RateLimits } from '../src/ratelimit';
+import type { RateLimits } from '../src/ratelimit.ts';
 import {
   DEFAULT_RETRY_AFTER,
   disabledUntil,
   isRateLimited,
   parseRetryAfterHeader,
   updateRateLimits,
-} from '../src/ratelimit';
+} from '../src/ratelimit.ts';
 
 describe('parseRetryAfterHeader()', () => {
   test('should fallback to 60s when incorrect header provided', () => {

@@ -1,4 +1,4 @@
-import { Replay } from '../../src';
+import { Replay } from '../../src.ts';
 
 describe('Unit | multipleInstances', () => {
   it('throws on creating multiple instances', function () {

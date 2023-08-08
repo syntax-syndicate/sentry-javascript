@@ -1,6 +1,6 @@
-import { REPLAY_SESSION_KEY, WINDOW } from '../../../src/constants';
-import { saveSession } from '../../../src/session/saveSession';
-import { makeSession } from '../../../src/session/Session';
+import { REPLAY_SESSION_KEY, WINDOW } from '../../../src/constants.ts';
+import { saveSession } from '../../../src/session/saveSession.ts';
+import { makeSession } from '../../../src/session/Session.ts';
 
 describe('Unit | session | saveSession', () => {
   beforeAll(() => {

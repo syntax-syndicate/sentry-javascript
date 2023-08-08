@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
 
-import { sentryTest } from '../../../utils/fixtures';
+import { sentryTest } from '../../../utils/fixtures.ts';
 import {
   getReplaySnapshot,
   REPLAY_DEFAULT_FLUSH_MAX_DELAY,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../utils/replayHelpers';
+} from '../../../utils/replayHelpers.ts';
 
 sentryTest('should stop recording after receiving an error response', async ({ getLocalTestPath, page }) => {
   if (shouldSkipReplayTest()) {

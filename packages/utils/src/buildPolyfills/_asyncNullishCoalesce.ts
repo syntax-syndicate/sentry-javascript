@@ -22,7 +22,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-import { _nullishCoalesce } from './_nullishCoalesce';
+import { _nullishCoalesce } from './_nullishCoalesce.ts';
 
 /**
  * Polyfill for the nullish coalescing operator (`??`), when used in situations where at least one of the values is the

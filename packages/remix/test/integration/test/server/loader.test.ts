@@ -1,4 +1,4 @@
-import { assertSentryTransaction, RemixTestEnv, assertSentryEvent } from './utils/helpers';
+import { assertSentryTransaction, RemixTestEnv, assertSentryEvent } from './utils/helpers.ts';
 import { Event } from '@sentry/types';
 
 const useV2 = process.env.REMIX_VERSION === '2';

@@ -8,11 +8,11 @@ import type {
 } from '@sentry/types';
 import { addInstrumentationHandler, logger } from '@sentry/utils';
 
-import type { FetchHint, ReplayContainer, ReplayNetworkOptions, XhrHint } from '../types';
-import { handleFetchSpanListener } from './handleFetch';
-import { handleXhrSpanListener } from './handleXhr';
-import { captureFetchBreadcrumbToReplay, enrichFetchBreadcrumb } from './util/fetchUtils';
-import { captureXhrBreadcrumbToReplay, enrichXhrBreadcrumb } from './util/xhrUtils';
+import type { FetchHint, ReplayContainer, ReplayNetworkOptions, XhrHint } from '../types.ts';
+import { handleFetchSpanListener } from './handleFetch.ts';
+import { handleXhrSpanListener } from './handleXhr.ts';
+import { captureFetchBreadcrumbToReplay, enrichFetchBreadcrumb } from './util/fetchUtils.ts';
+import { captureXhrBreadcrumbToReplay, enrichXhrBreadcrumb } from './util/xhrUtils.ts';
 
 interface ExtendedNetworkBreadcrumbsOptions extends ReplayNetworkOptions {
   replay: ReplayContainer;
@@ -90,7 +90,7 @@ export function beforeAddNetworkBreadcrumb(
       void captureFetchBreadcrumbToReplay(breadcrumb, hint, options);
     }
   } catch (e) {
-    __DEBUG_BUILD__ && logger.warn('Error when enriching network breadcrumb');
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.warn('Error when enriching network breadcrumb');
   }
 }
 

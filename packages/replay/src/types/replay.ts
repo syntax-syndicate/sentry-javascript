@@ -9,11 +9,11 @@ import type {
   XhrBreadcrumbHint,
 } from '@sentry/types';
 
-import type { SKIPPED, THROTTLED } from '../util/throttle';
-import type { AllPerformanceEntry } from './performance';
-import type { ReplayFrameEvent } from './replayFrame';
-import type { ReplayNetworkRequestOrResponse } from './request';
-import type { eventWithTime, recordOptions } from './rrweb';
+import type { SKIPPED, THROTTLED } from '../util/throttle.ts';
+import type { AllPerformanceEntry } from './performance.ts';
+import type { ReplayFrameEvent } from './replayFrame.ts';
+import type { ReplayNetworkRequestOrResponse } from './request.ts';
+import type { eventWithTime, recordOptions } from './rrweb.ts';
 
 export type RecordingEvent = ReplayFrameEvent | eventWithTime;
 export type RecordingOptions = recordOptions;

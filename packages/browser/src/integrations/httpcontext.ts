@@ -1,7 +1,7 @@
 import { addGlobalEventProcessor, getCurrentHub } from '@sentry/core';
 import type { Event, Integration } from '@sentry/types';
 
-import { WINDOW } from '../helpers';
+import { WINDOW } from '../helpers.ts';
 
 /** HttpContext integration collects information about HTTP request headers */
 export class HttpContext implements Integration {

@@ -8,12 +8,12 @@ import * as https from 'https';
 import * as HttpsProxyAgent from 'https-proxy-agent';
 import * as nock from 'nock';
 
-import type { Breadcrumb } from '../../src';
-import { NodeClient } from '../../src/client';
-import { Http as HttpIntegration } from '../../src/integrations/http';
-import { NODE_VERSION } from '../../src/nodeVersion';
-import type { NodeClientOptions } from '../../src/types';
-import { getDefaultNodeClientOptions } from '../helper/node-client-options';
+import type { Breadcrumb } from '../../src.ts';
+import { NodeClient } from '../../src/client.ts';
+import { Http as HttpIntegration } from '../../src/integrations/http.ts';
+import { NODE_VERSION } from '../../src/nodeVersion.ts';
+import type { NodeClientOptions } from '../../src/types.ts';
+import { getDefaultNodeClientOptions } from '../helper/node-client-options.ts';
 
 const originalHttpGet = http.get;
 const originalHttpRequest = http.request;

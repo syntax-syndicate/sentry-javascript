@@ -7,8 +7,8 @@ import type {
   ReplayNetworkOptions,
   ReplayNetworkRequestData,
   ReplayNetworkRequestOrResponse,
-} from '../../types';
-import { addNetworkBreadcrumb } from './addNetworkBreadcrumb';
+} from '../../types.ts';
+import { addNetworkBreadcrumb } from './addNetworkBreadcrumb.ts';
 import {
   buildNetworkRequestOrResponse,
   buildSkippedNetworkRequestOrResponse,
@@ -18,7 +18,7 @@ import {
   makeNetworkReplayBreadcrumb,
   parseContentLengthHeader,
   urlMatches,
-} from './networkUtils';
+} from './networkUtils.ts';
 
 /**
  * Capture a fetch breadcrumb to a replay.
@@ -39,7 +39,7 @@ export async function captureFetchBreadcrumbToReplay(
     const result = makeNetworkReplayBreadcrumb('resource.fetch', data);
     addNetworkBreadcrumb(options.replay, result);
   } catch (error) {
-    __DEBUG_BUILD__ && logger.error('[Replay] Failed to capture fetch breadcrumb', error);
+    typeof __DEBUG_BUILD__ !== 'undefined' && __DEBUG_BUILD__ && logger.error('[Replay] Failed to capture fetch breadcrumb', error);
   }
 }
 

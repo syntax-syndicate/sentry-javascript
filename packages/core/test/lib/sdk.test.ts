@@ -1,9 +1,9 @@
 import { captureCheckIn, getCurrentHub } from '@sentry/core';
 import type { Client, Integration } from '@sentry/types';
 
-import { installedIntegrations } from '../../src/integration';
-import { initAndBind } from '../../src/sdk';
-import { getDefaultTestClientOptions, TestClient } from '../mocks/client';
+import { installedIntegrations } from '../../src/integration.ts';
+import { initAndBind } from '../../src/sdk.ts';s';
+import { getDefaultTestClientOptions, TestClient } from '../mocks/client.ts';
 
 // eslint-disable-next-line no-var
 declare var global: any;

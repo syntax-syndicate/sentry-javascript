@@ -1,4 +1,4 @@
-import { parseFetchArgs } from '../src/instrument';
+import { parseFetchArgs } from '../src/instrument.ts';
 
 describe('instrument', () => {
   describe('parseFetchArgs', () => {

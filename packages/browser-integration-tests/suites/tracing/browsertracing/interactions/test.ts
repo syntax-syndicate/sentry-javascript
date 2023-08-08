@@ -2,12 +2,12 @@ import type { Route } from '@playwright/test';
 import { expect } from '@playwright/test';
 import type { Event, Span, SpanContext, Transaction } from '@sentry/types';
 
-import { sentryTest } from '../../../../utils/fixtures';
+import { sentryTest } from '../../../../utils/fixtures.ts';
 import {
   getFirstSentryEnvelopeRequest,
   getMultipleSentryEnvelopeRequests,
   shouldSkipTracingTest,
-} from '../../../../utils/helpers';
+} from '../../../../utils/helpers.ts';
 
 type TransactionJSON = ReturnType<Transaction['toJSON']> & {
   spans: ReturnType<Span['toJSON']>[];

@@ -2,16 +2,16 @@ import { expect } from '@playwright/test';
 import type { Replay } from '@sentry/replay';
 import type { ReplayContainer } from '@sentry/replay/build/npm/types/types';
 
-import { sentryTest } from '../../../utils/fixtures';
-import { envelopeRequestParser, waitForErrorRequest } from '../../../utils/helpers';
-import { expectedClickBreadcrumb, getExpectedReplayEvent } from '../../../utils/replayEventTemplates';
+import { sentryTest } from '../../../utils/fixtures.ts';
+import { envelopeRequestParser, waitForErrorRequest } from '../../../utils/helpers.ts';
+import { expectedClickBreadcrumb, getExpectedReplayEvent } from '../../../utils/replayEventTemplates.ts';
 import {
   getReplayEvent,
   getReplayRecordingContent,
   isReplayEvent,
   shouldSkipReplayTest,
   waitForReplayRequest,
-} from '../../../utils/replayHelpers';
+} from '../../../utils/replayHelpers.ts';
 
 sentryTest(
   '[buffer-mode] manually start buffer mode and capture buffer',
