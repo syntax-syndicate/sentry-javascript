@@ -1,5 +1,3 @@
-'use client';
-
 import Head from 'next/head';
 import { SentryLogo } from '@/components/sentry-logo';
 import styles from '@/styles/example-page-styles.module.css';
