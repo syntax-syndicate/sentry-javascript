@@ -71,14 +71,18 @@ body:
       label: Link to Sentry event
       description:
         If applicable, please provide a link to the affected event from your Sentry account. The event will only be
-        viewable by Sentry staff.
-      placeholder: https://sentry.io/organizations/<org-slug>/issues/<issue-id>/events/<event-id>/?project=<project-id>
+        viewable by people working at Sentry.
+      placeholder: https://<org-slug>.sentry.io/issues/<issue-id>/events/<event-id>/
   - type: textarea
     id: sdk-setup
     attributes:
       label: SDK Setup
-      description: How do you set up your Sentry SDK? Please show us your `Sentry.init` options.
+      description:
+        How do you set up your Sentry SDK? Please show us any pieces of code that seem relevant to you. (`Sentry.init()`
+        options, build configurations, custom Sentry functions, ...)
       placeholder: |-
+        For example:
+
         ```javascript
         Sentry.init({
           dsn: __YOUR_DSN__
@@ -91,7 +95,7 @@ body:
     id: repro
     attributes:
       label: Steps to Reproduce
-      description: How can we see what you're seeing? Specific is terrific.
+      description: What can one do to get this error on their computer? The more specific you are the better!
       placeholder: |-
         1. What
         2. you
@@ -108,7 +112,7 @@ body:
     id: actual
     attributes:
       label: Actual Result
-      description: Logs? Screenshots? Yes, please.
+      description: If you have logs or screenshots, please include them in this field!
     validations:
       required: true
   - type: markdown
