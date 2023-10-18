@@ -4,7 +4,7 @@ preReleaseCommand: bash scripts/craft-pre-release.sh
 targets:
   - name: git-repository
     archive: /^sentry-deno-\d.*\.tgz$/
-    repositoryUrl: git@github.com:lforst/craft-test-repo.git
+    repositoryUrl: git@github.com:getsentry/craft-test-repo.git
     stripComponents: 1
     branch: main
     createTag: true
