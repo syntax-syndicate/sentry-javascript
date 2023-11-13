@@ -98,6 +98,12 @@ export type UserSentryOptions = {
   widenClientFileUpload?: boolean;
 
   /**
+   * Automatically instrument clientside components in the Next.js pages router.
+   * Defaults to `true`.
+   */
+  autoInstrumentClientPages?: boolean;
+
+  /**
    * Automatically instrument Next.js data fetching methods and Next.js API routes with error and performance monitoring.
    * Defaults to `true`.
    */

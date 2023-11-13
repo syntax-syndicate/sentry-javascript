@@ -186,10 +186,8 @@ export function constructWebpackConfigFunction(
       );
     };
 
-    if (isServer && userSentryOptions.autoInstrumentServerFunctions !== false) {
-      // It is very important that we insert our loaders at the beginning of the array because we expect any sort of transformations/transpilations (e.g. TS -> JS) to already have happened.
-
-      // Wrap pages
+    if (!isServer && userSentryOptions.autoInstrumentClientPages !== false) {
+      // Wrap client pages
       newConfig.module.rules.unshift({
         test: isPageResource,
         use: [
@@ -197,11 +195,15 @@ export function constructWebpackConfigFunction(
             loader: path.resolve(__dirname, 'loaders', 'wrappingLoader.js'),
             options: {
               ...staticWrappingLoaderOptions,
-              wrappingTargetKind: 'page',
+              wrappingTargetKind: 'client-page',
             },
           },
         ],
       });
+    }
+
+    if (isServer && userSentryOptions.autoInstrumentServerFunctions !== false) {
+      // It is very important that we insert our loaders at the beginning of the array because we expect any sort of transformations/transpilations (e.g. TS -> JS) to already have happened.
 
       let vercelCronsConfig: VercelCronsConfig = undefined;
       try {
@@ -711,9 +713,7 @@ export function getWebpackPluginOptions(
   // Widening the upload scope is necessarily going to lead to us uploading files we don't need to (ones which
   // don't include any user code). In order to lessen that where we can, exclude the internal nextjs files we know
   // will be there.
-  const clientIgnore = userSentryOptions.widenClientFileUpload
-    ? ['framework-*', 'framework.*', 'main-*', 'polyfills-*', 'webpack-*']
-    : [];
+  const clientIgnore = userSentryOptions.widenClientFileUpload ? [] : [];
 
   const defaultPluginOptions = dropUndefinedKeys({
     include: isServer ? serverInclude : clientInclude,

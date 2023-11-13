@@ -27,6 +27,7 @@ export default [
         'src/config/templates/apiWrapperTemplate.ts',
         'src/config/templates/middlewareWrapperTemplate.ts',
         'src/config/templates/pageWrapperTemplate.ts',
+        'src/config/templates/clientPageWrapperTemplate.ts',
         'src/config/templates/requestAsyncStorageShim.ts',
         'src/config/templates/sentryInitWrapperTemplate.ts',
         'src/config/templates/serverComponentWrapperTemplate.ts',
