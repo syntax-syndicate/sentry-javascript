@@ -47,3 +47,5 @@ export { wrapPageComponentWithSentry } from './wrapPageComponentWithSentry';
 export { wrapGenerationFunctionWithSentry } from './wrapGenerationFunctionWithSentry';
 
 export { withServerActionInstrumentation } from './withServerActionInstrumentation';
+
+export { experimental_nextjsSSRTracing } from './appDirSSRTracing';

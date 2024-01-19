@@ -17,7 +17,21 @@ export default [
       // prevent this internal nextjs code from ending up in our built package (this doesn't happen automatially because
       // the name doesn't match an SDK dependency)
       packageSpecificConfig: {
-        external: ['next/router', 'next/constants', 'next/headers', 'stacktrace-parser'],
+        external: ['next/router', 'next/constants', 'next/headers', 'next/navigation', 'react', 'stacktrace-parser'],
+        output: {
+          plugins: [
+            {
+              name: 'wut',
+              renderChunk(code, chunk) {
+                if (chunk.fileName.endsWith('appDirSSRTracing.js')) {
+                  return `'use client'\n${code}`;
+                }
+
+                return null;
+              },
+            },
+          ],
+        },
       },
     }),
   ),

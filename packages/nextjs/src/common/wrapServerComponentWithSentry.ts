@@ -4,16 +4,20 @@ import {
   captureException,
   continueTrace,
   getCurrentScope,
+  getDynamicSamplingContextFromSpan,
   handleCallbackErrors,
   runWithAsyncContext,
   startSpanManual,
 } from '@sentry/core';
-import { winterCGHeadersToDict } from '@sentry/utils';
+import { dynamicSamplingContextToSentryBaggageHeader, winterCGHeadersToDict } from '@sentry/utils';
 
 import { isNotFoundNavigationError, isRedirectNavigationError } from '../common/nextNavigationErrorUtils';
 import type { ServerComponentContext } from '../common/types';
 import { commonObjectToPropagationContext } from './utils/commonObjectTracing';
 import { flushQueue } from './utils/responseEnd';
+
+import { Fragment, createElement } from 'react';
+import { experimental_nextjsSSRTracing } from './appDirSSRTracing';
 
 /**
  * Wraps an `app` directory server component with Sentry error instrumentation.
@@ -75,7 +79,22 @@ export function wrapServerComponentWithSentry<F extends (...args: any[]) => any>
           },
           span => {
             return handleCallbackErrors(
-              () => originalFunction.apply(thisArg, args),
+              () => {
+                return createElement(
+                  Fragment,
+                  null,
+                  experimental_nextjsSSRTracing({
+                    baggage: span
+                      ? dynamicSamplingContextToSentryBaggageHeader(getDynamicSamplingContextFromSpan(span))
+                      : undefined,
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    sentryTrace: transactionContext.traceId!,
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    suggestedPageloadSpanId: transactionContext.parentSpanId!,
+                  }),
+                  originalFunction.apply(thisArg, args),
+                );
+              },
               error => {
                 if (isNotFoundNavigationError(error)) {
                   // We don't want to report "not-found"s
