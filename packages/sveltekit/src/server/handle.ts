@@ -2,18 +2,18 @@ import {
   SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN,
   SEMANTIC_ATTRIBUTE_SENTRY_SOURCE,
   getActiveSpan,
-  getCurrentScope,
-  getDynamicSamplingContextFromSpan,
+  getRootSpan,
   setHttpStatus,
   spanToTraceHeader,
   withIsolationScope,
 } from '@sentry/core';
-import { getActiveTransaction, startSpan } from '@sentry/core';
-import { captureException } from '@sentry/node-experimental';
-/* eslint-disable @sentry-internal/sdk/no-optional-chaining */
+import { startSpan } from '@sentry/core';
+import { captureException, continueTrace } from '@sentry/node';
 import type { Span } from '@sentry/types';
 import { dynamicSamplingContextToSentryBaggageHeader, objectify } from '@sentry/utils';
 import type { Handle, ResolveOptions } from '@sveltejs/kit';
+
+import { getDynamicSamplingContextFromSpan } from '@sentry/opentelemetry';
 
 import { isHttpError, isRedirect } from '../common/utils';
 import { flushIfServerless, getTracePropagationData } from './utils';
@@ -104,12 +104,12 @@ export function addSentryCodeToPage(options: SentryHandleOptions): NonNullable<R
   const nonce = fetchProxyScriptNonce ? `nonce="${fetchProxyScriptNonce}"` : '';
 
   return ({ html }) => {
-    // eslint-disable-next-line deprecation/deprecation
-    const transaction = getActiveTransaction();
-    if (transaction) {
-      const traceparentData = spanToTraceHeader(transaction);
+    const activeSpan = getActiveSpan();
+    const rootSpan = activeSpan ? getRootSpan(activeSpan) : undefined;
+    if (rootSpan) {
+      const traceparentData = spanToTraceHeader(rootSpan);
       const dynamicSamplingContext = dynamicSamplingContextToSentryBaggageHeader(
-        getDynamicSamplingContextFromSpan(transaction),
+        getDynamicSamplingContextFromSpan(rootSpan),
       );
       const contentMeta = `<head>
     <meta name="sentry-trace" content="${traceparentData}"/>
@@ -149,9 +149,10 @@ export function sentryHandle(handlerOptions?: SentryHandleOptions): Handle {
   };
 
   const sentryRequestHandler: Handle = input => {
-    // if there is an active transaction, we know that this handle call is nested and hence
-    // we don't create a new domain for it. If we created one, nested server calls would
-    // create new transactions instead of adding a child span to the currently active span.
+    // if there is an active span, we know that this handle call is nested and hence
+    // we don't create a new execution context for it.
+    // If we created one, nested server calls would create new root span instead
+    // of adding a child span to the currently active span.
     if (getActiveSpan()) {
       return instrumentHandle(input, options);
     }
@@ -171,39 +172,36 @@ async function instrumentHandle(
     return resolve(event);
   }
 
-  const { dynamicSamplingContext, traceparentData, propagationContext } = getTracePropagationData(event);
-  getCurrentScope().setPropagationContext(propagationContext);
+  const { sentryTrace, baggage } = getTracePropagationData(event);
 
-  try {
-    const resolveResult = await startSpan(
-      {
-        op: 'http.server',
-        attributes: {
-          [SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN]: 'auto.http.sveltekit',
-          [SEMANTIC_ATTRIBUTE_SENTRY_SOURCE]: event.route?.id ? 'route' : 'url',
+  return continueTrace({ sentryTrace, baggage }, async () => {
+    try {
+      const resolveResult = await startSpan(
+        {
+          op: 'http.server',
+          attributes: {
+            [SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN]: 'auto.http.sveltekit',
+            [SEMANTIC_ATTRIBUTE_SENTRY_SOURCE]: event.route?.id ? 'route' : 'url',
+            'http.method': event.request.method,
+          },
+          name: `${event.request.method} ${event.route?.id || event.url.pathname}`,
         },
-        name: `${event.request.method} ${event.route?.id || event.url.pathname}`,
-        status: 'ok',
-        ...traceparentData,
-        metadata: {
-          dynamicSamplingContext: traceparentData && !dynamicSamplingContext ? {} : dynamicSamplingContext,
+        async (span?: Span) => {
+          const res = await resolve(event, {
+            transformPageChunk: addSentryCodeToPage(options),
+          });
+          if (span) {
+            setHttpStatus(span, res.status);
+          }
+          return res;
         },
-      },
-      async (span?: Span) => {
-        const res = await resolve(event, {
-          transformPageChunk: addSentryCodeToPage(options),
-        });
-        if (span) {
-          setHttpStatus(span, res.status);
-        }
-        return res;
-      },
-    );
-    return resolveResult;
-  } catch (e: unknown) {
-    sendErrorToSentry(e);
-    throw e;
-  } finally {
-    await flushIfServerless();
-  }
+      );
+      return resolveResult;
+    } catch (e: unknown) {
+      sendErrorToSentry(e);
+      throw e;
+    } finally {
+      await flushIfServerless();
+    }
+  });
 }

@@ -20,9 +20,6 @@ describe.each(['builtin', 'express'])('Remix API Loaders with adapter = %s', ada
       contexts: {
         trace: {
           status: 'internal_error',
-          tags: {
-            'http.status_code': '500',
-          },
           data: {
             'http.response.status_code': 500,
           },
@@ -54,8 +51,23 @@ describe.each(['builtin', 'express'])('Remix API Loaders with adapter = %s', ada
     const env = await RemixTestEnv.init(adapter);
     const url = `${env.url}/loader-throw-response/-1`;
 
-    const envelopes = await env.getMultipleEnvelopeRequest({ url, count: 1, envelopeType: ['event'] });
-    const event = envelopes[0][2];
+    // We also wait for the transaction, even though we don't care about it for this test
+    // but otherwise this may leak into another test
+    const envelopes = await env.getMultipleEnvelopeRequest({ url, count: 2, envelopeType: ['event', 'transaction'] });
+
+    const event = envelopes[0][2].type === 'transaction' ? envelopes[1][2] : envelopes[0][2];
+    const transaction = envelopes[0][2].type === 'transaction' ? envelopes[0][2] : envelopes[1][2];
+
+    assertSentryTransaction(transaction, {
+      contexts: {
+        trace: {
+          status: 'internal_error',
+          data: {
+            'http.response.status_code': 500,
+          },
+        },
+      },
+    });
 
     assertSentryEvent(event, {
       exception: {
@@ -123,18 +135,13 @@ describe.each(['builtin', 'express'])('Remix API Loaders with adapter = %s', ada
         trace: {
           op: 'http.server',
           status: 'ok',
-          tags: {
-            method: 'GET',
-            'http.status_code': '302',
-          },
           data: {
+            method: 'GET',
             'http.response.status_code': 302,
           },
         },
       },
-      tags: {
-        transaction: `routes/loader-json-response${useV2 ? '.' : '/'}$id`,
-      },
+      transaction: `routes/loader-json-response${useV2 ? '.' : '/'}$id`,
     });
 
     assertSentryTransaction(transaction_2[2], {
@@ -142,18 +149,13 @@ describe.each(['builtin', 'express'])('Remix API Loaders with adapter = %s', ada
         trace: {
           op: 'http.server',
           status: 'internal_error',
-          tags: {
-            method: 'GET',
-            'http.status_code': '500',
-          },
           data: {
+            method: 'GET',
             'http.response.status_code': 500,
           },
         },
       },
-      tags: {
-        transaction: `routes/loader-json-response${useV2 ? '.' : '/'}$id`,
-      },
+      transaction: `routes/loader-json-response${useV2 ? '.' : '/'}$id`,
     });
 
     assertSentryEvent(event[2], {
@@ -197,9 +199,7 @@ describe.each(['builtin', 'express'])('Remix API Loaders with adapter = %s', ada
       const val = key[key.length - 1];
       expect(tags[key]).toEqual(val);
     });
-    // express tests tend to take slightly longer on node >= 20
-    // TODO: check why this is happening
-  }, 10000);
+  });
 
   it('continues transaction from sentry-trace header and baggage', async () => {
     const env = await RemixTestEnv.init(adapter);

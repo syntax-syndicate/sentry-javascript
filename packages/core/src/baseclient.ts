@@ -15,15 +15,14 @@ import type {
   EventProcessor,
   FeedbackEvent,
   Integration,
-  IntegrationClass,
   Outcome,
   ParameterizedString,
   SdkMetadata,
   Session,
   SessionAggregates,
   SeverityLevel,
+  Span,
   StartSpanOptions,
-  Transaction,
   TransactionEvent,
   Transport,
   TransportMakeRequestResponse,
@@ -101,9 +100,6 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   /** Array of set up integrations. */
   protected _integrations: IntegrationIndex;
 
-  /** Indicates whether this client's integrations have been set up. */
-  protected _integrationsInitialized: boolean;
-
   /** Number of calls being processed */
   protected _numProcessing: number;
 
@@ -123,7 +119,6 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   protected constructor(options: O) {
     this._options = options;
     this._integrations = {};
-    this._integrationsInitialized = false;
     this._numProcessing = 0;
     this._outcomes = {};
     this._hooks = {};
@@ -136,7 +131,11 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
     }
 
     if (this._dsn) {
-      const url = getEnvelopeEndpointWithUrlEncodedAuth(this._dsn, options);
+      const url = getEnvelopeEndpointWithUrlEncodedAuth(
+        this._dsn,
+        options.tunnel,
+        options._metadata ? options._metadata.sdk : undefined,
+      );
       this._transport = options.transport({
         recordDroppedEvent: this.recordDroppedEvent.bind(this),
         ...options.transportOptions,
@@ -300,31 +299,11 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
     this._eventProcessors.push(eventProcessor);
   }
 
-  /**
-   * This is an internal function to setup all integrations that should run on the client.
-   * @deprecated Use `client.init()` instead.
-   */
-  public setupIntegrations(forceInitialize?: boolean): void {
-    if ((forceInitialize && !this._integrationsInitialized) || (this._isEnabled() && !this._integrationsInitialized)) {
-      this._setupIntegrations();
-    }
-  }
-
   /** @inheritdoc */
   public init(): void {
     if (this._isEnabled()) {
       this._setupIntegrations();
     }
-  }
-
-  /**
-   * Gets an installed integration by its `id`.
-   *
-   * @returns The installed integration or `undefined` if no integration with that `id` was installed.
-   * @deprecated Use `getIntegrationByName()` instead.
-   */
-  public getIntegrationById(integrationId: string): Integration | undefined {
-    return this.getIntegrationByName(integrationId);
   }
 
   /**
@@ -334,19 +313,6 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
    */
   public getIntegrationByName<T extends Integration = Integration>(integrationName: string): T | undefined {
     return this._integrations[integrationName] as T | undefined;
-  }
-
-  /**
-   * Returns the client's instance of the given integration class, it any.
-   * @deprecated Use `getIntegrationByName()` instead.
-   */
-  public getIntegration<T extends Integration>(integration: IntegrationClass<T>): T | null {
-    try {
-      return (this._integrations[integration.id] as T) || null;
-    } catch (_oO) {
-      DEBUG_BUILD && logger.warn(`Cannot retrieve integration ${integration.id} from the current Client`);
-      return null;
-    }
   }
 
   /**
@@ -417,10 +383,13 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   /* eslint-disable @typescript-eslint/unified-signatures */
 
   /** @inheritdoc */
-  public on(hook: 'startTransaction', callback: (transaction: Transaction) => void): void;
+  public on(hook: 'spanStart', callback: (span: Span) => void): void;
 
   /** @inheritdoc */
-  public on(hook: 'finishTransaction', callback: (transaction: Transaction) => void): void;
+  public on(hook: 'spanEnd', callback: (span: Span) => void): void;
+
+  /** @inheritdoc */
+  public on(hook: 'idleSpanEnableAutoFinish', callback: (span: Span) => void): void;
 
   /** @inheritdoc */
   public on(hook: 'beforeEnvelope', callback: (envelope: Envelope) => void): void;
@@ -432,10 +401,7 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   public on(hook: 'preprocessEvent', callback: (event: Event, hint?: EventHint) => void): void;
 
   /** @inheritdoc */
-  public on(
-    hook: 'afterSendEvent',
-    callback: (event: Event, sendResponse: TransportMakeRequestResponse | void) => void,
-  ): void;
+  public on(hook: 'afterSendEvent', callback: (event: Event, sendResponse: TransportMakeRequestResponse) => void): void;
 
   /** @inheritdoc */
   public on(hook: 'beforeAddBreadcrumb', callback: (breadcrumb: Breadcrumb, hint?: BreadcrumbHint) => void): void;
@@ -444,16 +410,19 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   public on(hook: 'createDsc', callback: (dsc: DynamicSamplingContext) => void): void;
 
   /** @inheritdoc */
-  public on(hook: 'otelSpanEnd', callback: (otelSpan: unknown, mutableOptions: { drop: boolean }) => void): void;
-
-  /** @inheritdoc */
   public on(
     hook: 'beforeSendFeedback',
     callback: (feedback: FeedbackEvent, options?: { includeReplay: boolean }) => void,
   ): void;
 
   /** @inheritdoc */
-  public on(hook: 'startPageLoadSpan', callback: (options: StartSpanOptions) => void): void;
+  public on(
+    hook: 'startPageLoadSpan',
+    callback: (
+      options: StartSpanOptions,
+      traceOptions?: { sentryTrace?: string | undefined; baggage?: string | undefined },
+    ) => void,
+  ): void;
 
   /** @inheritdoc */
   public on(hook: 'startNavigationSpan', callback: (options: StartSpanOptions) => void): void;
@@ -473,10 +442,13 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   }
 
   /** @inheritdoc */
-  public emit(hook: 'startTransaction', transaction: Transaction): void;
+  public emit(hook: 'spanStart', span: Span): void;
 
   /** @inheritdoc */
-  public emit(hook: 'finishTransaction', transaction: Transaction): void;
+  public emit(hook: 'spanEnd', span: Span): void;
+
+  /** @inheritdoc */
+  public emit(hook: 'idleSpanEnableAutoFinish', span: Span): void;
 
   /** @inheritdoc */
   public emit(hook: 'beforeEnvelope', envelope: Envelope): void;
@@ -488,7 +460,7 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   public emit(hook: 'preprocessEvent', event: Event, hint?: EventHint): void;
 
   /** @inheritdoc */
-  public emit(hook: 'afterSendEvent', event: Event, sendResponse: TransportMakeRequestResponse | void): void;
+  public emit(hook: 'afterSendEvent', event: Event, sendResponse: TransportMakeRequestResponse): void;
 
   /** @inheritdoc */
   public emit(hook: 'beforeAddBreadcrumb', breadcrumb: Breadcrumb, hint?: BreadcrumbHint): void;
@@ -497,13 +469,14 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   public emit(hook: 'createDsc', dsc: DynamicSamplingContext): void;
 
   /** @inheritdoc */
-  public emit(hook: 'otelSpanEnd', otelSpan: unknown, mutableOptions: { drop: boolean }): void;
-
-  /** @inheritdoc */
   public emit(hook: 'beforeSendFeedback', feedback: FeedbackEvent, options?: { includeReplay: boolean }): void;
 
   /** @inheritdoc */
-  public emit(hook: 'startPageLoadSpan', options: StartSpanOptions): void;
+  public emit(
+    hook: 'startPageLoadSpan',
+    options: StartSpanOptions,
+    traceOptions?: { sentryTrace?: string | undefined; baggage?: string | undefined },
+  ): void;
 
   /** @inheritdoc */
   public emit(hook: 'startNavigationSpan', options: StartSpanOptions): void;
@@ -524,16 +497,19 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
   /**
    * @inheritdoc
    */
-  public sendEnvelope(envelope: Envelope): PromiseLike<void | TransportMakeRequestResponse> | void {
+  public sendEnvelope(envelope: Envelope): PromiseLike<TransportMakeRequestResponse> {
     this.emit('beforeEnvelope', envelope);
 
     if (this._isEnabled() && this._transport) {
       return this._transport.send(envelope).then(null, reason => {
         DEBUG_BUILD && logger.error('Error while sending event:', reason);
+        return reason;
       });
-    } else {
-      DEBUG_BUILD && logger.error('Transport disabled');
     }
+
+    DEBUG_BUILD && logger.error('Transport disabled');
+
+    return resolvedSyncPromise({});
   }
 
   /* eslint-enable @typescript-eslint/unified-signatures */
@@ -543,9 +519,6 @@ export abstract class BaseClient<O extends ClientOptions> implements Client<O> {
     const { integrations } = this._options;
     this._integrations = setupIntegrations(this, integrations);
     afterSetupIntegrations(this, integrations);
-
-    // TODO v8: We don't need this flag anymore
-    this._integrationsInitialized = true;
   }
 
   /** Updates existing session based on the provided event */

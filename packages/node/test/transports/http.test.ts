@@ -1,3 +1,4 @@
+/* eslint-disable deprecation/deprecation */
 import * as http from 'http';
 
 import { createGunzip } from 'zlib';
@@ -50,7 +51,9 @@ function setupTestServer(
     res.end();
 
     // also terminate socket because keepalive hangs connection a bit
-    res.connection.end();
+    if (res.connection) {
+      res.connection.end();
+    }
   });
 
   testServer.listen(18099);
@@ -80,15 +83,17 @@ const defaultOptions = {
 // empty function to keep test output clean
 const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
+afterEach(done => {
+  jest.clearAllMocks();
+
+  if (testServer && testServer.listening) {
+    testServer.close(done);
+  } else {
+    done();
+  }
+});
+
 describe('makeNewHttpTransport()', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-
-    if (testServer) {
-      testServer.close();
-    }
-  });
-
   describe('.send()', () => {
     it('should correctly send envelope to server', async () => {
       await setupTestServer({ statusCode: SUCCESS }, (req, body) => {

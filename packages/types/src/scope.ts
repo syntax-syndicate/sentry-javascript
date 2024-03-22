@@ -40,13 +40,12 @@ export interface ScopeData {
   sdkProcessingMetadata: { [key: string]: unknown };
   fingerprint: string[];
   level?: SeverityLevel;
-  /** @deprecated This will be removed in v8. */
   transactionName?: string;
   span?: Span;
 }
 
 /**
- * Holds additional event information. {@link Scope.applyToEvent} will be called by the client before an event is sent.
+ * Holds additional event information.
  */
 export interface Scope {
   /**
@@ -61,7 +60,13 @@ export interface Scope {
    */
   getClient<C extends Client>(): C | undefined;
 
-  /** Add new event processor that will be called after {@link applyToEvent}. */
+  /**
+   * Add internal on change listener. Used for sub SDKs that need to store the scope.
+   * @hidden
+   */
+  addScopeListener(callback: (scope: Scope) => void): void;
+
+  /** Add new event processor that will be called during event processing. */
   addEventProcessor(callback: EventProcessor): this;
 
   /** Get the data of this scope, which is applied to an event during processing. */
@@ -121,8 +126,15 @@ export interface Scope {
   setLevel(level: SeverityLevel): this;
 
   /**
-   * Sets the transaction name on the scope for future events.
-   * @deprecated Use extra or tags instead.
+   * Sets the transaction name on the scope so that the name of the transaction
+   * (e.g. taken server route or page location) is attached to future events.
+   *
+   * IMPORTANT: Calling this function does NOT change the name of the currently active
+   * span. If you want to change the name of the active span, use `span.updateName()`
+   * instead.
+   *
+   * By default, the SDK updates the scope's transaction name automatically on sensible
+   * occasions, such as a page navigation or when handling a new request on the server.
    */
   setTransactionName(name?: string): this;
 

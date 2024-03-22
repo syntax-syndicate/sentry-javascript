@@ -1,19 +1,12 @@
-import type { Client, Envelope, Event, Span, Transaction } from '@sentry/types';
+import type { Client, Envelope, Event } from '@sentry/types';
 import { SentryError, SyncPromise, dsnToString, logger } from '@sentry/utils';
 
-import {
-  Scope,
-  addBreadcrumb,
-  getCurrentScope,
-  getIsolationScope,
-  makeSession,
-  setCurrentClient,
-  setGlobalScope,
-} from '../../src';
+import { Scope, addBreadcrumb, getCurrentScope, getIsolationScope, makeSession, setCurrentClient } from '../../src';
 import * as integrationModule from '../../src/integration';
 import { TestClient, getDefaultTestClientOptions } from '../mocks/client';
 import { AdHocIntegration, TestIntegration } from '../mocks/integration';
 import { makeFakeTransport } from '../mocks/transport';
+import { clearGlobalScope } from './clear-global-scope';
 
 const PUBLIC_DSN = 'https://username@domain/123';
 // eslint-disable-next-line no-var
@@ -49,9 +42,6 @@ jest.mock('@sentry/utils', () => {
     truncate(str: string): string {
       return str;
     },
-    timestampWithMs(): number {
-      return 2020;
-    },
     dateTimestampInSeconds(): number {
       return 2020;
     },
@@ -62,7 +52,7 @@ describe('BaseClient', () => {
   beforeEach(() => {
     TestClient.sendEventCalled = undefined;
     TestClient.instance = undefined;
-    setGlobalScope(undefined);
+    clearGlobalScope();
     getCurrentScope().clear();
     getCurrentScope().setClient(undefined);
     getIsolationScope().clear();
@@ -897,22 +887,22 @@ describe('BaseClient', () => {
           {
             data: { _sentry_extra_metrics: { M1: { value: 1 }, M2: { value: 2 } } },
             description: 'first-paint',
-            endTimestamp: 1591603196.637835,
+            timestamp: 1591603196.637835,
             op: 'paint',
-            parentSpanId: 'a3df84a60c2e4e76',
-            spanId: '9e15bf99fbe4bc80',
-            startTimestamp: 1591603196.637835,
-            traceId: '86f39e84263a4de99c326acab3bfe3bd',
-          } as unknown as Span,
+            parent_span_id: 'a3df84a60c2e4e76',
+            span_id: '9e15bf99fbe4bc80',
+            start_timestamp: 1591603196.637835,
+            trace_id: '86f39e84263a4de99c326acab3bfe3bd',
+          },
           {
             description: 'first-contentful-paint',
-            endTimestamp: 1591603196.637835,
+            timestamp: 1591603196.637835,
             op: 'paint',
-            parentSpanId: 'a3df84a60c2e4e76',
-            spanId: 'aa554c1f506b0783',
-            startTimestamp: 1591603196.637835,
-            traceId: '86f39e84263a4de99c326acab3bfe3bd',
-          } as any as Span,
+            parent_span_id: 'a3df84a60c2e4e76',
+            span_id: 'aa554c1f506b0783',
+            start_timestamp: 1591603196.637835,
+            trace_id: '86f39e84263a4de99c326acab3bfe3bd',
+          },
         ],
         start_timestamp: 1591603196.614865,
         timestamp: 1591603196.728485,
@@ -1481,18 +1471,6 @@ describe('BaseClient', () => {
       global.__SENTRY__ = {};
     });
 
-    test('sets up each integration on `setupIntegrations` call', () => {
-      expect.assertions(2);
-
-      const options = getDefaultTestClientOptions({ dsn: PUBLIC_DSN, integrations: [new TestIntegration()] });
-      const client = new TestClient(options);
-      // eslint-disable-next-line deprecation/deprecation
-      client.setupIntegrations();
-
-      expect(Object.keys((client as any)._integrations).length).toEqual(1);
-      expect(client.getIntegrationByName(TestIntegration.id)).toBeTruthy();
-    });
-
     test('sets up each integration on `init` call', () => {
       expect.assertions(2);
 
@@ -1504,40 +1482,12 @@ describe('BaseClient', () => {
       expect(client.getIntegrationByName(TestIntegration.id)).toBeTruthy();
     });
 
-    test('skips installation for `setupIntegrations()` if DSN is not provided', () => {
-      expect.assertions(2);
-
-      const options = getDefaultTestClientOptions({ integrations: [new TestIntegration()] });
-      const client = new TestClient(options);
-      // eslint-disable-next-line deprecation/deprecation
-      client.setupIntegrations();
-
-      expect(Object.keys((client as any)._integrations).length).toEqual(0);
-      expect(client.getIntegrationByName(TestIntegration.id)).toBeFalsy();
-    });
-
     test('skips installation for `init()` if DSN is not provided', () => {
       expect.assertions(2);
 
       const options = getDefaultTestClientOptions({ integrations: [new TestIntegration()] });
       const client = new TestClient(options);
       client.init();
-
-      expect(Object.keys((client as any)._integrations).length).toEqual(0);
-      expect(client.getIntegrationByName(TestIntegration.id)).toBeFalsy();
-    });
-
-    test('skips installation for `setupIntegrations()` if `enabled` is set to `false`', () => {
-      expect.assertions(2);
-
-      const options = getDefaultTestClientOptions({
-        dsn: PUBLIC_DSN,
-        enabled: false,
-        integrations: [new TestIntegration()],
-      });
-      const client = new TestClient(options);
-      // eslint-disable-next-line deprecation/deprecation
-      client.setupIntegrations();
 
       expect(Object.keys((client as any)._integrations).length).toEqual(0);
       expect(client.getIntegrationByName(TestIntegration.id)).toBeFalsy();
@@ -1556,29 +1506,6 @@ describe('BaseClient', () => {
 
       expect(Object.keys((client as any)._integrations).length).toEqual(0);
       expect(client.getIntegrationByName(TestIntegration.id)).toBeFalsy();
-    });
-
-    test('skips installation if integrations are already installed', () => {
-      expect.assertions(4);
-
-      const options = getDefaultTestClientOptions({ dsn: PUBLIC_DSN, integrations: [new TestIntegration()] });
-      const client = new TestClient(options);
-      // note: not the `Client` method `setupIntegrations`, but the free-standing function which that method calls
-      const setupIntegrationsHelper = jest.spyOn(integrationModule, 'setupIntegrations');
-
-      // it should install the first time, because integrations aren't yet installed...
-      // eslint-disable-next-line deprecation/deprecation
-      client.setupIntegrations();
-
-      expect(Object.keys((client as any)._integrations).length).toEqual(1);
-      expect(client.getIntegrationByName(TestIntegration.id)).toBeTruthy();
-      expect(setupIntegrationsHelper).toHaveBeenCalledTimes(1);
-
-      // ...but it shouldn't try to install a second time
-      // eslint-disable-next-line deprecation/deprecation
-      client.setupIntegrations();
-
-      expect(setupIntegrationsHelper).toHaveBeenCalledTimes(1);
     });
 
     test('does not add integrations twice when calling `init` multiple times', () => {
@@ -1804,7 +1731,7 @@ describe('BaseClient', () => {
 
       expect(mockSend).toBeCalledTimes(1);
       expect(callback).toBeCalledTimes(1);
-      expect(callback).toBeCalledWith(errorEvent, undefined);
+      expect(callback).toBeCalledWith(errorEvent, 'send error');
     });
 
     it('passes the response to the hook', async () => {
@@ -1935,20 +1862,6 @@ describe('BaseClient', () => {
     ] as const;
 
     describe.each(scenarios)('with client %s', (_, client) => {
-      it('should call a startTransaction hook', () => {
-        expect.assertions(1);
-
-        const mockTransaction = {
-          traceId: '86f39e84263a4de99c326acab3bfe3bd',
-        } as Transaction;
-
-        client.on('startTransaction', transaction => {
-          expect(transaction).toEqual(mockTransaction);
-        });
-
-        client.emit('startTransaction', mockTransaction);
-      });
-
       it('should call a beforeEnvelope hook', () => {
         expect.assertions(1);
 

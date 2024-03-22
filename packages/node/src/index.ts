@@ -46,8 +46,6 @@ export {
   makeMain,
   setCurrentClient,
   Scope,
-  // eslint-disable-next-line deprecation/deprecation
-  startTransaction,
   SDK_VERSION,
   setContext,
   setExtra,
@@ -63,9 +61,12 @@ export {
   withMonitor,
   setMeasurement,
   getActiveSpan,
+  getRootSpan,
   startSpan,
   startInactiveSpan,
   startSpanManual,
+  withActiveSpan,
+  getSpanDescendants,
   continueTrace,
   parameterize,
   functionToStringIntegration,
@@ -76,7 +77,6 @@ export {
   startSession,
   captureSession,
   endSession,
-  withActiveSpan,
 } from '@sentry/core';
 
 export {
@@ -85,8 +85,6 @@ export {
   SEMANTIC_ATTRIBUTE_SENTRY_SOURCE,
   SEMANTIC_ATTRIBUTE_SENTRY_SAMPLE_RATE,
 } from '@sentry/core';
-
-export type { SpanStatusType } from '@sentry/core';
 
 export { autoDiscoverNodePerformanceMonitoringIntegrations } from './tracing';
 
@@ -102,19 +100,24 @@ export { addRequestDataToEvent, DEFAULT_USER_INCLUDES, extractRequestData } from
 
 export { createGetModuleFromFilename } from './module';
 
-import { Integrations as CoreIntegrations } from '@sentry/core';
-
 import * as Handlers from './handlers';
 import * as NodeIntegrations from './integrations';
 import * as TracingIntegrations from './tracing/integrations';
 
 // TODO: Deprecate this once we migrated tracing integrations
 export const Integrations = {
-  // eslint-disable-next-line deprecation/deprecation
-  ...CoreIntegrations,
   ...NodeIntegrations,
   ...TracingIntegrations,
 };
+
+export {
+  captureConsoleIntegration,
+  debugIntegration,
+  dedupeIntegration,
+  extraErrorDataIntegration,
+  rewriteFramesIntegration,
+  sessionTimingIntegration,
+} from '@sentry/core';
 
 export { consoleIntegration } from './integrations/console';
 export { onUncaughtExceptionIntegration } from './integrations/onuncaughtexception';

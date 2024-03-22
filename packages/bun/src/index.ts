@@ -18,23 +18,19 @@ export type {
 } from '@sentry/types';
 export type { AddRequestDataToEventOptions } from '@sentry/utils';
 
-export type { TransactionNamingScheme } from '@sentry/node-experimental';
-export type { BunOptions } from './types';
-
 export {
-  // eslint-disable-next-line deprecation/deprecation
-  addGlobalEventProcessor,
   addEventProcessor,
   addBreadcrumb,
   addIntegration,
   captureException,
   captureEvent,
   captureMessage,
-  close,
+  captureCheckIn,
+  startSession,
+  captureSession,
+  endSession,
+  withMonitor,
   createTransport,
-  flush,
-  // eslint-disable-next-line deprecation/deprecation
-  getActiveTransaction,
   // eslint-disable-next-line deprecation/deprecation
   getCurrentHub,
   getClient,
@@ -43,12 +39,8 @@ export {
   getGlobalScope,
   getIsolationScope,
   Hub,
-  // eslint-disable-next-line deprecation/deprecation
-  makeMain,
   setCurrentClient,
   Scope,
-  // eslint-disable-next-line deprecation/deprecation
-  startTransaction,
   SDK_VERSION,
   setContext,
   setExtra,
@@ -60,69 +52,81 @@ export {
   setHttpStatus,
   withScope,
   withIsolationScope,
-  captureCheckIn,
-  withMonitor,
+  makeNodeTransport,
+  NodeClient,
+  defaultStackParser,
+  flush,
+  close,
+  getSentryRelease,
+  addRequestDataToEvent,
+  DEFAULT_USER_INCLUDES,
+  extractRequestData,
+  createGetModuleFromFilename,
+  anrIntegration,
+  consoleIntegration,
+  httpIntegration,
+  nativeNodeFetchIntegration,
+  onUncaughtExceptionIntegration,
+  onUnhandledRejectionIntegration,
+  modulesIntegration,
+  contextLinesIntegration,
+  nodeContextIntegration,
+  localVariablesIntegration,
+  requestDataIntegration,
+  functionToStringIntegration,
+  inboundFiltersIntegration,
+  linkedErrorsIntegration,
   setMeasurement,
   getActiveSpan,
   startSpan,
   startInactiveSpan,
   startSpanManual,
-  continueTrace,
-  metricsDefault as metrics,
-  functionToStringIntegration,
-  inboundFiltersIntegration,
-  linkedErrorsIntegration,
-  requestDataIntegration,
-  parameterize,
-  startSession,
-  captureSession,
-  endSession,
   withActiveSpan,
-} from '@sentry/core';
-export type { SpanStatusType } from '@sentry/core';
-export {
-  DEFAULT_USER_INCLUDES,
-  autoDiscoverNodePerformanceMonitoringIntegrations,
+  getRootSpan,
+  getSpanDescendants,
+  continueTrace,
+  getAutoPerformanceIntegrations,
   cron,
-  createGetModuleFromFilename,
-  defaultStackParser,
-  extractRequestData,
-  getSentryRelease,
-  addRequestDataToEvent,
-  anrIntegration,
-  consoleIntegration,
-  contextLinesIntegration,
-  hapiIntegration,
-  httpIntegration,
-  localVariablesIntegration,
-  modulesIntegration,
-  nativeNodeFetchintegration,
-  nodeContextIntegration,
-  onUncaughtExceptionIntegration,
-  onUnhandledRejectionIntegration,
-  spotlightIntegration,
+  metrics,
+  parameterize,
   SEMANTIC_ATTRIBUTE_SENTRY_OP,
   SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN,
   SEMANTIC_ATTRIBUTE_SENTRY_SOURCE,
   SEMANTIC_ATTRIBUTE_SENTRY_SAMPLE_RATE,
-} from '@sentry/node-experimental';
+  expressIntegration,
+  expressErrorHandler,
+  setupExpressErrorHandler,
+  fastifyIntegration,
+  setupFastifyErrorHandler,
+  graphqlIntegration,
+  mongoIntegration,
+  mongooseIntegration,
+  mysqlIntegration,
+  mysql2Integration,
+  nestIntegration,
+  postgresIntegration,
+  prismaIntegration,
+  hapiIntegration,
+  setupHapiErrorHandler,
+  spotlightIntegration,
+  initOpenTelemetry,
+} from '@sentry/node';
+
+export {
+  captureConsoleIntegration,
+  debugIntegration,
+  dedupeIntegration,
+  extraErrorDataIntegration,
+  rewriteFramesIntegration,
+  sessionTimingIntegration,
+} from '@sentry/core';
+
+export type { BunOptions } from './types';
 
 export { BunClient } from './client';
 export {
   getDefaultIntegrations,
   init,
 } from './sdk';
-
-import { Integrations as CoreIntegrations } from '@sentry/core';
-import { Integrations as NodeIntegrations } from '@sentry/node-experimental';
-import { BunServer } from './integrations/bunserver';
 export { bunServerIntegration } from './integrations/bunserver';
-
-const INTEGRATIONS = {
-  // eslint-disable-next-line deprecation/deprecation
-  ...CoreIntegrations,
-  ...NodeIntegrations,
-  BunServer,
-};
-
-export { INTEGRATIONS as Integrations };
+export { makeFetchTransport } from './transports';

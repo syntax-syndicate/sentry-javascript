@@ -1,5 +1,7 @@
 import {
   SEMANTIC_ATTRIBUTE_SENTRY_SOURCE,
+  SPAN_STATUS_ERROR,
+  SPAN_STATUS_OK,
   addTracingExtensions,
   captureException,
   getClient,
@@ -66,7 +68,6 @@ export function wrapGenerationFunctionWithSentry<F extends (...args: any[]) => a
           {
             op: 'function.nextjs',
             name: `${componentType}.${generationFunctionIdentifier} (${componentRoute})`,
-            data,
             attributes: {
               [SEMANTIC_ATTRIBUTE_SENTRY_SOURCE]: 'route',
               [SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN]: 'auto.function.nextjs',
@@ -78,12 +79,12 @@ export function wrapGenerationFunctionWithSentry<F extends (...args: any[]) => a
               err => {
                 if (isNotFoundNavigationError(err)) {
                   // We don't want to report "not-found"s
-                  span?.setStatus('not_found');
+                  span.setStatus({ code: SPAN_STATUS_ERROR, message: 'not_found' });
                 } else if (isRedirectNavigationError(err)) {
                   // We don't want to report redirects
-                  span?.setStatus('ok');
+                  span.setStatus({ code: SPAN_STATUS_OK });
                 } else {
-                  span?.setStatus('internal_error');
+                  span.setStatus({ code: SPAN_STATUS_ERROR, message: 'internal_error' });
                   captureException(err, {
                     mechanism: {
                       handled: false,
@@ -92,7 +93,7 @@ export function wrapGenerationFunctionWithSentry<F extends (...args: any[]) => a
                 }
               },
               () => {
-                span?.end();
+                span.end();
               },
             );
           },

@@ -7,15 +7,15 @@ import type { DynamicSamplingContext, Envelope } from './envelope';
 import type { Event, EventHint } from './event';
 import type { EventProcessor } from './eventprocessor';
 import type { FeedbackEvent } from './feedback';
-import type { Integration, IntegrationClass } from './integration';
+import type { Integration } from './integration';
 import type { ClientOptions } from './options';
 import type { ParameterizedString } from './parameterize';
 import type { Scope } from './scope';
 import type { SdkMetadata } from './sdkmetadata';
 import type { Session, SessionAggregates } from './session';
 import type { SeverityLevel } from './severity';
+import type { Span } from './span';
 import type { StartSpanOptions } from './startSpanOptions';
-import type { Transaction } from './transaction';
 import type { Transport, TransportMakeRequestResponse } from './transport';
 
 /**
@@ -127,12 +127,6 @@ export interface Client<O extends ClientOptions = ClientOptions> {
    */
   getEventProcessors(): EventProcessor[];
 
-  /**
-   * Returns the client's instance of the given integration class, it any.
-   * @deprecated Use `getIntegrationByName()` instead.
-   */
-  getIntegration<T extends Integration>(integration: IntegrationClass<T>): T | null;
-
   /** Get the instance of the integration with the given name on the client, if it was added. */
   getIntegrationByName<T extends Integration = Integration>(name: string): T | undefined;
 
@@ -144,12 +138,6 @@ export interface Client<O extends ClientOptions = ClientOptions> {
    *
    * */
   addIntegration(integration: Integration): void;
-
-  /**
-   * This is an internal function to setup all integrations that should run on the client.
-   * @deprecated Use `client.init()` instead.
-   */
-  setupIntegrations(forceInitialize?: boolean): void;
 
   /**
    * Initialize this client.
@@ -169,6 +157,9 @@ export interface Client<O extends ClientOptions = ClientOptions> {
   /** Submits the session to Sentry */
   sendSession(session: Session | SessionAggregates): void;
 
+  /** Sends an envelope to Sentry */
+  sendEnvelope(envelope: Envelope): PromiseLike<TransportMakeRequestResponse>;
+
   /**
    * Record on the client that an event got dropped (ie, an event that will not be sent to sentry).
    *
@@ -179,20 +170,24 @@ export interface Client<O extends ClientOptions = ClientOptions> {
   recordDroppedEvent(reason: EventDropReason, dataCategory: DataCategory, event?: Event): void;
 
   // HOOKS
-  // TODO(v8): Make the hooks non-optional.
   /* eslint-disable @typescript-eslint/unified-signatures */
 
   /**
-   * Register a callback for transaction start.
-   * Receives the transaction as argument.
+   * Register a callback for whenever a span is started.
+   * Receives the span as argument.
    */
-  on(hook: 'startTransaction', callback: (transaction: Transaction) => void): void;
+  on(hook: 'spanStart', callback: (span: Span) => void): void;
 
   /**
-   * Register a callback for transaction finish.
-   * Receives the transaction as argument.
+   * Register a callback for whenever a span is ended.
+   * Receives the span as argument.
    */
-  on(hook: 'finishTransaction', callback: (transaction: Transaction) => void): void;
+  on(hook: 'spanEnd', callback: (span: Span) => void): void;
+
+  /**
+   * Register a callback for when an idle span is allowed to auto-finish.
+   */
+  on(hook: 'idleSpanEnableAutoFinish', callback: (span: Span) => void): void;
 
   /**
    * Register a callback for transaction start and finish.
@@ -216,7 +211,7 @@ export interface Client<O extends ClientOptions = ClientOptions> {
   /**
    * Register a callback for when an event has been sent.
    */
-  on(hook: 'afterSendEvent', callback: (event: Event, sendResponse: TransportMakeRequestResponse | void) => void): void;
+  on(hook: 'afterSendEvent', callback: (event: Event, sendResponse: TransportMakeRequestResponse) => void): void;
 
   /**
    * Register a callback before a breadcrumb is added.
@@ -229,12 +224,6 @@ export interface Client<O extends ClientOptions = ClientOptions> {
   on(hook: 'createDsc', callback: (dsc: DynamicSamplingContext) => void): void;
 
   /**
-   * Register a callback when an OpenTelemetry span is ended (in @sentry/opentelemetry-node).
-   * The option argument may be mutated to drop the span.
-   */
-  on(hook: 'otelSpanEnd', callback: (otelSpan: unknown, mutableOptions: { drop: boolean }) => void): void;
-
-  /**
    * Register a callback when a Feedback event has been prepared.
    * This should be used to mutate the event. The options argument can hint
    * about what kind of mutation it expects.
@@ -245,12 +234,18 @@ export interface Client<O extends ClientOptions = ClientOptions> {
   ): void;
 
   /**
-   * A hook for BrowserTracing to trigger a span start for a page load.
+   * A hook for the browser tracing integrations to trigger a span start for a page load.
    */
-  on(hook: 'startPageLoadSpan', callback: (options: StartSpanOptions) => void): void;
+  on(
+    hook: 'startPageLoadSpan',
+    callback: (
+      options: StartSpanOptions,
+      traceOptions?: { sentryTrace?: string | undefined; baggage?: string | undefined },
+    ) => void,
+  ): void;
 
   /**
-   * A hook for BrowserTracing to trigger a span for a navigation.
+   * A hook for browser tracing integrations to trigger a span for a navigation.
    */
   on(hook: 'startNavigationSpan', callback: (options: StartSpanOptions) => void): void;
 
@@ -264,17 +259,16 @@ export interface Client<O extends ClientOptions = ClientOptions> {
    */
   on(hook: 'close', callback: () => void): void;
 
-  /**
-   * Fire a hook event for transaction start.
-   * Expects to be given a transaction as the second argument.
-   */
-  emit(hook: 'startTransaction', transaction: Transaction): void;
+  /** Fire a hook whener a span starts. */
+  emit(hook: 'spanStart', span: Span): void;
+
+  /** Fire a hook whener a span ends. */
+  emit(hook: 'spanEnd', span: Span): void;
 
   /**
-   * Fire a hook event for transaction finish.
-   * Expects to be given a transaction as the second argument.
+   * Fire a hook indicating that an idle span is allowed to auto finish.
    */
-  emit(hook: 'finishTransaction', transaction: Transaction): void;
+  emit(hook: 'idleSpanEnableAutoFinish', span: Span): void;
 
   /*
    * Fire a hook event for envelope creation and sending. Expects to be given an envelope as the
@@ -299,7 +293,7 @@ export interface Client<O extends ClientOptions = ClientOptions> {
    * Fire a hook event after sending an event. Expects to be given an Event as the
    * second argument.
    */
-  emit(hook: 'afterSendEvent', event: Event, sendResponse: TransportMakeRequestResponse | void): void;
+  emit(hook: 'afterSendEvent', event: Event, sendResponse: TransportMakeRequestResponse): void;
 
   /**
    * Fire a hook for when a breadcrumb is added. Expects the breadcrumb as second argument.
@@ -312,13 +306,6 @@ export interface Client<O extends ClientOptions = ClientOptions> {
   emit(hook: 'createDsc', dsc: DynamicSamplingContext): void;
 
   /**
-   * Fire a hook for when an OpenTelemetry span is ended (in @sentry/opentelemetry-node).
-   * Expects the OTEL span & as second argument, and an option object as third argument.
-   * The option argument may be mutated to drop the span.
-   */
-  emit(hook: 'otelSpanEnd', otelSpan: unknown, mutableOptions: { drop: boolean }): void;
-
-  /**
    * Fire a hook event for after preparing a feedback event. Events to be given
    * a feedback event as the second argument, and an optional options object as
    * third argument.
@@ -326,12 +313,16 @@ export interface Client<O extends ClientOptions = ClientOptions> {
   emit(hook: 'beforeSendFeedback', feedback: FeedbackEvent, options?: { includeReplay?: boolean }): void;
 
   /**
-   * Emit a hook event for BrowserTracing to trigger a span start for a page load.
+   * Emit a hook event for browser tracing integrations to trigger a span start for a page load.
    */
-  emit(hook: 'startPageLoadSpan', options: StartSpanOptions): void;
+  emit(
+    hook: 'startPageLoadSpan',
+    options: StartSpanOptions,
+    traceOptions?: { sentryTrace?: string | undefined; baggage?: string | undefined },
+  ): void;
 
   /**
-   * Emit a hook event for BrowserTracing to trigger a span for a navigation.
+   * Emit a hook event for browser tracing integrations to trigger a span for a navigation.
    */
   emit(hook: 'startNavigationSpan', options: StartSpanOptions): void;
 

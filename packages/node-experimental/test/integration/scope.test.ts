@@ -1,5 +1,6 @@
-import { getCurrentScope, setGlobalScope } from '@sentry/core';
+import { getCurrentScope } from '@sentry/core';
 import { getClient, getSpanScopes } from '@sentry/opentelemetry';
+import { clearGlobalScope } from '../../../core/test/lib/clear-global-scope';
 
 import * as Sentry from '../../src/';
 import type { NodeClient } from '../../src/sdk/client';
@@ -56,23 +57,36 @@ describe('Integration | Scope', () => {
       await client.flush();
 
       expect(beforeSend).toHaveBeenCalledTimes(1);
+
+      if (spanId) {
+        expect(beforeSend).toHaveBeenCalledWith(
+          expect.objectContaining({
+            contexts: expect.objectContaining({
+              trace: {
+                span_id: spanId,
+                trace_id: traceId,
+                // local span ID from propagation context
+                ...(enableTracing ? { parent_span_id: expect.any(String) } : undefined),
+              },
+            }),
+          }),
+          {
+            event_id: expect.any(String),
+            originalException: error,
+            syntheticException: expect.any(Error),
+          },
+        );
+      }
+
       expect(beforeSend).toHaveBeenCalledWith(
         expect.objectContaining({
-          contexts: expect.objectContaining({
-            trace: spanId
-              ? {
-                  span_id: spanId,
-                  trace_id: traceId,
-                  parent_span_id: undefined,
-                }
-              : expect.any(Object),
-          }),
           tags: {
             tag1: 'val1',
             tag2: 'val2',
             tag3: 'val3',
             tag4: 'val4',
           },
+          ...(enableTracing ? { transaction: 'outer' } : {}),
         }),
         {
           event_id: expect.any(String),
@@ -88,11 +102,18 @@ describe('Integration | Scope', () => {
           expect.objectContaining({
             contexts: expect.objectContaining({
               trace: {
-                data: { 'otel.kind': 'INTERNAL', 'sentry.origin': 'manual', 'sentry.source': 'custom' },
+                data: {
+                  'otel.kind': 'INTERNAL',
+                  'sentry.origin': 'manual',
+                  'sentry.source': 'custom',
+                  'sentry.sample_rate': 1,
+                },
                 span_id: spanId,
                 status: 'ok',
                 trace_id: traceId,
                 origin: 'manual',
+                // local span ID from propagation context
+                parent_span_id: expect.any(String),
               },
             }),
             spans: [],
@@ -177,7 +198,8 @@ describe('Integration | Scope', () => {
               ? {
                   span_id: spanId1,
                   trace_id: traceId1,
-                  parent_span_id: undefined,
+                  // local span ID from propagation context
+                  ...(enableTracing ? { parent_span_id: expect.any(String) } : undefined),
                 }
               : expect.any(Object),
           }),
@@ -187,6 +209,7 @@ describe('Integration | Scope', () => {
             tag3: 'val3a',
             tag4: 'val4a',
           },
+          ...(enableTracing ? { transaction: 'outer' } : {}),
         }),
         {
           event_id: expect.any(String),
@@ -202,7 +225,8 @@ describe('Integration | Scope', () => {
               ? {
                   span_id: spanId2,
                   trace_id: traceId2,
-                  parent_span_id: undefined,
+                  // local span ID from propagation context
+                  ...(enableTracing ? { parent_span_id: expect.any(String) } : undefined),
                 }
               : expect.any(Object),
           }),
@@ -212,6 +236,7 @@ describe('Integration | Scope', () => {
             tag3: 'val3b',
             tag4: 'val4b',
           },
+          ...(enableTracing ? { transaction: 'outer' } : {}),
         }),
         {
           event_id: expect.any(String),
@@ -228,7 +253,7 @@ describe('Integration | Scope', () => {
 
   describe('global scope', () => {
     beforeEach(() => {
-      setGlobalScope(undefined);
+      clearGlobalScope();
     });
 
     it('works before calling init', () => {
@@ -264,7 +289,7 @@ describe('Integration | Scope', () => {
       const error = new Error('test error');
       Sentry.captureException(error);
 
-      await client.flush();
+      await client?.flush();
 
       expect(beforeSend).toHaveBeenCalledTimes(1);
       expect(beforeSend).toHaveBeenCalledWith(
@@ -322,7 +347,7 @@ describe('Integration | Scope', () => {
       const error = new Error('test error');
       Sentry.captureException(error);
 
-      await client.flush();
+      await client?.flush();
 
       expect(beforeSend).toHaveBeenCalledTimes(1);
       expect(beforeSend).toHaveBeenCalledWith(
@@ -371,7 +396,7 @@ describe('Integration | Scope', () => {
 
       expect(initialIsolationScope.getScopeData().tags).toEqual({ tag1: 'val1', tag2: 'val2' });
 
-      await client.flush();
+      await client?.flush();
 
       expect(beforeSend).toHaveBeenCalledTimes(1);
       expect(beforeSend).toHaveBeenCalledWith(
@@ -414,7 +439,7 @@ describe('Integration | Scope', () => {
         });
       });
 
-      await client.flush();
+      await client?.flush();
 
       expect(beforeSend).toHaveBeenCalledTimes(1);
       expect(beforeSend).toHaveBeenCalledWith(
@@ -474,7 +499,7 @@ describe('Integration | Scope', () => {
       const error = new Error('test error');
       Sentry.captureException(error);
 
-      await client.flush();
+      await client?.flush();
 
       expect(beforeSend).toHaveBeenCalledTimes(1);
       expect(beforeSend).toHaveBeenCalledWith(
@@ -522,7 +547,7 @@ describe('Integration | Scope', () => {
 
       expect(initialCurrentScope.getScopeData().tags).toEqual({ tag1: 'val1', tag2: 'val2' });
 
-      await client.flush();
+      await client?.flush();
 
       expect(beforeSend).toHaveBeenCalledTimes(1);
       expect(beforeSend).toHaveBeenCalledWith(
@@ -568,7 +593,7 @@ describe('Integration | Scope', () => {
         });
       });
 
-      await client.flush();
+      await client?.flush();
 
       expect(beforeSend).toHaveBeenCalledTimes(1);
       expect(beforeSend).toHaveBeenCalledWith(
@@ -611,7 +636,7 @@ describe('Integration | Scope', () => {
         });
       });
 
-      await client.flush();
+      await client?.flush();
 
       expect(beforeSend).toHaveBeenCalledTimes(1);
       expect(beforeSend).toHaveBeenCalledWith(
@@ -657,7 +682,7 @@ describe('Integration | Scope', () => {
         });
       });
 
-      await client.flush();
+      await client?.flush();
 
       expect(beforeSend).toHaveBeenCalledTimes(1);
       expect(beforeSend).toHaveBeenCalledWith(

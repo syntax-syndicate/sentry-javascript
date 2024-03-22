@@ -13,8 +13,6 @@ export {
 export type { LazyLoadedIntegration } from './node';
 
 export {
-  // eslint-disable-next-line deprecation/deprecation
-  BrowserTracing,
   browserTracingIntegration,
   startBrowserTracingNavigationSpan,
   startBrowserTracingPageLoadSpan,
@@ -24,9 +22,8 @@ export {
   addPerformanceInstrumentationHandler,
   addClsInstrumentationHandler,
   addFidInstrumentationHandler,
+  addTtfbInstrumentationHandler,
   addLcpInstrumentationHandler,
 } from './browser';
-
-export { addTracingHeadersToFetchRequest, instrumentFetchRequest } from './common/fetch';
 
 export type { RequestInstrumentationOptions } from './browser';

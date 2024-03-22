@@ -44,12 +44,11 @@ env:
     ${{ github.workspace }}/packages/ember/*.d.ts
     ${{ github.workspace }}/packages/gatsby/*.d.ts
     ${{ github.workspace }}/packages/core/src/version.ts
-    ${{ github.workspace }}/packages/serverless
     ${{ github.workspace }}/packages/utils/cjs
     ${{ github.workspace }}/packages/utils/esm
 
-  BUILD_CACHE_KEY: ${{ github.event.inputs.commit || github.sha }}
-  BUILD_PROFILING_NODE_CACHE_TARBALL_KEY: profiling-node-tarball-${{ github.event.inputs.commit || github.sha }}
+  BUILD_CACHE_KEY: build-cache-${{ github.event.inputs.commit || github.sha }}
+  BUILD_CACHE_TARBALL_KEY: tarball-${{ github.event.inputs.commit || github.sha }}
 
   # GH will use the first restore-key it finds that matches
   # So it will start by looking for one from the same branch, else take the newest one it can find elsewhere
@@ -83,7 +82,7 @@ jobs:
           echo "COMMIT_MESSAGE=$(git log -n 1 --pretty=format:%s $COMMIT_SHA)" >> $GITHUB_ENV
 
       - name: Determine changed packages
-        uses: dorny/paths-filter@v3.0.0
+        uses: dorny/paths-filter@v3.0.1
         id: changed
         with:
           filters: |
@@ -101,7 +100,6 @@ jobs:
               - 'packages/tracing-internal/**'
               - 'packages/utils/**'
               - 'packages/types/**'
-              - 'packages/integrations/**'
             browser: &browser
               - *shared
               - 'packages/browser/**'
@@ -141,7 +139,6 @@ jobs:
               - 'packages/profiling-node/**'
               - 'dev-packages/e2e-tests/test-applications/node-profiling/**'
             profiling_node_bindings:
-              - *workflow
               - 'packages/profiling-node/**'
               - 'dev-packages/e2e-tests/test-applications/node-profiling/**'
             deno:
@@ -268,17 +265,12 @@ jobs:
           needs.job_get_metadata.outputs.force_skip_cache == 'false'
         with:
           path: .nxcache
-          key: nx-Linux-${{ github.ref }}-${{ env.HEAD_COMMIT }}
+          key: nx-Linux-${{ github.ref }}-${{ env.HEAD_COMMIT || github.sha }}
           # On develop branch, we want to _store_ the cache (so it can be used by other branches), but never _restore_ from it
           restore-keys:
             ${{needs.job_get_metadata.outputs.is_develop == 'false' && env.NX_CACHE_RESTORE_KEYS || 'nx-never-restore'}}
 
       - name: Build packages
-        # Under normal circumstances, using the git SHA as a cache key, there shouldn't ever be a cache hit on the built
-        # packages, and so `yarn build` should always run. This `if` check is therefore only there for testing CI issues
-        # where the built packages are beside the point. In that case, you can change `BUILD_CACHE_KEY` (at the top of
-        # this file) to a constant and skip rebuilding all of the packages each time CI runs.
-        if: steps.cache_built_packages.outputs.cache-hit == ''
         run: yarn build
     outputs:
       # this needs to be passed on, because the `needs` context only looks at direct ancestors (so steps which depend on
@@ -301,22 +293,17 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
-          # The size limit action runs `yarn` and `yarn build` when this job is executed on
-          # use Node 14 for now.
-          node-version: '14'
+          node-version-file: 'package.json'
       - name: Restore caches
         uses: ./.github/actions/restore-cache
         env:
           DEPENDENCY_CACHE_KEY: ${{ needs.job_build.outputs.dependency_cache_key }}
       - name: Check bundle sizes
-        uses: getsentry/size-limit-action@runForBranch
+        uses: ./dev-packages/size-limit-gh-action
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          skip_step: build
-          main_branch: develop
-          # When on release branch, we want to always run
-          # Else, we fall back to the default handling of the action
-          run_for_branch: ${{ (needs.job_get_metadata.outputs.is_release == 'true' && 'true') || '' }}
+          # Only run comparison against develop if this is a PR
+          comparison_branch: ${{ (github.event_name == 'pull_request' && github.base_ref) ||  ''}}
 
   job_lint:
     name: Lint
@@ -342,8 +329,6 @@ jobs:
         run: yarn lint:lerna
       - name: Lint C++ files
         run: yarn lint:clang
-      - name: Validate ES5 builds
-        run: yarn validate:es5
 
   job_check_format:
     name: Check file formatting
@@ -408,15 +393,15 @@ jobs:
         uses: ./.github/actions/restore-cache
         env:
           DEPENDENCY_CACHE_KEY: ${{ needs.job_build.outputs.dependency_cache_key }}
-      - name: Pack tarballs
-        # Profiling tarball is built separately as we assemble the precompiled binaries
-        run: yarn build:tarball --ignore @sentry/profiling-node
 
-      - name: Restore profiling tarball
-        uses: actions/cache/restore@v4
+      - name: Extract Profiling Node Prebuilt Binaries
+        uses: actions/download-artifact@v3
         with:
-          key: ${{ env.BUILD_PROFILING_NODE_CACHE_TARBALL_KEY }}
-          path: ${{ github.workspace }}/packages/*/*.tgz
+          name: profiling-node-binaries-${{ github.sha }}
+          path: ${{ github.workspace }}/packages/profiling-node/lib/
+
+      - name: Pack tarballs
+        run: yarn build:tarball
 
       - name: Archive artifacts
         uses: actions/upload-artifact@v4
@@ -424,11 +409,10 @@ jobs:
           name: ${{ github.sha }}
           path: |
             ${{ github.workspace }}/packages/browser/build/bundles/**
-            ${{ github.workspace }}/packages/integrations/build/bundles/**
             ${{ github.workspace }}/packages/replay/build/bundles/**
             ${{ github.workspace }}/packages/replay-canvas/build/bundles/**
             ${{ github.workspace }}/packages/**/*.tgz
-            ${{ github.workspace }}/packages/serverless/build/aws/dist-serverless/*.zip
+            ${{ github.workspace }}/packages/aws-serverless/build/aws/dist-serverless/*.zip
 
   job_browser_unit_tests:
     name: Browser Unit Tests
@@ -634,28 +618,24 @@ jobs:
       matrix:
         bundle:
           - esm
-          - bundle_es5
-          - bundle_es5_min
-          - bundle_es6
-          - bundle_es6_min
-          - bundle_replay_es6
-          - bundle_replay_es6_min
-          - bundle_tracing_es5
-          - bundle_tracing_es5_min
-          - bundle_tracing_es6
-          - bundle_tracing_es6_min
-          - bundle_tracing_replay_es6
-          - bundle_tracing_replay_es6_min
+          - bundle
+          - bundle_min
+          - bundle_replay
+          - bundle_replay_min
+          - bundle_tracing
+          - bundle_tracing_min
+          - bundle_tracing_replay
+          - bundle_tracing_replay_min
         project:
           - chromium
         include:
           # Only check all projects for esm & full bundle
           # We also shard the tests as they take the longest
-          - bundle: bundle_tracing_replay_es6_min
+          - bundle: bundle_tracing_replay_min
             project: ''
             shard: 1
             shards: 2
-          - bundle: bundle_tracing_replay_es6_min
+          - bundle: bundle_tracing_replay_min
             project: ''
             shard: 2
             shards: 2
@@ -672,7 +652,7 @@ jobs:
             shards: 3
         exclude:
           # Do not run the default chromium-only tests
-          - bundle: bundle_tracing_replay_es6_min
+          - bundle: bundle_tracing_replay_min
             project: 'chromium'
           - bundle: esm
             project: 'chromium'
@@ -790,7 +770,7 @@ jobs:
     name: Browser (${{ matrix.browser }}) Tests
     needs: [job_get_metadata, job_build]
     if: needs.job_get_metadata.outputs.changed_browser == 'true' || github.event_name != 'pull_request'
-    runs-on: ubuntu-20.04-large-js
+    runs-on: ubuntu-20.04
     timeout-minutes: 20
     strategy:
       fail-fast: false
@@ -918,7 +898,7 @@ jobs:
           yarn test
 
   job_remix_integration_tests:
-    name: Remix v${{ matrix.remix }} (Node ${{ matrix.node }}) ${{ matrix.tracingIntegration && 'TracingIntegration'}} Tests
+    name: Remix v${{ matrix.remix }} (Node ${{ matrix.node }}) Tests
     needs: [job_get_metadata, job_build]
     if: needs.job_get_metadata.outputs.changed_remix == 'true' || github.event_name != 'pull_request'
     runs-on: ubuntu-20.04
@@ -934,8 +914,6 @@ jobs:
             remix: 1
           - node: 16
             remix: 1
-          - tracingIntegration: true
-            remix: 2
     steps:
       - name: Check out current commit (${{ needs.job_get_metadata.outputs.commit_label }})
         uses: actions/checkout@v4
@@ -953,7 +931,6 @@ jobs:
         env:
           NODE_VERSION: ${{ matrix.node }}
           REMIX_VERSION: ${{ matrix.remix }}
-          TRACING_INTEGRATION: ${{ matrix.tracingIntegration }}
         run: |
           cd packages/remix
           yarn test:integration:ci
@@ -992,8 +969,6 @@ jobs:
           key: nx-Linux-${{ github.ref }}-${{ env.HEAD_COMMIT }}
           # On develop branch, we want to _store_ the cache (so it can be used by other branches), but never _restore_ from it
           restore-keys: ${{ env.NX_CACHE_RESTORE_KEYS }}
-      - name: Build tarballs
-        run: yarn build:tarball --ignore @sentry/profiling-node
 
       # Rebuild profiling by compiling TS and pull the precompiled binary artifacts
       - name: Build Profiling Node
@@ -1008,6 +983,7 @@ jobs:
         # https://github.com/actions/upload-artifact/issues/478
         if: |
           (needs.job_get_metadata.outputs.changed_profiling_node_bindings == 'true') ||
+            (needs.job_get_metadata.outputs.is_release == 'true') ||
           (github.event_name != 'pull_request')
         uses: actions/download-artifact@v3
         with:
@@ -1015,14 +991,14 @@ jobs:
           path: ${{ github.workspace }}/packages/profiling-node/lib/
 
       - name: Build Profiling tarball
-        run: yarn build:tarball --scope @sentry/profiling-node
+        run: yarn build:tarball
       # End rebuild profiling
 
       - name: Stores tarballs in cache
         uses: actions/cache/save@v4
         with:
           path: ${{ github.workspace }}/packages/*/*.tgz
-          key: ${{ env.BUILD_PROFILING_NODE_CACHE_TARBALL_KEY }}
+          key: ${{ env.BUILD_CACHE_TARBALL_KEY }}
 
   job_e2e_tests:
     name: E2E ${{ matrix.label || matrix.test-application }} Test
@@ -1058,17 +1034,17 @@ jobs:
             'create-next-app',
             'create-remix-app',
             'create-remix-app-v2',
+            'create-remix-app-express-vite-dev',
             'debug-id-sourcemaps',
             'nextjs-app-dir',
             'nextjs-14',
             'react-create-hash-router',
             'react-router-6-use-routes',
             'standard-frontend-react',
-            'standard-frontend-react-tracing-import',
             'sveltekit',
             'sveltekit-2',
             'generic-ts3.8',
-            'node-experimental-fastify-app',
+            'node-fastify-app',
             # TODO(v8): Re-enable hapi tests
             # 'node-hapi-app',
             'node-exports-test-app',
@@ -1117,7 +1093,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ${{ github.workspace }}/packages/*/*.tgz
-          key: ${{ env.BUILD_PROFILING_NODE_CACHE_TARBALL_KEY }}
+          key: ${{ env.BUILD_CACHE_TARBALL_KEY }}
 
       - name: Get node version
         id: versions
@@ -1208,13 +1184,13 @@ jobs:
         with:
           name: profiling-node-binaries-${{ github.sha }}
           path: ${{ github.workspace }}/packages/profiling-node/lib/
-      - name: Build Profiling tarball
-        run: yarn build:tarball --scope @sentry/profiling-node
+
       - name: Restore tarball cache
         uses: actions/cache/restore@v4
         with:
           path: ${{ github.workspace }}/packages/*/*.tgz
-          key: ${{ env.BUILD_PROFILING_NODE_CACHE_TARBALL_KEY }}
+          key: ${{ env.BUILD_CACHE_TARBALL_KEY }}
+          fail-on-cache-miss : true
 
       - name: Get node version
         id: versions

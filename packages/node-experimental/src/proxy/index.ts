@@ -28,13 +28,10 @@
 
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import assert from 'assert';
 import type * as http from 'http';
 import type { OutgoingHttpHeaders } from 'http';
 import * as net from 'net';
 import * as tls from 'tls';
-// TODO (v8): Remove this when Node < 12 is no longer supported
-import { URL } from 'url';
 import { logger } from '@sentry/utils';
 import { Agent } from './base';
 import type { AgentConnectOpts } from './base';
@@ -190,8 +187,6 @@ export class HttpsProxyAgent<Uri extends string> extends Agent {
     // Need to wait for the "socket" event to re-play the "data" events.
     req.once('socket', (s: net.Socket) => {
       debug('Replaying proxy buffer for failed request');
-      assert(s.listenerCount('data') > 0);
-
       // Replay the "buffered" Buffer onto the fake `socket`, since at
       // this point the HTTP module machinery has been hooked up for
       // the user.

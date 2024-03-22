@@ -8,7 +8,7 @@ export type { IntegrationIndex } from './integration';
 
 export * from './tracing';
 export * from './semanticAttributes';
-export { createEventEnvelope, createSessionEnvelope } from './envelope';
+export { createEventEnvelope, createSessionEnvelope, createAttachmentEnvelope } from './envelope';
 export {
   captureCheckIn,
   withMonitor,
@@ -17,8 +17,6 @@ export {
   captureMessage,
   close,
   flush,
-  // eslint-disable-next-line deprecation/deprecation
-  startTransaction,
   setContext,
   setExtra,
   setExtras,
@@ -29,7 +27,6 @@ export {
   startSession,
   endSession,
   captureSession,
-  withActiveSpan,
   addEventProcessor,
 } from './exports';
 export {
@@ -46,7 +43,6 @@ export {
   getCurrentScope,
   getIsolationScope,
   getGlobalScope,
-  setGlobalScope,
   withScope,
   withIsolationScope,
   getClient,
@@ -90,31 +86,29 @@ export {
   spanToJSON,
   spanIsSampled,
   spanToTraceContext,
+  getSpanDescendants,
+  getStatusMessage,
+  getRootSpan,
+  getActiveSpan,
+  addChildSpanToSpan,
 } from './utils/spanUtils';
-export { getRootSpan } from './utils/getRootSpan';
 export { applySdkMetadata } from './utils/sdkMetadata';
 export { DEFAULT_ENVIRONMENT } from './constants';
-/* eslint-disable deprecation/deprecation */
-export { ModuleMetadata } from './integrations/metadata';
-export { RequestData } from './integrations/requestdata';
-export { InboundFilters } from './integrations/inboundfilters';
-export { FunctionToString } from './integrations/functiontostring';
-export { LinkedErrors } from './integrations/linkederrors';
 export { addBreadcrumb } from './breadcrumbs';
-/* eslint-enable deprecation/deprecation */
-import * as INTEGRATIONS from './integrations';
 export { functionToStringIntegration } from './integrations/functiontostring';
 export { inboundFiltersIntegration } from './integrations/inboundfilters';
 export { linkedErrorsIntegration } from './integrations/linkederrors';
 export { moduleMetadataIntegration } from './integrations/metadata';
 export { requestDataIntegration } from './integrations/requestdata';
+export { captureConsoleIntegration } from './integrations/captureconsole';
+export { debugIntegration } from './integrations/debug';
+export { dedupeIntegration } from './integrations/dedupe';
+export { extraErrorDataIntegration } from './integrations/extraerrordata';
+export { rewriteFramesIntegration } from './integrations/rewriteframes';
+export { sessionTimingIntegration } from './integrations/sessiontiming';
 export { metrics } from './metrics/exports';
 export type { MetricData } from './metrics/exports';
 export { metricsDefault } from './metrics/exports-default';
 export { BrowserMetricsAggregator } from './metrics/browser-aggregator';
-
-/** @deprecated Import the integration function directly, e.g. `inboundFiltersIntegration()` instead of `new Integrations.InboundFilter(). */
-const Integrations = INTEGRATIONS;
-
-// eslint-disable-next-line deprecation/deprecation
-export { Integrations };
+export { getMetricSummaryJsonForSpan } from './metrics/metric-summary';
+export { addTracingHeadersToFetchRequest, instrumentFetchRequest } from './fetch';

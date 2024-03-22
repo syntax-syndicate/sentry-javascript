@@ -43,12 +43,6 @@ export {
   makeMain,
   setCurrentClient,
   Scope,
-  // eslint-disable-next-line deprecation/deprecation
-  startTransaction,
-  getActiveSpan,
-  startSpan,
-  startInactiveSpan,
-  startSpanManual,
   continueTrace,
   SDK_VERSION,
   setContext,
@@ -59,13 +53,9 @@ export {
   setUser,
   withScope,
   withIsolationScope,
-  withActiveSpan,
-  // eslint-disable-next-line deprecation/deprecation
-  FunctionToString,
-  // eslint-disable-next-line deprecation/deprecation
-  InboundFilters,
   functionToStringIntegration,
   inboundFiltersIntegration,
+  dedupeIntegration,
   parameterize,
   startSession,
   captureSession,
@@ -103,16 +93,10 @@ export {
   onLoad,
   showReportDialog,
   captureUserFeedback,
-  // eslint-disable-next-line deprecation/deprecation
-  wrap,
 } from './sdk';
 
 export { breadcrumbsIntegration } from './integrations/breadcrumbs';
-export { dedupeIntegration } from './integrations/dedupe';
 export { globalHandlersIntegration } from './integrations/globalhandlers';
 export { httpContextIntegration } from './integrations/httpcontext';
 export { linkedErrorsIntegration } from './integrations/linkederrors';
 export { browserApiErrorsIntegration } from './integrations/browserapierrors';
-
-// eslint-disable-next-line deprecation/deprecation
-export { Breadcrumbs, LinkedErrors, HttpContext, Dedupe } from './integrations';

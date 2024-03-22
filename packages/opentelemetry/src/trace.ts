@@ -1,14 +1,24 @@
-import type { Context, Span, SpanOptions, Tracer } from '@opentelemetry/api';
+import type { Context, Span, SpanContext, SpanOptions, Tracer } from '@opentelemetry/api';
+import { TraceFlags } from '@opentelemetry/api';
 import { context } from '@opentelemetry/api';
 import { SpanStatusCode, trace } from '@opentelemetry/api';
 import { suppressTracing } from '@opentelemetry/core';
-import { SDK_VERSION, getClient, getCurrentScope, handleCallbackErrors } from '@sentry/core';
+import {
+  SDK_VERSION,
+  SEMANTIC_ATTRIBUTE_SENTRY_OP,
+  continueTrace as baseContinueTrace,
+  getClient,
+  getCurrentScope,
+  getDynamicSamplingContextFromClient,
+  getRootSpan,
+  handleCallbackErrors,
+} from '@sentry/core';
 import type { Client, Scope } from '@sentry/types';
+import { continueTraceAsRemoteSpan, getSamplingDecision, makeTraceState } from './propagator';
 
-import { InternalSentrySemanticAttributes } from './semanticAttributes';
 import type { OpenTelemetryClient, OpenTelemetrySpanContext } from './types';
-import { getContextFromScope } from './utils/contextData';
-import { setSpanMetadata } from './utils/spanData';
+import { getContextFromScope, getScopesFromContext } from './utils/contextData';
+import { getDynamicSamplingContextFromSpan } from './utils/dynamicSamplingContext';
 
 /**
  * Wraps a function with a transaction/span and finishes the span after the function is done.
@@ -24,7 +34,7 @@ export function startSpan<T>(options: OpenTelemetrySpanContext, callback: (span:
 
   const { name } = options;
 
-  const activeCtx = getContext(options.scope);
+  const activeCtx = getContext(options.scope, options.forceTransaction);
   const shouldSkipSpan = options.onlyIfParent && !trace.getSpan(activeCtx);
   const ctx = shouldSkipSpan ? suppressTracing(activeCtx) : activeCtx;
 
@@ -52,12 +62,15 @@ export function startSpan<T>(options: OpenTelemetrySpanContext, callback: (span:
  *
  * Note that you'll always get a span passed to the callback, it may just be a NonRecordingSpan if the span is not sampled.
  */
-export function startSpanManual<T>(options: OpenTelemetrySpanContext, callback: (span: Span) => T): T {
+export function startSpanManual<T>(
+  options: OpenTelemetrySpanContext,
+  callback: (span: Span, finish: () => void) => T,
+): T {
   const tracer = getTracer();
 
   const { name } = options;
 
-  const activeCtx = getContext(options.scope);
+  const activeCtx = getContext(options.scope, options.forceTransaction);
   const shouldSkipSpan = options.onlyIfParent && !trace.getSpan(activeCtx);
   const ctx = shouldSkipSpan ? suppressTracing(activeCtx) : activeCtx;
 
@@ -67,7 +80,7 @@ export function startSpanManual<T>(options: OpenTelemetrySpanContext, callback: 
     _applySentryAttributesToSpan(span, options);
 
     return handleCallbackErrors(
-      () => callback(span),
+      () => callback(span, () => span.end()),
       () => {
         span.setStatus({ code: SpanStatusCode.ERROR });
       },
@@ -95,7 +108,7 @@ export function startInactiveSpan(options: OpenTelemetrySpanContext): Span {
 
   const { name } = options;
 
-  const activeCtx = getContext(options.scope);
+  const activeCtx = getContext(options.scope, options.forceTransaction);
   const shouldSkipSpan = options.onlyIfParent && !trace.getSpan(activeCtx);
   const ctx = shouldSkipSpan ? suppressTracing(activeCtx) : activeCtx;
 
@@ -128,23 +141,10 @@ function getTracer(): Tracer {
 }
 
 function _applySentryAttributesToSpan(span: Span, options: OpenTelemetrySpanContext): void {
-  // eslint-disable-next-line deprecation/deprecation
-  const { origin, op, source, metadata } = options;
-
-  if (origin) {
-    span.setAttribute(InternalSentrySemanticAttributes.ORIGIN, origin);
-  }
+  const { op } = options;
 
   if (op) {
-    span.setAttribute(InternalSentrySemanticAttributes.OP, op);
-  }
-
-  if (source) {
-    span.setAttribute(InternalSentrySemanticAttributes.SOURCE, source);
-  }
-
-  if (metadata) {
-    setSpanMetadata(span, metadata);
+    span.setAttribute(SEMANTIC_ATTRIBUTE_SENTRY_OP, op);
   }
 }
 
@@ -166,7 +166,82 @@ function ensureTimestampInMilliseconds(timestamp: number): number {
   return isMs ? timestamp * 1000 : timestamp;
 }
 
-function getContext(scope?: Scope): Context {
+function getContext(scope: Scope | undefined, forceTransaction: boolean | undefined): Context {
+  const ctx = getContextForScope(scope);
+  const actualScope = getScopesFromContext(ctx)?.scope;
+
+  const parentSpan = trace.getSpan(ctx);
+
+  // In the case that we have no parent span, we need to "simulate" one to ensure the propagation context is correct
+  if (!parentSpan) {
+    const client = getClient();
+
+    if (actualScope && client) {
+      const propagationContext = actualScope.getPropagationContext();
+      const dynamicSamplingContext =
+        propagationContext.dsc || getDynamicSamplingContextFromClient(propagationContext.traceId, client);
+
+      // We store the DSC as OTEL trace state on the span context
+      const traceState = makeTraceState({
+        parentSpanId: propagationContext.parentSpanId,
+        dsc: dynamicSamplingContext,
+        sampled: propagationContext.sampled,
+      });
+
+      const spanContext: SpanContext = {
+        traceId: propagationContext.traceId,
+        spanId: propagationContext.parentSpanId || propagationContext.spanId,
+        isRemote: true,
+        traceFlags: propagationContext.sampled ? TraceFlags.SAMPLED : TraceFlags.NONE,
+        traceState,
+      };
+
+      // Add remote parent span context,
+      return trace.setSpanContext(ctx, spanContext);
+    }
+
+    // if we have no scope or client, we just return the context as-is
+    return ctx;
+  }
+
+  // If we don't want to force a transaction, and we have a parent span, all good, we just return as-is!
+  if (!forceTransaction) {
+    return ctx;
+  }
+
+  // Else, if we do have a parent span but want to force a transaction, we have to simulate a "root" context
+
+  // Else, we need to do two things:
+  // 1. Unset the parent span from the context, so we'll create a new root span
+  // 2. Ensure the propagation context is correct, so we'll continue from the parent span
+  const ctxWithoutSpan = trace.deleteSpan(ctx);
+
+  const { spanId, traceId } = parentSpan.spanContext();
+  const sampled = getSamplingDecision(parentSpan.spanContext());
+
+  const rootSpan = getRootSpan(parentSpan);
+  const dsc = getDynamicSamplingContextFromSpan(rootSpan);
+
+  const traceState = makeTraceState({
+    dsc,
+    parentSpanId: spanId,
+    sampled,
+  });
+
+  const spanContext: SpanContext = {
+    traceId,
+    spanId,
+    isRemote: true,
+    traceFlags: sampled ? TraceFlags.SAMPLED : TraceFlags.NONE,
+    traceState,
+  };
+
+  const ctxWithSpanContext = trace.setSpanContext(ctxWithoutSpan, spanContext);
+
+  return ctxWithSpanContext;
+}
+
+function getContextForScope(scope?: Scope): Context {
   if (scope) {
     const ctx = getContextFromScope(scope);
     if (ctx) {
@@ -175,4 +250,21 @@ function getContext(scope?: Scope): Context {
   }
 
   return context.active();
+}
+
+/**
+ * Continue a trace from `sentry-trace` and `baggage` values.
+ * These values can be obtained from incoming request headers, or in the browser from `<meta name="sentry-trace">`
+ * and `<meta name="baggage">` HTML tags.
+ *
+ * Spans started with `startSpan`, `startSpanManual` and `startInactiveSpan`, within the callback will automatically
+ * be attached to the incoming trace.
+ *
+ * This is a custom version of `continueTrace` that is used in OTEL-powered environments.
+ * It propagates the trace as a remote span, in addition to setting it on the propagation context.
+ */
+export function continueTrace<T>(options: Parameters<typeof baseContinueTrace>[0], callback: () => T): T {
+  return baseContinueTrace(options, () => {
+    return continueTraceAsRemoteSpan(context.active(), options, callback);
+  });
 }

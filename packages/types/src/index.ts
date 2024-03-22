@@ -47,7 +47,7 @@ export type {
   ProfileItem,
 } from './envelope';
 export type { ExtendedError } from './error';
-export type { Event, EventHint, EventType, ErrorEvent, TransactionEvent, SerializedEvent } from './event';
+export type { Event, EventHint, EventType, ErrorEvent, TransactionEvent } from './event';
 export type { EventProcessor } from './eventprocessor';
 export type { Exception } from './exception';
 export type { Extra, Extras } from './extra';
@@ -69,7 +69,7 @@ export type {
   Profile,
 } from './profiling';
 export type { ReplayEvent, ReplayRecordingData, ReplayRecordingMode } from './replay';
-export type { FeedbackEvent } from './feedback';
+export type { FeedbackEvent, UserFeedback } from './feedback';
 export type { QueryParams, Request, SanitizedRequestData } from './request';
 export type { Runtime } from './runtime';
 export type { CaptureContext, Scope, ScopeContext, ScopeData } from './scope';
@@ -100,6 +100,7 @@ export type {
   TraceFlag,
   MetricSummary,
 } from './span';
+export type { SpanStatus } from './spanStatus';
 export type { StackFrame } from './stackframe';
 export type { Stacktrace, StackParser, StackLineParser, StackLineParserFn } from './stacktrace';
 export type { PropagationContext, TracePropagationTargets } from './tracing';
@@ -130,10 +131,9 @@ export type {
   BaseTransportOptions,
   TransportRequestExecutor,
 } from './transport';
-export type { User, UserFeedback } from './user';
+export type { User } from './user';
 export type { WebFetchHeaders, WebFetchRequest } from './webfetchapi';
 export type { WrappedFunction } from './wrappedfunction';
-export type { Instrumenter } from './instrumenter';
 export type {
   HandlerDataFetch,
   HandlerDataXhr,

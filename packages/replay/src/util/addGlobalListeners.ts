@@ -44,14 +44,14 @@ export function addGlobalListeners(replay: ReplayContainer): void {
       }
     });
 
-    client.on('startTransaction', transaction => {
-      replay.lastTransaction = transaction;
+    client.on('spanStart', span => {
+      replay.lastActiveSpan = span;
     });
 
-    // We may be missing the initial startTransaction due to timing issues,
+    // We may be missing the initial spanStart due to timing issues,
     // so we capture it on finish again.
-    client.on('finishTransaction', transaction => {
-      replay.lastTransaction = transaction;
+    client.on('spanEnd', span => {
+      replay.lastActiveSpan = span;
     });
 
     // We want to flush replay
@@ -59,8 +59,6 @@ export function addGlobalListeners(replay: ReplayContainer): void {
       const replayId = replay.getSessionId();
       if (options && options.includeReplay && replay.isEnabled() && replayId) {
         // This should never reject
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        replay.flush();
         if (feedbackEvent.contexts && feedbackEvent.contexts.feedback) {
           feedbackEvent.contexts.feedback.replay_id = replayId;
         }

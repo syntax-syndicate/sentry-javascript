@@ -1,15 +1,16 @@
-/* eslint-disable no-bitwise */
 import type { Attributes, Context, SpanContext } from '@opentelemetry/api';
-import { TraceFlags, isSpanContextValid, trace } from '@opentelemetry/api';
+import { isSpanContextValid, trace } from '@opentelemetry/api';
+import { TraceState } from '@opentelemetry/core';
 import type { Sampler, SamplingResult } from '@opentelemetry/sdk-trace-base';
 import { SamplingDecision } from '@opentelemetry/sdk-trace-base';
 import { SEMANTIC_ATTRIBUTE_SENTRY_SAMPLE_RATE, hasTracingEnabled } from '@sentry/core';
 import type { Client, ClientOptions, SamplingContext } from '@sentry/types';
 import { isNaN, logger } from '@sentry/utils';
+import { SENTRY_TRACE_STATE_SAMPLED_NOT_RECORDING } from './constants';
 
 import { DEBUG_BUILD } from './debug-build';
-import { InternalSentrySemanticAttributes } from './semanticAttributes';
-import { getPropagationContextFromContext } from './utils/contextData';
+import { getPropagationContextFromSpanContext, getSamplingDecision } from './propagator';
+import { setIsSetup } from './utils/setupCheck';
 
 /**
  * A custom OTEL sampler that uses Sentry sampling rates to make it's decision
@@ -19,6 +20,7 @@ export class SentrySampler implements Sampler {
 
   public constructor(client: Client) {
     this._client = client;
+    setIsSetup('SentrySampler');
   }
 
   /** @inheritDoc */
@@ -37,6 +39,7 @@ export class SentrySampler implements Sampler {
     }
 
     const parentContext = trace.getSpanContext(context);
+    const traceState = parentContext?.traceState || new TraceState();
 
     let parentSampled: boolean | undefined = undefined;
 
@@ -44,11 +47,11 @@ export class SentrySampler implements Sampler {
     // Note for testing: `isSpanContextValid()` checks the format of the traceId/spanId, so we need to pass valid ones
     if (parentContext && isSpanContextValid(parentContext) && parentContext.traceId === traceId) {
       if (parentContext.isRemote) {
-        parentSampled = getParentRemoteSampled(parentContext, context);
+        parentSampled = getParentRemoteSampled(parentContext);
         DEBUG_BUILD &&
           logger.log(`[Tracing] Inheriting remote parent's sampled decision for ${spanName}: ${parentSampled}`);
       } else {
-        parentSampled = Boolean(parentContext.traceFlags & TraceFlags.SAMPLED);
+        parentSampled = getSamplingDecision(parentContext);
         DEBUG_BUILD && logger.log(`[Tracing] Inheriting parent's sampled decision for ${spanName}: ${parentSampled}`);
       }
     }
@@ -67,10 +70,6 @@ export class SentrySampler implements Sampler {
       [SEMANTIC_ATTRIBUTE_SENTRY_SAMPLE_RATE]: Number(sampleRate),
     };
 
-    if (typeof parentSampled === 'boolean') {
-      attributes[InternalSentrySemanticAttributes.PARENT_SAMPLED] = parentSampled;
-    }
-
     // Since this is coming from the user (or from a function provided by the user), who knows what we might get. (The
     // only valid values are booleans or numbers between 0 and 1.)
     if (!isValidSampleRate(sampleRate)) {
@@ -79,6 +78,7 @@ export class SentrySampler implements Sampler {
       return {
         decision: SamplingDecision.NOT_RECORD,
         attributes,
+        traceState: traceState.set(SENTRY_TRACE_STATE_SAMPLED_NOT_RECORDING, '1'),
       };
     }
 
@@ -96,6 +96,7 @@ export class SentrySampler implements Sampler {
       return {
         decision: SamplingDecision.NOT_RECORD,
         attributes,
+        traceState: traceState.set(SENTRY_TRACE_STATE_SAMPLED_NOT_RECORDING, '1'),
       };
     }
 
@@ -115,6 +116,7 @@ export class SentrySampler implements Sampler {
       return {
         decision: SamplingDecision.NOT_RECORD,
         attributes,
+        traceState: traceState.set(SENTRY_TRACE_STATE_SAMPLED_NOT_RECORDING, '1'),
       };
     }
 
@@ -178,10 +180,10 @@ function isValidSampleRate(rate: unknown): boolean {
   return true;
 }
 
-function getParentRemoteSampled(spanContext: SpanContext, context: Context): boolean | undefined {
+function getParentRemoteSampled(spanContext: SpanContext): boolean | undefined {
   const traceId = spanContext.traceId;
-  const traceparentData = getPropagationContextFromContext(context);
+  const traceparentData = getPropagationContextFromSpanContext(spanContext);
 
-  // Only inherit sample rate if `traceId` is the same
+  // Only inherit sampled if `traceId` is the same
   return traceparentData && traceId === traceparentData.traceId ? traceparentData.sampled : undefined;
 }

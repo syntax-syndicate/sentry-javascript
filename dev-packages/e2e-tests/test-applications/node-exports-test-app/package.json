@@ -13,21 +13,17 @@
   },
   "dependencies": {
     "@sentry/node-experimental": "latest || *",
+    "@sentry/node": "latest || *",
     "@sentry/sveltekit": "latest || *",
     "@sentry/remix": "latest || *",
     "@sentry/astro": "latest || *",
     "@sentry/nextjs": "latest || *",
-    "@sentry/serverless": "latest || *",
+    "@sentry/aws-serverless": "latest || *",
+    "@sentry/google-cloud-serverless": "latest || *",
     "@sentry/bun": "latest || *",
     "@sentry/types": "latest || *",
     "@types/node": "18.15.1",
     "typescript": "4.9.5"
-  },
-  "pnpm": {
-    "overrides": {
-      "@sentry/node": "latest || *",
-      "@sentry/tracing": "file:../../tracing-shim-esm"
-    }
   },
   "devDependencies": {
     "ts-node": "10.9.1"

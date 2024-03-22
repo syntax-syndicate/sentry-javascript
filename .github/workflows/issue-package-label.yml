@@ -38,9 +38,6 @@ jobs:
               "@sentry.angular": {
                 "label": "Package: Angular"
               },
-              "@sentry.angular-ivy": {
-                "label": "Package: Angular"
-              },
               "@sentry.bun": {
                 "label": "Package: Bun"
               },
@@ -55,9 +52,6 @@ jobs:
               },
               "@sentry.node": {
                 "label": "Package: Node"
-              },
-              "@sentry.opentelemetry-node": {
-                "label": "Package: otel-node"
               },
               "@sentry.react": {
                 "label": "Package: react"

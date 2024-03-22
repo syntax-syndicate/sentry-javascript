@@ -3,11 +3,7 @@ export * from '../exports';
 export type { RequestInstrumentationOptions } from './request';
 
 export {
-  // eslint-disable-next-line deprecation/deprecation
-  BrowserTracing,
   BROWSER_TRACING_INTEGRATION_ID,
-} from './browsertracing';
-export {
   browserTracingIntegration,
   startBrowserTracingNavigationSpan,
   startBrowserTracingPageLoadSpan,
@@ -19,5 +15,6 @@ export {
   addPerformanceInstrumentationHandler,
   addClsInstrumentationHandler,
   addFidInstrumentationHandler,
+  addTtfbInstrumentationHandler,
   addLcpInstrumentationHandler,
 } from './instrument';

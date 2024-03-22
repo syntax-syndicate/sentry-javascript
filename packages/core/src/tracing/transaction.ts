@@ -5,6 +5,7 @@ import type {
   Hub,
   MeasurementUnit,
   Measurements,
+  SpanJSON,
   SpanTimeInput,
   Transaction as TransactionInterface,
   TransactionContext,
@@ -18,10 +19,10 @@ import { DEBUG_BUILD } from '../debug-build';
 import { getCurrentHub } from '../hub';
 import { getMetricSummaryJsonForSpan } from '../metrics/metric-summary';
 import { SEMANTIC_ATTRIBUTE_SENTRY_SAMPLE_RATE, SEMANTIC_ATTRIBUTE_SENTRY_SOURCE } from '../semanticAttributes';
-import { spanTimeInputToSeconds, spanToJSON, spanToTraceContext } from '../utils/spanUtils';
+import { getSpanDescendants, spanTimeInputToSeconds, spanToJSON, spanToTraceContext } from '../utils/spanUtils';
 import { getDynamicSamplingContextFromSpan } from './dynamicSamplingContext';
-import { SentrySpan, SpanRecorder } from './sentrySpan';
-import { getCapturedScopesOnSpan, getSpanTree } from './trace';
+import { SentrySpan } from './sentrySpan';
+import { getCapturedScopesOnSpan } from './utils';
 
 /** JSDoc */
 export class Transaction extends SentrySpan implements TransactionInterface {
@@ -44,8 +45,7 @@ export class Transaction extends SentrySpan implements TransactionInterface {
   private _metadata: Partial<TransactionMetadata>;
 
   /**
-   * This constructor should never be called manually. Those instrumenting tracing should use
-   * `Sentry.startTransaction()`, and internal methods should use `hub.startTransaction()`.
+   * This constructor should never be called manually.
    * @internal
    * @hideconstructor
    * @hidden
@@ -128,20 +128,6 @@ export class Transaction extends SentrySpan implements TransactionInterface {
   }
 
   /**
-   * Attaches SpanRecorder to the span itself
-   * @param maxlen maximum number of spans that can be recorded
-   */
-  public initSpanRecorder(maxlen: number = 1000): void {
-    // eslint-disable-next-line deprecation/deprecation
-    if (!this.spanRecorder) {
-      // eslint-disable-next-line deprecation/deprecation
-      this.spanRecorder = new SpanRecorder(maxlen);
-    }
-    // eslint-disable-next-line deprecation/deprecation
-    this.spanRecorder.add(this);
-  }
-
-  /**
    * Set the context of a transaction event.
    * @deprecated Use either `.setAttribute()`, or set the context on the scope before creating the transaction.
    */
@@ -199,19 +185,6 @@ export class Transaction extends SentrySpan implements TransactionInterface {
   }
 
   /**
-   * @inheritDoc
-   */
-  public updateWithContext(transactionContext: TransactionContext): this {
-    // eslint-disable-next-line deprecation/deprecation
-    super.updateWithContext(transactionContext);
-
-    this._name = transactionContext.name || '';
-    this._trimEnd = transactionContext.trimEnd;
-
-    return this;
-  }
-
-  /**
    * @inheritdoc
    *
    * @experimental
@@ -251,9 +224,6 @@ export class Transaction extends SentrySpan implements TransactionInterface {
 
     // eslint-disable-next-line deprecation/deprecation
     const client = this._hub.getClient();
-    if (client) {
-      client.emit('finishTransaction', this);
-    }
 
     if (this._sampled !== true) {
       // At this point if `sampled !== true` we want to discard the transaction.
@@ -266,8 +236,8 @@ export class Transaction extends SentrySpan implements TransactionInterface {
       return undefined;
     }
 
-    // We only want to include finished spans in the event
-    const finishedSpans = getSpanTree(this).filter(span => span !== this && spanToJSON(span).timestamp);
+    // The transaction span itself should be filtered out
+    const finishedSpans = getSpanDescendants(this).filter(span => span !== this);
 
     if (this._trimEnd && finishedSpans.length > 0) {
       const endTimes = finishedSpans.map(span => spanToJSON(span).timestamp).filter(Boolean) as number[];
@@ -275,6 +245,13 @@ export class Transaction extends SentrySpan implements TransactionInterface {
         return prev > current ? prev : current;
       });
     }
+
+    // We want to filter out any incomplete SpanJSON objects
+    function isFullFinishedSpan(input: Partial<SpanJSON>): input is SpanJSON {
+      return !!input.start_timestamp && !!input.timestamp && !!input.span_id && !!input.trace_id;
+    }
+
+    const spans = finishedSpans.map(span => spanToJSON(span)).filter(isFullFinishedSpan);
 
     const { scope: capturedSpanScope, isolationScope: capturedSpanIsolationScope } = getCapturedScopesOnSpan(this);
 
@@ -289,11 +266,8 @@ export class Transaction extends SentrySpan implements TransactionInterface {
         // We don't want to override trace context
         trace: spanToTraceContext(this),
       },
-      // TODO: Pass spans serialized via `spanToJSON()` here instead in v8.
-      spans: finishedSpans,
+      spans,
       start_timestamp: this._startTime,
-      // eslint-disable-next-line deprecation/deprecation
-      tags: this.tags,
       timestamp: this._endTime,
       transaction: this._name,
       type: 'transaction',
@@ -301,7 +275,9 @@ export class Transaction extends SentrySpan implements TransactionInterface {
         ...metadata,
         capturedSpanScope,
         capturedSpanIsolationScope,
-        dynamicSamplingContext: getDynamicSamplingContextFromSpan(this),
+        ...dropUndefinedKeys({
+          dynamicSamplingContext: getDynamicSamplingContextFromSpan(this),
+        }),
       },
       _metrics_summary: getMetricSummaryJsonForSpan(this),
       ...(source && {

@@ -11,18 +11,19 @@ import {
 import type { DsnLike, Integration, Options, UserFeedback } from '@sentry/types';
 import {
   addHistoryInstrumentationHandler,
+  consoleSandbox,
   logger,
   stackParserFromStackParserOptions,
   supportsFetch,
 } from '@sentry/utils';
 
+import { dedupeIntegration } from '@sentry/core';
 import type { BrowserClientOptions, BrowserOptions } from './client';
 import { BrowserClient } from './client';
 import { DEBUG_BUILD } from './debug-build';
-import { WINDOW, wrap as internalWrap } from './helpers';
+import { WINDOW } from './helpers';
 import { breadcrumbsIntegration } from './integrations/breadcrumbs';
 import { browserApiErrorsIntegration } from './integrations/browserapierrors';
-import { dedupeIntegration } from './integrations/dedupe';
 import { globalHandlersIntegration } from './integrations/globalhandlers';
 import { httpContextIntegration } from './integrations/httpcontext';
 import { linkedErrorsIntegration } from './integrations/linkederrors';
@@ -41,6 +42,40 @@ export function getDefaultIntegrations(_options: Options): Integration[] {
     dedupeIntegration(),
     httpContextIntegration(),
   ];
+}
+
+function applyDefaultOptions(optionsArg: BrowserOptions = {}): BrowserOptions {
+  const defaultOptions: BrowserOptions = {
+    defaultIntegrations: getDefaultIntegrations(optionsArg),
+    release:
+      typeof __SENTRY_RELEASE__ === 'string' // This allows build tooling to find-and-replace __SENTRY_RELEASE__ to inject a release value
+        ? __SENTRY_RELEASE__
+        : WINDOW.SENTRY_RELEASE && WINDOW.SENTRY_RELEASE.id // This supports the variable that sentry-webpack-plugin injects
+          ? WINDOW.SENTRY_RELEASE.id
+          : undefined,
+    autoSessionTracking: true,
+    sendClientReports: true,
+  };
+
+  return { ...defaultOptions, ...optionsArg };
+}
+
+function shouldShowBrowserExtensionError(): boolean {
+  const windowWithMaybeChrome = WINDOW as typeof WINDOW & { chrome?: { runtime?: { id?: string } } };
+  const isInsideChromeExtension =
+    windowWithMaybeChrome &&
+    windowWithMaybeChrome.chrome &&
+    windowWithMaybeChrome.chrome.runtime &&
+    windowWithMaybeChrome.chrome.runtime.id;
+
+  const windowWithMaybeBrowser = WINDOW as typeof WINDOW & { browser?: { runtime?: { id?: string } } };
+  const isInsideBrowserExtension =
+    windowWithMaybeBrowser &&
+    windowWithMaybeBrowser.browser &&
+    windowWithMaybeBrowser.browser.runtime &&
+    windowWithMaybeBrowser.browser.runtime.id;
+
+  return !!isInsideBrowserExtension || !!isInsideChromeExtension;
 }
 
 /**
@@ -94,26 +129,17 @@ declare const __SENTRY_RELEASE__: string | undefined;
  *
  * @see {@link BrowserOptions} for documentation on configuration options.
  */
-export function init(options: BrowserOptions = {}): void {
-  if (options.defaultIntegrations === undefined) {
-    options.defaultIntegrations = getDefaultIntegrations(options);
-  }
-  if (options.release === undefined) {
-    // This allows build tooling to find-and-replace __SENTRY_RELEASE__ to inject a release value
-    if (typeof __SENTRY_RELEASE__ === 'string') {
-      options.release = __SENTRY_RELEASE__;
-    }
+export function init(browserOptions: BrowserOptions = {}): void {
+  const options = applyDefaultOptions(browserOptions);
 
-    // This supports the variable that sentry-webpack-plugin injects
-    if (WINDOW.SENTRY_RELEASE && WINDOW.SENTRY_RELEASE.id) {
-      options.release = WINDOW.SENTRY_RELEASE.id;
-    }
-  }
-  if (options.autoSessionTracking === undefined) {
-    options.autoSessionTracking = true;
-  }
-  if (options.sendClientReports === undefined) {
-    options.sendClientReports = true;
+  if (shouldShowBrowserExtensionError()) {
+    consoleSandbox(() => {
+      // eslint-disable-next-line no-console
+      console.error(
+        '[Sentry] You cannot run Sentry this way in a browser extension, check: https://docs.sentry.io/platforms/javascript/troubleshooting/#setting-up-sentry-in-shared-environments-eg-browser-extensions',
+      );
+    });
+    return;
   }
 
   if (DEBUG_BUILD) {
@@ -240,23 +266,6 @@ export function forceLoad(): void {
  */
 export function onLoad(callback: () => void): void {
   callback();
-}
-
-/**
- * Wrap code within a try/catch block so the SDK is able to capture errors.
- *
- * @deprecated This function will be removed in v8.
- * It is not part of Sentry's official API and it's easily replaceable by using a try/catch block
- * and calling Sentry.captureException.
- *
- * @param fn A function to wrap.
- *
- * @returns The result of wrapped function call.
- */
-// TODO(v8): Remove this function
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function wrap(fn: (...args: any) => any): any {
-  return internalWrap(fn)();
 }
 
 /**

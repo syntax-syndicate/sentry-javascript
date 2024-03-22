@@ -38,12 +38,6 @@ packages:
     unpublish: $all
     # proxy: npmjs # Don't proxy for E2E tests!
 
-  '@sentry/angular-ivy':
-    access: $all
-    publish: $all
-    unpublish: $all
-    # proxy: npmjs # Don't proxy for E2E tests!
-
   '@sentry/astro':
     access: $all
     publish: $all
@@ -86,12 +80,6 @@ packages:
     unpublish: $all
     # proxy: npmjs # Don't proxy for E2E tests!
 
-  '@sentry/integrations':
-    access: $all
-    publish: $all
-    unpublish: $all
-    # proxy: npmjs # Don't proxy for E2E tests!
-
   '@sentry/nextjs':
     access: $all
     publish: $all
@@ -105,12 +93,6 @@ packages:
     # proxy: npmjs # Don't proxy for E2E tests!
 
   '@sentry/node-experimental':
-    access: $all
-    publish: $all
-    unpublish: $all
-    # proxy: npmjs # Don't proxy for E2E tests!
-
-  '@sentry/opentelemetry-node':
     access: $all
     publish: $all
     unpublish: $all
@@ -146,7 +128,13 @@ packages:
     unpublish: $all
     # proxy: npmjs # Don't proxy for E2E tests!
 
-  '@sentry/serverless':
+  '@sentry/aws-serverless':
+    access: $all
+    publish: $all
+    unpublish: $all
+    # proxy: npmjs # Don't proxy for E2E tests!
+
+  '@sentry/google-cloud-serverless':
     access: $all
     publish: $all
     unpublish: $all

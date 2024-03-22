@@ -1,8 +1,7 @@
 import type { Context } from './context';
 import type { DynamicSamplingContext } from './envelope';
-import type { Instrumenter } from './instrumenter';
 import type { MeasurementUnit } from './measurement';
-import type { ExtractedNodeRequestData, Primitive, WorkerLocation } from './misc';
+import type { ExtractedNodeRequestData, WorkerLocation } from './misc';
 import type { PolymorphicRequest } from './polymorphics';
 import type { Span, SpanAttributes, SpanContext } from './span';
 
@@ -38,7 +37,22 @@ export interface TransactionContext extends SpanContext {
 /**
  * Data pulled from a `sentry-trace` header
  */
-export type TraceparentData = Pick<TransactionContext, 'traceId' | 'parentSpanId' | 'parentSampled'>;
+export interface TraceparentData {
+  /**
+   * Trace ID
+   */
+  traceId?: string | undefined;
+
+  /**
+   * Parent Span ID
+   */
+  parentSpanId?: string | undefined;
+
+  /**
+   * If this transaction has a parent, the parent's sampling decision
+   */
+  parentSampled?: boolean | undefined;
+}
 
 /**
  * Transaction "Class", inherits Span only has `setName`
@@ -60,18 +74,12 @@ export interface Transaction extends Omit<TransactionContext, 'name' | 'op'>, Sp
    * Was this transaction chosen to be sent as part of the sample?
    * @deprecated Use `spanIsSampled(transaction)` instead.
    */
-  sampled?: boolean;
+  sampled?: boolean | undefined;
 
   /**
    * @inheritDoc
    */
   startTimestamp: number;
-
-  /**
-   * Tags for the transaction.
-   * @deprecated Use `getSpanAttributes(transaction)` instead.
-   */
-  tags: { [key: string]: Primitive };
 
   /**
    * Data for the transaction.
@@ -90,13 +98,6 @@ export interface Transaction extends Omit<TransactionContext, 'name' | 'op'>, Sp
    * @deprecated Use attributes or store data on the scope instead.
    */
   metadata: TransactionMetadata;
-
-  /**
-   * The instrumenter that created this transaction.
-   *
-   * @deprecated This field will be removed in v8.
-   */
-  instrumenter: Instrumenter;
 
   /**
    * Set the context of a transaction event.
@@ -122,12 +123,6 @@ export interface Transaction extends Omit<TransactionContext, 'name' | 'op'>, Sp
   toContext(): TransactionContext;
 
   /**
-   * Updates the current transaction with a new `TransactionContext`.
-   * @deprecated Update the fields directly instead.
-   */
-  updateWithContext(transactionContext: TransactionContext): this;
-
-  /**
    * Set metadata for this transaction.
    * @deprecated Use attributes or store data on the scope instead.
    */
@@ -139,6 +134,14 @@ export interface Transaction extends Omit<TransactionContext, 'name' | 'op'>, Sp
    * @deprecated Use top-level `getDynamicSamplingContextFromSpan` instead.
    */
   getDynamicSamplingContext(): Partial<DynamicSamplingContext>;
+
+  /**
+   * Creates a new `Span` while setting the current `Span.id` as `parentSpanId`.
+   * Also the `sampled` decision will be inherited.
+   *
+   * @deprecated Use `startSpan()`, `startSpanManual()` or `startInactiveSpan()` instead.
+   */
+  startChild(spanContext?: Pick<SpanContext, Exclude<keyof SpanContext, 'sampled' | 'traceId' | 'parentSpanId'>>): Span;
 }
 
 /**

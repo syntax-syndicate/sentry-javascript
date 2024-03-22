@@ -7,8 +7,8 @@ import {
   SENTRY_FORK_SET_ISOLATION_SCOPE_CONTEXT_KEY,
   SENTRY_FORK_SET_SCOPE_CONTEXT_KEY,
 } from './constants';
-import { getCurrentHub } from './custom/getCurrentHub';
-import { getScopesFromContext, setContextOnScope, setHubOnContext, setScopesOnContext } from './utils/contextData';
+import { getScopesFromContext, setContextOnScope, setScopesOnContext } from './utils/contextData';
+import { setIsSetup } from './utils/setupCheck';
 
 /**
  * Wrap an OpenTelemetry ContextManager in a way that ensures the context is kept in sync with the Sentry Hub.
@@ -31,6 +31,10 @@ export function wrapContextManagerClass<ContextManagerInstance extends ContextMa
 
   // @ts-expect-error TS does not like this, but we know this is fine
   class SentryContextManager extends ContextManagerClass {
+    public constructor() {
+      super();
+      setIsSetup('SentryContextManager');
+    }
     /**
      * Overwrite with() of the original AsyncLocalStorageContextManager
      * to ensure we also create a new hub per context.
@@ -54,25 +58,17 @@ export function wrapContextManagerClass<ContextManagerInstance extends ContextMa
         isolationScope || (shouldForkIsolationScope ? currentIsolationScope.clone() : currentIsolationScope);
       const scopes = { scope: newCurrentScope, isolationScope: newIsolationScope };
 
-      const mockHub = {
-        // eslint-disable-next-line deprecation/deprecation
-        ...getCurrentHub(),
-        getScope: () => newCurrentScope,
-        getIsolationScope: () => newIsolationScope,
-      };
-
-      const ctx1 = setHubOnContext(context, mockHub);
-      const ctx2 = setScopesOnContext(ctx1, scopes);
+      const ctx1 = setScopesOnContext(context, scopes);
 
       // Remove the unneeded values again
-      const ctx3 = ctx2
+      const ctx2 = ctx1
         .deleteValue(SENTRY_FORK_ISOLATION_SCOPE_CONTEXT_KEY)
         .deleteValue(SENTRY_FORK_SET_SCOPE_CONTEXT_KEY)
         .deleteValue(SENTRY_FORK_SET_ISOLATION_SCOPE_CONTEXT_KEY);
 
-      setContextOnScope(newCurrentScope, ctx3);
+      setContextOnScope(newCurrentScope, ctx2);
 
-      return super.with(ctx3, fn, thisArg, ...args);
+      return super.with(ctx2, fn, thisArg, ...args);
     }
   }
 

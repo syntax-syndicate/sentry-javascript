@@ -1,7 +1,8 @@
-import { convertIntegrationFnToClass, defineIntegration, getClient } from '@sentry/core';
-import type { Event, Exception, Integration, IntegrationClass, IntegrationFn, StackParser } from '@sentry/types';
+import { defineIntegration, getClient } from '@sentry/core';
+import type { Event, Exception, IntegrationFn, StackParser } from '@sentry/types';
 import { LRUMap, logger } from '@sentry/utils';
-import type { Debugger, InspectorNotification, Runtime, Session } from 'inspector';
+import type { Debugger, InspectorNotification, Runtime } from 'inspector';
+import { Session } from 'inspector';
 
 import { NODE_MAJOR } from '../../nodeVersion';
 import type { NodeClient } from '../../sdk/client';
@@ -78,22 +79,6 @@ class AsyncSession implements DebugSession {
 
   /** Throws if inspector API is not available */
   public constructor() {
-    /*
-    TODO: We really should get rid of this require statement below for a couple of reasons:
-    1. It makes the integration unusable in the SvelteKit SDK, as it's not possible to use `require`
-       in SvelteKit server code (at least not by default).
-    2. Throwing in a constructor is bad practice
-
-    More context for a future attempt to fix this:
-    We already tried replacing it with import but didn't get it to work because of async problems.
-    We still called import in the constructor but assigned to a promise which we "awaited" in
-    `configureAndConnect`. However, this broke the Node integration tests as no local variables
-    were reported any more. We probably missed a place where we need to await the promise, too.
-    */
-
-    // Node can be built without inspector support so this can throw
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { Session } = require('inspector');
     this._session = new Session();
   }
 
@@ -128,7 +113,7 @@ class AsyncSession implements DebugSession {
         } else if (prop?.value?.objectId && prop?.value?.className === 'Object') {
           const id = prop.value.objectId;
           add(vars => this._unrollObject(id, prop.name, vars, next));
-        } else if (prop?.value?.value || prop?.value?.description) {
+        } else if (prop?.value) {
           add(vars => this._unrollOther(prop, vars, next));
         }
       }
@@ -191,10 +176,18 @@ class AsyncSession implements DebugSession {
    * Unrolls other properties
    */
   private _unrollOther(prop: Runtime.PropertyDescriptor, vars: Variables, next: (vars: Variables) => void): void {
-    if (prop?.value?.value) {
-      vars[prop.name] = prop.value.value;
-    } else if (prop?.value?.description && prop?.value?.type !== 'function') {
-      vars[prop.name] = `<${prop.value.description}>`;
+    if (prop.value) {
+      if ('value' in prop.value) {
+        if (prop.value.value === undefined || prop.value.value === null) {
+          vars[prop.name] = `<${prop.value.value}>`;
+        } else {
+          vars[prop.name] = prop.value.value;
+        }
+      } else if ('description' in prop.value && prop.value.type !== 'function') {
+        vars[prop.name] = `<${prop.value.description}>`;
+      } else if (prop.value.type === 'undefined') {
+        vars[prop.name] = '<undefined>';
+      }
     }
 
     next(vars);
@@ -391,19 +384,7 @@ const _localVariablesSyncIntegration = ((
   };
 }) satisfies IntegrationFn;
 
-export const localVariablesSyncIntegration = defineIntegration(_localVariablesSyncIntegration);
-
 /**
  * Adds local variables to exception frames.
- * @deprecated Use `localVariablesSyncIntegration()` instead.
  */
-// eslint-disable-next-line deprecation/deprecation
-export const LocalVariablesSync = convertIntegrationFnToClass(
-  INTEGRATION_NAME,
-  localVariablesSyncIntegration,
-) as IntegrationClass<Integration & { processEvent: (event: Event) => Event; setup: (client: NodeClient) => void }> & {
-  new (options?: LocalVariablesIntegrationOptions, session?: DebugSession): Integration;
-};
-
-// eslint-disable-next-line deprecation/deprecation
-export type LocalVariablesSync = typeof LocalVariablesSync;
+export const localVariablesSyncIntegration = defineIntegration(_localVariablesSyncIntegration);

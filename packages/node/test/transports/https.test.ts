@@ -1,3 +1,4 @@
+/* eslint-disable deprecation/deprecation */
 import * as http from 'http';
 import * as https from 'https';
 import { createTransport } from '@sentry/core';
@@ -49,7 +50,9 @@ function setupTestServer(
     res.end();
 
     // also terminate socket because keepalive hangs connection a bit
-    res.connection.end();
+    if (res.connection) {
+      res.connection.end();
+    }
   });
 
   testServer.listen(8099);
@@ -81,15 +84,17 @@ const defaultOptions = {
   recordDroppedEvent: () => undefined, // noop
 };
 
+afterEach(done => {
+  jest.clearAllMocks();
+
+  if (testServer && testServer.listening) {
+    testServer.close(done);
+  } else {
+    done();
+  }
+});
+
 describe('makeNewHttpsTransport()', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-
-    if (testServer) {
-      testServer.close();
-    }
-  });
-
   describe('.send()', () => {
     it('should correctly send envelope to server', async () => {
       await setupTestServer({ statusCode: SUCCESS }, (req, body) => {

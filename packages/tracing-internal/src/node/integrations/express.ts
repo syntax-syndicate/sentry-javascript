@@ -1,6 +1,9 @@
 /* eslint-disable max-lines */
+import type { Transaction } from '@sentry/core';
+import { SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN } from '@sentry/core';
+import { startInactiveSpan, withActiveSpan } from '@sentry/core';
 import { SEMANTIC_ATTRIBUTE_SENTRY_SOURCE, spanToJSON } from '@sentry/core';
-import type { Hub, Integration, PolymorphicRequest, Transaction } from '@sentry/types';
+import type { Integration, PolymorphicRequest } from '@sentry/types';
 import {
   GLOBAL_OBJ,
   extractPathForTransaction,
@@ -11,7 +14,6 @@ import {
 } from '@sentry/utils';
 
 import { DEBUG_BUILD } from '../../common/debug-build';
-import { shouldDisableAutoInstrumentation } from './utils/node-utils';
 
 type Method =
   | 'all'
@@ -119,14 +121,9 @@ export class Express implements Integration {
   /**
    * @inheritDoc
    */
-  public setupOnce(_: unknown, getCurrentHub: () => Hub): void {
+  public setupOnce(_: unknown): void {
     if (!this._router) {
       DEBUG_BUILD && logger.error('ExpressIntegration is missing an Express instance');
-      return;
-    }
-
-    if (shouldDisableAutoInstrumentation(getCurrentHub)) {
-      DEBUG_BUILD && logger.log('Express Integration is skipped because of instrumenter configuration.');
       return;
     }
 
@@ -158,11 +155,14 @@ function wrap(fn: Function, method: Method): (...args: any[]) => void {
       return function (this: NodeJS.Global, req: unknown, res: ExpressResponse & SentryTracingResponse): void {
         const transaction = res.__sentry_transaction;
         if (transaction) {
-          // eslint-disable-next-line deprecation/deprecation
-          const span = transaction.startChild({
-            name: fn.name,
-            op: `middleware.express.${method}`,
-            origin: 'auto.middleware.express',
+          const span = withActiveSpan(transaction, () => {
+            return startInactiveSpan({
+              name: fn.name,
+              op: `middleware.express.${method}`,
+              attributes: {
+                [SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN]: 'auto.middleware.express',
+              },
+            });
           });
           res.once('finish', () => {
             span.end();
@@ -179,12 +179,17 @@ function wrap(fn: Function, method: Method): (...args: any[]) => void {
         next: () => void,
       ): void {
         const transaction = res.__sentry_transaction;
-        // eslint-disable-next-line deprecation/deprecation
-        const span = transaction?.startChild({
-          name: fn.name,
-          op: `middleware.express.${method}`,
-          origin: 'auto.middleware.express',
-        });
+        const span = transaction
+          ? withActiveSpan(transaction, () => {
+              return startInactiveSpan({
+                name: fn.name,
+                op: `middleware.express.${method}`,
+                attributes: {
+                  [SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN]: 'auto.middleware.express',
+                },
+              });
+            })
+          : undefined;
         fn.call(this, req, res, function (this: NodeJS.Global, ...args: unknown[]): void {
           span?.end();
           next.call(this, ...args);
@@ -200,12 +205,17 @@ function wrap(fn: Function, method: Method): (...args: any[]) => void {
         next: () => void,
       ): void {
         const transaction = res.__sentry_transaction;
-        // eslint-disable-next-line deprecation/deprecation
-        const span = transaction?.startChild({
-          name: fn.name,
-          op: `middleware.express.${method}`,
-          origin: 'auto.middleware.express',
-        });
+        const span = transaction
+          ? withActiveSpan(transaction, () => {
+              return startInactiveSpan({
+                name: fn.name,
+                op: `middleware.express.${method}`,
+                attributes: {
+                  [SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN]: 'auto.middleware.express',
+                },
+              });
+            })
+          : undefined;
         fn.call(this, err, req, res, function (this: NodeJS.Global, ...args: unknown[]): void {
           span?.end();
           next.call(this, ...args);

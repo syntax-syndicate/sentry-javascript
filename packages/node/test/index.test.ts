@@ -1,5 +1,4 @@
 import {
-  LinkedErrors,
   SDK_VERSION,
   getGlobalScope,
   getIsolationScope,
@@ -11,7 +10,7 @@ import {
 import type { EventHint, Integration } from '@sentry/types';
 
 import type { Event } from '../src';
-import { contextLinesIntegration } from '../src';
+import { contextLinesIntegration, linkedErrorsIntegration } from '../src';
 import {
   NodeClient,
   addBreadcrumb,
@@ -24,9 +23,7 @@ import {
   init,
 } from '../src';
 import { setNodeAsyncContextStrategy } from '../src/async';
-import { ContextLines } from '../src/integrations';
 import { defaultStackParser, getDefaultIntegrations } from '../src/sdk';
-import type { NodeClientOptions } from '../src/types';
 import { getDefaultNodeClientOptions } from './helper/node-client-options';
 
 jest.mock('@sentry/core', () => {
@@ -218,8 +215,7 @@ describe('SentryNode', () => {
       expect.assertions(15);
       const options = getDefaultNodeClientOptions({
         stackParser: defaultStackParser,
-        // eslint-disable-next-line deprecation/deprecation
-        integrations: [new ContextLines(), new LinkedErrors()],
+        integrations: [contextLinesIntegration(), linkedErrorsIntegration()],
         beforeSend: (event: Event) => {
           expect(event.exception).not.toBeUndefined();
           expect(event.exception!.values![1]).not.toBeUndefined();
@@ -415,7 +411,7 @@ describe('SentryNode initialization', () => {
       expect(sdkData.version).toEqual(SDK_VERSION);
     });
 
-    // wrapper packages (like @sentry/serverless) set their SDK data in their `init` methods, which are
+    // wrapper packages (like @sentry/aws-serverless) set their SDK data in their `init` methods, which are
     // called before the client is instantiated, and we don't want to clobber that data
     it("shouldn't overwrite SDK data that's already there", () => {
       init({
@@ -423,10 +419,10 @@ describe('SentryNode initialization', () => {
         // this would normally be set by the wrapper SDK in init()
         _metadata: {
           sdk: {
-            name: 'sentry.javascript.serverless',
+            name: 'sentry.javascript.aws-serverless',
             packages: [
               {
-                name: 'npm:@sentry/serverless',
+                name: 'npm:@sentry/aws-serverless',
                 version: SDK_VERSION,
               },
             ],
@@ -437,8 +433,8 @@ describe('SentryNode initialization', () => {
 
       const sdkData = getClient()?.getOptions()._metadata?.sdk || {};
 
-      expect(sdkData.name).toEqual('sentry.javascript.serverless');
-      expect(sdkData.packages?.[0].name).toEqual('npm:@sentry/serverless');
+      expect(sdkData.name).toEqual('sentry.javascript.aws-serverless');
+      expect(sdkData.packages?.[0].name).toEqual('npm:@sentry/aws-serverless');
       expect(sdkData.packages?.[0].version).toEqual(SDK_VERSION);
       expect(sdkData.version).toEqual(SDK_VERSION);
     });
@@ -484,24 +480,6 @@ describe('SentryNode initialization', () => {
 
       const options = (initAndBind as jest.Mock).mock.calls[0][1];
       expect(options.autoSessionTracking).toBe(undefined);
-    });
-  });
-
-  describe('instrumenter', () => {
-    it('defaults to sentry instrumenter', () => {
-      init({ dsn });
-
-      const instrumenter = (getClient()?.getOptions() as NodeClientOptions).instrumenter;
-
-      expect(instrumenter).toEqual('sentry');
-    });
-
-    it('allows to set instrumenter', () => {
-      init({ dsn, instrumenter: 'otel' });
-
-      const instrumenter = (getClient()?.getOptions() as NodeClientOptions).instrumenter;
-
-      expect(instrumenter).toEqual('otel');
     });
   });
 

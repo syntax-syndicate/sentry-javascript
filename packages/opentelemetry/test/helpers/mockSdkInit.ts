@@ -4,6 +4,7 @@ import type { ClientOptions, Options } from '@sentry/types';
 
 import { getCurrentScope, getGlobalScope, getIsolationScope } from '@sentry/core';
 import { setOpenTelemetryContextAsyncContextStrategy } from '../../src/asyncContextStrategy';
+import { clearOpenTelemetrySetupCheck } from '../../src/utils/setupCheck';
 import { init as initTestClient } from './TestClient';
 import { initOtel } from './initOtel';
 
@@ -13,13 +14,8 @@ const PUBLIC_DSN = 'https://username@domain/123';
  * Initialize Sentry for Node.
  */
 function init(options: Partial<Options> | undefined = {}): void {
-  const fullOptions: Partial<Options> = {
-    instrumenter: 'otel',
-    ...options,
-  };
-
   setOpenTelemetryContextAsyncContextStrategy();
-  initTestClient(fullOptions);
+  initTestClient(options);
   initOtel();
 }
 
@@ -37,6 +33,7 @@ export function mockSdkInit(options?: Partial<ClientOptions>) {
 }
 
 export function cleanupOtel(_provider?: BasicTracerProvider): void {
+  clearOpenTelemetrySetupCheck();
   const provider = getProvider(_provider);
 
   if (!provider) {

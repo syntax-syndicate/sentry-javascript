@@ -1,8 +1,4 @@
-export {
-  // eslint-disable-next-line deprecation/deprecation
-  Replay,
-  replayIntegration,
-} from './integration';
+export { replayIntegration } from './integration';
 
 export type {
   ReplayConfiguration,
@@ -20,6 +16,3 @@ export type {
 } from './types';
 
 export { getReplay } from './util/getReplay';
-
-// TODO (v8): Remove deprecated types
-export * from './types/deprecated';
