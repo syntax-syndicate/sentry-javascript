@@ -260,7 +260,7 @@ export interface Client<O extends ClientOptions = ClientOptions> {
   on(hook: 'close', callback: () => void): void;
 
   /** Fire a hook whener a span starts. */
-  emit(hook: 'spanStart', span: Span): void;
+  emit(hook: 'spanStart', span: ReadableSpan): void;
 
   /** Fire a hook whener a span ends. */
   emit(hook: 'spanEnd', span: Span): void;

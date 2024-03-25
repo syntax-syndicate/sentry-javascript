@@ -1,13 +1,11 @@
 import type { Context } from '@opentelemetry/api';
 import { ROOT_CONTEXT, trace } from '@opentelemetry/api';
 import type { Span, SpanProcessor as SpanProcessorInterface } from '@opentelemetry/sdk-trace-base';
-import { BatchSpanProcessor } from '@opentelemetry/sdk-trace-base';
 import { addChildSpanToSpan, getClient, getDefaultCurrentScope, getDefaultIsolationScope } from '@sentry/core';
 import { logger } from '@sentry/utils';
 
 import { DEBUG_BUILD } from './debug-build';
 import { SEMANTIC_ATTRIBUTE_SENTRY_PARENT_IS_REMOTE } from './semanticAttributes';
-import { SentrySpanExporter } from './spanExporter';
 import { getScopesFromContext } from './utils/contextData';
 import { setIsSetup } from './utils/setupCheck';
 import { setSpanScopes } from './utils/spanData';
@@ -55,16 +53,15 @@ function onSpanEnd(span: Span): void {
  * Converts OpenTelemetry Spans to Sentry Spans and sends them to Sentry via
  * the Sentry SDK.
  */
-export class SentrySpanProcessor extends BatchSpanProcessor implements SpanProcessorInterface {
-  public constructor() {
-    super(new SentrySpanExporter());
+export class SentrySpanProcessor implements SpanProcessorInterface {
+  private _isShutDown: boolean;
 
+  public constructor() {
+    this._isShutDown = false;
     setIsSetup('SentrySpanProcessor');
   }
 
-  /**
-   * @inheritDoc
-   */
+  // eslint-disable-next-line jsdoc/require-jsdoc
   public onStart(span: Span, parentContext: Context): void {
     onSpanStart(span, parentContext);
 
@@ -72,22 +69,47 @@ export class SentrySpanProcessor extends BatchSpanProcessor implements SpanProce
     // once we decoupled opentelemetry from SentrySpan
 
     DEBUG_BUILD && logger.log(`[Tracing] Starting span "${span.name}" (${span.spanContext().spanId})`);
-
-    return super.onStart(span, parentContext);
   }
 
-  /** @inheritDoc */
+  // eslint-disable-next-line jsdoc/require-jsdoc
   public onEnd(span: Span): void {
-    DEBUG_BUILD && logger.log(`[Tracing] Finishing span "${span.name}" (${span.spanContext().spanId})`);
-
-    if (!this._shouldSendSpanToSentry(span)) {
-      // Prevent this being called to super.onEnd(), which would pass this to the span exporter
+    if (this._isShutDown) {
+      DEBUG_BUILD &&
+        logger.log(
+          `[Tracing] Will not finish and record span "${span.name}" because processor is shut down (${
+            span.spanContext().spanId
+          })`,
+        );
       return;
     }
 
-    onSpanEnd(span);
+    if (!this._shouldSendSpanToSentry(span)) {
+      DEBUG_BUILD &&
+        logger.log(
+          `[Tracing] Will not finish and record span "${
+            span.name
+          }" because _shouldSendSpanToSentry() returned falsy value (${span.spanContext().spanId})`,
+        );
+      return;
+    }
 
-    return super.onEnd(span);
+    DEBUG_BUILD && logger.log(`[Tracing] Finishing span "${span.name}" (${span.spanContext().spanId})`);
+
+    onSpanEnd(span);
+  }
+
+  // eslint-disable-next-line jsdoc/require-jsdoc
+  public async forceFlush(): Promise<void> {
+    const client = getClient();
+    await client?.flush().then(null, () => {
+      // client.flush() can throw but we shouldn't surface it so we noop here.
+    });
+  }
+
+  // eslint-disable-next-line jsdoc/require-jsdoc
+  public async shutdown(): Promise<void> {
+    this._isShutDown = true;
+    await this.forceFlush();
   }
 
   /**
@@ -97,4 +119,8 @@ export class SentrySpanProcessor extends BatchSpanProcessor implements SpanProce
   protected _shouldSendSpanToSentry(_span: Span): boolean {
     return true;
   }
+}
+
+function isRootSpan(span: Span, parentContext: Context): boolean {
+  const parentSpan = trace.getSpan(parentContext);
 }
