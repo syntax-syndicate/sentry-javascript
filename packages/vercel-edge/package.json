@@ -44,7 +44,9 @@
   "dependencies": {
     "@sentry/core": "8.0.0-alpha.7",
     "@sentry/types": "8.0.0-alpha.7",
-    "@sentry/utils": "8.0.0-alpha.7"
+    "@sentry/utils": "8.0.0-alpha.7",
+    "@sentry/opentelemetry": "8.0.0-alpha.7",
+    "@vercel/otel": "1.8.1"
   },
   "devDependencies": {
     "@edge-runtime/jest-environment": "2.2.3",

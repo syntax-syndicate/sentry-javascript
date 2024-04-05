@@ -5,6 +5,7 @@ import { dropUndefinedKeys } from '@sentry/utils';
 import { getActiveSpan } from './utils/getActiveSpan';
 import { spanHasName, spanHasParentId } from './utils/spanTypes';
 
+// TODO(lforst): I think the following code is faulty. An event should not always receive the trace context when it passes through the event processing pipeline, but rather this should be done through specific logic for each individual event type.
 /** Ensure the `trace` context is set on all events. */
 export function setupEventContextTrace(client: Client): void {
   client.addEventProcessor(event => {

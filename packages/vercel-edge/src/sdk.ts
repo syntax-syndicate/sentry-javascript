@@ -9,12 +9,14 @@ import {
 import type { Integration, Options } from '@sentry/types';
 import { GLOBAL_OBJ, createStackParser, nodeStackLineParser, stackParserFromStackParserOptions } from '@sentry/utils';
 
-import { setAsyncLocalStorageAsyncContextStrategy } from './async';
 import { VercelEdgeClient } from './client';
 import { winterCGFetchIntegration } from './integrations/wintercg-fetch';
 import { makeEdgeTransport } from './transports';
 import type { VercelEdgeClientOptions, VercelEdgeOptions } from './types';
 import { getVercelEnv } from './utils/vercel';
+
+import { setOpenTelemetryContextAsyncContextStrategy } from '@sentry/opentelemetry';
+import { registerOTel } from '@vercel/otel';
 
 declare const process: {
   env: Record<string, string>;
@@ -35,7 +37,7 @@ export function getDefaultIntegrations(options: Options): Integration[] {
 
 /** Inits the Sentry NextJS SDK on the Edge Runtime. */
 export function init(options: VercelEdgeOptions = {}): void {
-  setAsyncLocalStorageAsyncContextStrategy();
+  setOpenTelemetryContextAsyncContextStrategy();
 
   if (options.defaultIntegrations === undefined) {
     options.defaultIntegrations = getDefaultIntegrations(options);
@@ -77,6 +79,51 @@ export function init(options: VercelEdgeOptions = {}): void {
   };
 
   initAndBind(VercelEdgeClient, clientOptions);
+
+  // OTEL
+
+  // if (client.getOptions().debug) {
+  //   const otelLogger = new Proxy(logger as typeof logger & { verbose: (typeof logger)['debug'] }, {
+  //     get(target, prop, receiver) {
+  //       const actualProp = prop === 'verbose' ? 'debug' : prop;
+  //       return Reflect.get(target, actualProp, receiver);
+  //     },
+  //   });
+
+  //   diag.setLogger(otelLogger, DiagLogLevel.DEBUG);
+  // }
+
+  // const provider = setupOtel(client);
+  // client.traceProvider = provider;
+
+  registerOTel({
+    // traceSampler: new SentrySampler(),
+    // attributes: {
+    //   [SemanticResourceAttributes.SERVICE_NAME]: 'node',
+    //   [SemanticResourceAttributes.SERVICE_NAMESPACE]: 'sentry',
+    //   [SemanticResourceAttributes.SERVICE_VERSION]: SDK_VERSION,
+    // },
+    // propagators: [],
+    // spanProcessors: [],
+    // contextManager: null,
+    serviceName: 'luca-service',
+    spanProcessors: [
+      {
+        async forceFlush() {
+          //
+        },
+        async shutdown() {
+          //
+        },
+        onStart(span) {
+          console.log('luca-otel-start', span.name);
+        },
+        onEnd(span) {
+          console.log('luca-otel-end', span.name);
+        },
+      },
+    ],
+  });
 }
 
 /**
