@@ -33,8 +33,6 @@ export {
   // eslint-disable-next-line deprecation/deprecation
   getCurrentHub,
   Hub,
-  // eslint-disable-next-line deprecation/deprecation
-  makeMain,
   getGlobalHub,
   getDefaultCurrentScope,
   getDefaultIsolationScope,
@@ -54,11 +52,7 @@ export {
 export { makeSession, closeSession, updateSession } from './session';
 export { SessionFlusher } from './sessionflusher';
 export { Scope } from './scope';
-export {
-  notifyEventProcessors,
-  // eslint-disable-next-line deprecation/deprecation
-  addGlobalEventProcessor,
-} from './eventProcessors';
+export { notifyEventProcessors } from './eventProcessors';
 export { getEnvelopeEndpointWithUrlEncodedAuth, getReportDialogEndpoint } from './api';
 export { BaseClient } from './baseclient';
 export { ServerRuntimeClient } from './server-runtime-client';
@@ -75,8 +69,6 @@ export {
   getIntegrationsToSetup,
   addIntegration,
   defineIntegration,
-  // eslint-disable-next-line deprecation/deprecation
-  convertIntegrationFnToClass,
 } from './integration';
 export { applyScopeDataToEvent, mergeScopeData } from './utils/applyScopeDataToEvent';
 export { prepareEvent } from './utils/prepareEvent';
@@ -96,6 +88,7 @@ export {
   getActiveSpan,
   addChildSpanToSpan,
 } from './utils/spanUtils';
+export { parseSampleRate } from './utils/parseSampleRate';
 export { applySdkMetadata } from './utils/sdkMetadata';
 export { DEFAULT_ENVIRONMENT } from './constants';
 export { addBreadcrumb } from './breadcrumbs';
@@ -116,3 +109,7 @@ export { metricsDefault } from './metrics/exports-default';
 export { BrowserMetricsAggregator } from './metrics/browser-aggregator';
 export { getMetricSummaryJsonForSpan } from './metrics/metric-summary';
 export { addTracingHeadersToFetchRequest, instrumentFetchRequest } from './fetch';
+export { trpcMiddleware } from './trpc';
+
+// eslint-disable-next-line deprecation/deprecation
+export { getCurrentHubShim } from './getCurrentHubShim';

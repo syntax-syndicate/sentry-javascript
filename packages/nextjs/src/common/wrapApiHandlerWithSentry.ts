@@ -5,7 +5,6 @@ import {
   continueTrace,
   setHttpStatus,
   startSpanManual,
-  withIsolationScope,
 } from '@sentry/core';
 import { consoleSandbox, isString, logger, objectify, stripUrlQueryAndFragment } from '@sentry/utils';
 
@@ -13,6 +12,7 @@ import { SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN } from '@sentry/core';
 import type { AugmentedNextApiRequest, AugmentedNextApiResponse, NextApiHandler } from './types';
 import { platformSupportsStreaming } from './utils/platformSupportsStreaming';
 import { flushQueue } from './utils/responseEnd';
+import { withIsolationScopeOrReuseFromRootSpan } from './utils/withIsolationScopeOrReuseFromRootSpan';
 
 /**
  * Wrap the given API route handler for tracing and error capturing. Thin wrapper around `withSentry`, which only
@@ -54,7 +54,7 @@ export function wrapApiHandlerWithSentry(apiHandler: NextApiHandler, parameteriz
 
       addTracingExtensions();
 
-      return withIsolationScope(isolationScope => {
+      return withIsolationScopeOrReuseFromRootSpan(isolationScope => {
         return continueTrace(
           {
             // TODO(v8): Make it so that continue trace will allow null as sentryTrace value and remove this fallback here
@@ -87,6 +87,7 @@ export function wrapApiHandlerWithSentry(apiHandler: NextApiHandler, parameteriz
               {
                 name: `${reqMethod}${reqPath}`,
                 op: 'http.server',
+                forceTransaction: true,
                 attributes: {
                   [SEMANTIC_ATTRIBUTE_SENTRY_SOURCE]: 'route',
                   [SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN]: 'auto.http.nextjs',
@@ -115,7 +116,7 @@ export function wrapApiHandlerWithSentry(apiHandler: NextApiHandler, parameteriz
                   if (
                     process.env.NODE_ENV === 'development' &&
                     !process.env.SENTRY_IGNORE_API_RESOLUTION_ERROR &&
-                    !res.finished
+                    !res.writableEnded
                   ) {
                     consoleSandbox(() => {
                       // eslint-disable-next-line no-console

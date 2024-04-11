@@ -10,13 +10,13 @@ import {
   startSpan,
   startSpanManual,
   withActiveSpan,
-  withIsolationScope,
 } from '@sentry/core';
 import type { Span } from '@sentry/types';
 import { isString } from '@sentry/utils';
 
 import { platformSupportsStreaming } from './platformSupportsStreaming';
 import { autoEndSpanOnResponseEnd, flushQueue } from './responseEnd';
+import { withIsolationScopeOrReuseFromRootSpan } from './withIsolationScopeOrReuseFromRootSpan';
 
 declare module 'http' {
   interface IncomingMessage {
@@ -89,7 +89,7 @@ export function withTracedServerSideDataFetcher<F extends (...args: any[]) => Pr
   },
 ): (...params: Parameters<F>) => Promise<ReturnType<F>> {
   return async function (this: unknown, ...args: Parameters<F>): Promise<ReturnType<F>> {
-    return withIsolationScope(async isolationScope => {
+    return withIsolationScopeOrReuseFromRootSpan(async isolationScope => {
       isolationScope.setSDKProcessingMetadata({
         request: req,
       });
@@ -141,6 +141,7 @@ function getOrStartRequestSpan(req: IncomingMessage, res: ServerResponse, name: 
 
   const requestSpan = startInactiveSpan({
     name,
+    forceTransaction: true,
     op: 'http.server',
     attributes: {
       [SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN]: 'auto.function.nextjs',
@@ -176,6 +177,7 @@ export async function callDataFetcherTraced<F extends (...args: any[]) => Promis
     {
       op: 'function.nextjs',
       name: `${dataFetchingMethodName} (${parameterizedRoute})`,
+      onlyIfParent: true,
       attributes: {
         [SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN]: 'auto.function.nextjs',
         [SEMANTIC_ATTRIBUTE_SENTRY_SOURCE]: 'route',

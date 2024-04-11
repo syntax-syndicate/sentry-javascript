@@ -1,6 +1,6 @@
 import { spawn, spawnSync } from 'child_process';
 import { join } from 'path';
-import type { Envelope, EnvelopeItemType, Event, SerializedSession } from '@sentry/types';
+import type { Envelope, EnvelopeItemType, Event, SerializedSession, SessionAggregates } from '@sentry/types';
 import axios from 'axios';
 import { createBasicSentryServer } from './server';
 
@@ -113,6 +113,9 @@ type Expected =
     }
   | {
       session: Partial<SerializedSession> | ((event: SerializedSession) => void);
+    }
+  | {
+      sessions: Partial<SessionAggregates> | ((event: SessionAggregates) => void);
     };
 
 /** Creates a test runner */
@@ -123,9 +126,11 @@ export function createRunner(...paths: string[]) {
   const expectedEnvelopes: Expected[] = [];
   const flags: string[] = [];
   const ignored: EnvelopeItemType[] = [];
+  let withEnv: Record<string, string> = {};
   let withSentryServer = false;
   let dockerOptions: DockerOptions | undefined;
   let ensureNoErrorOutput = false;
+  let expectError = false;
 
   if (testPath.endsWith('.ts')) {
     flags.push('-r', 'ts-node/register');
@@ -134,6 +139,14 @@ export function createRunner(...paths: string[]) {
   return {
     expect: function (expected: Expected) {
       expectedEnvelopes.push(expected);
+      return this;
+    },
+    expectError: function () {
+      expectError = true;
+      return this;
+    },
+    withEnv: function (env: Record<string, string>) {
+      withEnv = env;
       return this;
     },
     withFlags: function (...args: string[]) {
@@ -255,8 +268,8 @@ export function createRunner(...paths: string[]) {
           }
 
           const env = mockServerPort
-            ? { ...process.env, SENTRY_DSN: `http://public@localhost:${mockServerPort}/1337` }
-            : process.env;
+            ? { ...process.env, ...withEnv, SENTRY_DSN: `http://public@localhost:${mockServerPort}/1337` }
+            : { ...process.env, ...withEnv };
 
           // eslint-disable-next-line no-console
           if (process.env.DEBUG) console.log('starting scenario', testPath, flags, env.SENTRY_DSN);
@@ -268,7 +281,7 @@ export function createRunner(...paths: string[]) {
           });
 
           if (ensureNoErrorOutput) {
-            child.stderr.on('data', (data: Buffer) => {
+            child.stderr?.on('data', (data: Buffer) => {
               const output = data.toString();
               complete(new Error(`Expected no error output but got: '${output}'`));
             });
@@ -314,7 +327,7 @@ export function createRunner(...paths: string[]) {
           }
 
           let buffer = Buffer.alloc(0);
-          child.stdout.on('data', (data: Buffer) => {
+          child.stdout?.on('data', (data: Buffer) => {
             // This is horribly memory inefficient but it's only for tests
             buffer = Buffer.concat([buffer, data]);
 
@@ -347,7 +360,18 @@ export function createRunner(...paths: string[]) {
           }
 
           const url = `http://localhost:${scenarioServerPort}${path}`;
-          if (method === 'get') {
+          if (expectError) {
+            try {
+              if (method === 'get') {
+                await axios.get(url, { headers });
+              } else {
+                await axios.post(url, { headers });
+              }
+            } catch (e) {
+              return;
+            }
+            return;
+          } else if (method === 'get') {
             return (await axios.get(url, { headers })).data;
           } else {
             return (await axios.post(url, { headers })).data;

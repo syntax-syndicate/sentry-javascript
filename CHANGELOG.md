@@ -4,6 +4,220 @@
 
 - "You miss 100 percent of the chances you don't take. — Wayne Gretzky" — Michael Scott
 
+## 8.0.0-alpha.9
+
+This is the eighth alpha release of Sentry JavaScript SDK v8, which includes a variety of breaking changes.
+
+Read the [in-depth migration guide](./MIGRATION.md) to find out how to address any breaking changes in your code.
+
+### Important Changes
+
+- **feat: Add @sentry-internal/browser-utils (#11381)**
+
+A big part of the browser-runtime specific exports of the internal `@sentry/utils` package were moved into a new package
+`@sentry-internal/browser-utils`. If you imported any API from `@sentry/utils` (which is generally not recommended but
+necessary for some workarounds), please check that your import statements still point to existing exports after
+upgrading.
+
+- **feat: Add loader file to node-based SDKs to support ESM monkeypatching (#11338)**
+
+When using ESM, it is necessary to use a "loader" to be able to instrument certain third-party packages and Node.js API.
+The server-side SDKs now ship with a set of ESM loader hooks, that should be used when using ESM. Use them as follows:
+
+```sh
+# For Node.js <= 18.18.2
+node --experimental-loader=@sentry/node/hook your-app.js
+
+# For Node.js >= 18.19.0
+node --import=@sentry/node/register your-app.js
+```
+
+Please note that due to an upstream bug, these loader hooks will currently crash or simply not work. We are planning to
+fix this in upcoming versions of the SDK - definitely before a stable version 8 release.
+
+- **feat(node): Add Koa error handler (#11403)**
+- **feat(node): Add NestJS error handler (#11375)**
+
+The Sentry SDK now exports integrations and error middlewares for Koa (`koaIntegration()`, `setupKoaErrorHandler()`) and
+NestJS (`setupNestErrorHandler()`) that can be used to instrument your Koa and NestJS applications with error
+monitoring.
+
+### Removal/Refactoring of deprecated functionality
+
+- feat(core): Remove hub check in isSentryRequestUrl (#11407)
+- feat(opentelemetry): Remove top level startActiveSpan (#11380)
+- feat(types): `beforeSend` and `beforeSendTransaction` breaking changes (#11354)
+- feat(v8): Remove all class based integrations (#11345)
+- feat(v8/core): Remove span.attributes top level field (#11378)
+- ref: Remove convertIntegrationFnToClass (#11343)
+- ref(node): Remove the old `node` package (#11322)
+- ref(tracing): Remove `span.startChild()` (#11376)
+- ref(v8): Remove `addRequestDataToTransaction` util (#11369)
+- ref(v8): Remove `args` on `HandlerDataXhr` (#11373)
+- ref(v8): Remove `getGlobalObject` utility method (#11372)
+- ref(v8): Remove `metadata` on transaction (#11397)
+- ref(v8): Remove `pushScope`, `popScope`, `isOlderThan`, `shouldSendDefaultPii` from hub (#11404)
+- ref(v8): Remove `shouldCreateSpanForRequest` from vercel edge options (#11371)
+- ref(v8): Remove deprecated `_reportAllChanges` option (#11393)
+- ref(v8): Remove deprecated `scope.getTransaction()` (#11365)
+- ref(v8): Remove deprecated methods on scope (#11366)
+- ref(v8): Remove deprecated span & transaction properties (#11400)
+- ref(v8): Remove Transaction concept (#11422)
+
+### Other Changes
+
+- feat: Add `trpcMiddleware` back to serverside SDKs (#11374)
+- feat: Implement timed events & remove `transaction.measurements` (#11398)
+- feat(browser): Bump web-vitals to 3.5.2 (#11391)
+- feat(feedback): Add `getFeedback` utility to get typed feedback instance (#11331)
+- feat(otel): Do not sample `options` and `head` requests (#11467)
+- feat(remix): Update scope `transactionName` when resolving route (#11420)
+- feat(replay): Bump `rrweb` to 2.12.0 (#11314)
+- feat(replay): Use data sentry element as fallback for the component name (#11383)
+- feat(sveltekit): Update scope `transactionName` when pageload route name is updated (#11406)
+- feat(tracing-internal): Reset propagation context on navigation (#11401)
+- feat(types): Add View Hierarchy types (#11409)
+- feat(utils): Use `globalThis` (#11351)
+- feat(vue): Update scope's `transactionName` when resolving a route (#11423)
+- fix(core): unref timer to not block node exit (#11430)
+- fix(node): Fix baggage propagation (#11363)
+- fix(web-vitals): Check for undefined navigation entry (#11311)
+- ref: Set preserveModules to true for browser packages (#11452)
+- ref(core): Remove duplicate logic in scope.update (#11384)
+- ref(feedback): Add font family style to actor (#11432)
+- ref(feedback): Add font family to buttons (#11414)
+- ref(gcp-serverless): Remove setting `.__sentry_transaction` (#11346)
+- ref(nextjs): Replace multiplexer with conditional exports (#11442)
+
+## 8.0.0-alpha.8
+
+This is a partially broken release and was superseded by version `8.0.0-alpha.9`.
+
+## 8.0.0-alpha.7
+
+This is the seventh alpha release of Sentry JavaScript SDK v8, which includes a variety of breaking changes.
+
+Read the [in-depth migration guide](./MIGRATION.md) to find out how to address any breaking changes in your code.
+
+### Important Changes
+
+- **feat(nextjs): Use OpenTelemetry for performance monitoring and tracing (#11016)**
+
+We now use OpenTelemetry under the hood to power performance monitoring and tracing in the Next.js SDK.
+
+- **feat(v8/gatsby): Update SDK initialization for gatsby (#11292)**
+
+In v8, you cannot initialize the SDK anymore via Gatsby plugin options. Instead, you have to configure the SDK in a
+`sentry.config.js` file.
+
+We also removed the automatic initialization of `browserTracingIntegration`. You now have to add this integration
+yourself.
+
+### Removal/Refactoring of deprecated functionality
+
+- feat(v8): Remove addGlobalEventProcessor (#11255)
+- feat(v8): Remove deprecated span id fields (#11180)
+- feat(v8): Remove makeMain export (#11278)
+- feat(v8/core): Remove deprecated span.sampled (#11274)
+- feat(v8/core): Remove getActiveTransaction (#11280)
+- feat(v8/core): Remove spanMetadata field (#11271)
+- feat(v8/ember): Remove deprecated StartTransactionFunction (#11270)
+- feat(v8/replay): Remove deprecated replay options (#11268)
+- feat(v8/svelte): Remove deprecated componentTrackingPreprocessor export (#11277)
+- ref: Remove more usages of getCurrentHub in the codebase (#11281)
+- ref(core): Remove `scope.setSpan()` and `scope.getSpan()` methods (#11051)
+- ref(profiling-node): Remove usage of getCurrentHub (#11275)
+- ref(v8): change integration.setupOnce signature (#11238)
+- ref: remove node-experimental references (#11290)
+
+### Other Changes
+
+- feat(feedback): Make "required" text for input elements configurable (#11152) (#11153)
+- feat(feedback): Update user feedback screenshot and cropping to align with designs (#11227)
+- feat(nextjs): Remove `runtime` and `vercel` tags (#11291)
+- feat(node): Add scope to ANR events (#11256)
+- feat(node): Do not include `prismaIntegration` by default (#11265)
+- feat(node): Ensure `tracePropagationTargets` are respected (#11285)
+- feat(node): Simplify `SentrySpanProcessor` (#11273)
+- feat(profiling): Use OTEL powered node package (#11239)
+- feat(utils): Allow text encoder/decoder polyfill from global **SENTRY** (#11283)
+- fix(nextjs): Show misconfiguration warning (no `instrumentation.ts`) (#11266)
+- fix(node): Add logs when node-fetch cannot be instrumented (#11289)
+- fix(node): Skip capturing Hapi Boom error responses. (#11151)
+- fix(node): Use `suppressTracing` to avoid capturing otel spans (#11288)
+- fix(opentelemetry): Do not stomp span status when `startSpan` callback throws (#11170)
+
+## 8.0.0-alpha.6
+
+This version did not publish correctly due to a configuration issue.
+
+## 8.0.0-alpha.5
+
+This is the fifth alpha release of Sentry JavaScript SDK v8, which includes a variety of breaking changes.
+
+Read the [in-depth migration guide](./MIGRATION.md) to find out how to address any breaking changes in your code.
+
+### Important Changes
+
+- **feat(nextjs): Remove `client.(server|client).config.ts` functionality in favor of `instrumentation.ts` (#11059)**
+  - feat(nextjs): Bump minimum required Next.js version to `13.2.0` (#11097)
+
+With version 8 of the SDK we will no longer support the use of `sentry.server.config.ts` and `sentry.edge.config.ts`
+files. Instead, please initialize the Sentry Next.js SDK for the serverside in a
+[Next.js instrumentation hook](https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation).
+**`sentry.client.config.ts|js` is still supported and encouraged for initializing the clientside SDK.** Please see the
+[Migration Guide](./MIGRATION.md#updated-the-recommended-way-of-calling-sentryinit) for more details.
+
+In addition, the Next.js SDK now requires a minimum Next.js version of `13.2.0`.
+
+- **feat(v8/angular): Merge angular and angular-ivy packages and start Angular support at v14 (#11091)**
+
+The `@sentry/angular-ivy` package has been removed. The `@sentry/angular` package now supports Ivy by default and
+requires at least Angular 14. See the [Migration Guide](./MIGRATION.md#removal-of-sentryangular-ivy-package) for more
+details.
+
+### Removal/Refactoring of deprecated functionality
+
+- feat(aws-serverless): Remove deprecated `rethrowAfterCapture` option (#11126)
+- feat(node): Remove deprecated/duplicate/unused definitions (#11120)
+- feat(v8): Remove deprecated integration methods on client (#11134)
+- feat(v8/browser): Remove class export for linked errors (#11129)
+- feat(v8/browser): Remove deprecated wrap export (#11127)
+- feat(v8/core): Remove deprecated client.setupIntegrations method (#11179)
+- feat(v8/core): Remove deprecated integration classes (#11132)
+- feat(v8/ember): Remove InitSentryForEmber export (#11202)
+- feat(v8/nextjs): Remove usage of class integrations (#11182)
+- feat(v8/replay): Delete deprecated types (#11177)
+- feat(v8/utils): Remove deprecated util functions (#11143)
+- ref(node): Remove class based export for local variable integration (#11128)
+
+### Other Changes
+
+- feat(browser): Make fetch the default transport for offline (#11209)
+- feat(core): Filter out noisy GoogleTag error by default (#11208)
+- feat(deps): Bump @sentry/cli from 2.30.0 to 2.30.2 (#11168)
+- feat(nextjs): Prefix webpack plugin log messages with runtime (#11173)
+- feat(node-profiling): Output ESM and remove Sentry deps from output (#11135)
+- feat(node): Allow Anr worker to be stopped and restarted (#11214)
+- feat(node): Support `tunnel` option for ANR (#11163)
+- feat(opentelemetry): Do not capture exceptions for timed events (#11221)
+- feat(serverless): Add Node.js 20 to compatible runtimes (#11103)
+- feat(sveltekit): Switch to Otel-based `@sentry/node` package (#11075)
+- fix(attachments): Add missing `view_hierarchy` attachment type (#11197)
+- fix(build): Ensure tree shaking works properly for ESM output (#11122)
+- fix(feedback): Only allow screenshots in secure contexts (#11188)
+- fix(feedback): Reduce force layout in screenshots (#11181)
+- fix(feedback): Smoother cropping experience and better UI (#11165)
+- fix(feedback): Fix screenshot black bars in Safari (#11233)
+- fix(metrics): use correct statsd data category (#11184)
+- fix(metrics): use web-vitals ttfb calculation (#11185)
+- fix(node): Export `initOpenTelemetry` (#11158)
+- fix(node): Clear ANR timer on stop (#11229)
+- fix(node): Time zone handling for `cron` (#11225)
+- fix(node): Use unique variable for ANR context transfer (#11161)
+- fix(opentelemetry): Do not stomp span error status (#11169)
+- fix(types): Fix incorrect `sampled` type on `Transaction` (#11115)
+
 ## 8.0.0-alpha.4
 
 This is the fourth Alpha release of the v8 cycle, which includes a variety of breaking changes.
@@ -393,6 +607,25 @@ We have also removed or updated a variety of deprecated APIs.
 - ref: Remove deprecated `showReportDialog` APIs (#10609)
 - ref: Remove usage of span tags (#10808)
 - ref: Remove user segment (#10575)
+
+## 7.108.0
+
+This release fixes issues with Time to First Byte (TTFB) calculation in the SDK that was introduced with `7.95.0`. It
+also fixes some bugs with Interaction to First Paint (INP) instrumentation. This may impact your Sentry Performance
+Score calculation.
+
+- feat(serverless): Add Node.js 20 to compatible runtimes (#11104)
+- feat(core): Backport `ResizeObserver` and `googletag` default filters (#11210)
+- feat(webvitals): Adds event entry names for INP handler. Also guard against empty metric value
+- fix(metrics): use correct statsd data category (#11187)
+- fix(node): Record local variables with falsy values (v7) (#11190)
+- fix(node): Use unique variable for ANR context transfer (v7) (#11162)
+- fix(node): Time zone handling for `cron` (#11225)
+- fix(tracing): use web-vitals ttfb calculation (#11231)
+- fix(types): Fix incorrect `sampled` type on `Transaction` (#11146)
+- fix(webvitals): Fix mapping not being maintained properly and sometimes not sending INP spans (#11183)
+
+Work in this release contributed by @quisido and @joshkel. Thank you for your contributions!
 
 ## 7.107.0
 

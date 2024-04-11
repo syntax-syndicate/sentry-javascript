@@ -13,7 +13,6 @@ export type {
   StackFrame,
   Stacktrace,
   Thread,
-  Transaction,
   User,
 } from '@sentry/types';
 export type { AddRequestDataToEventOptions } from '@sentry/utils';
@@ -98,18 +97,24 @@ export {
   setupExpressErrorHandler,
   fastifyIntegration,
   setupFastifyErrorHandler,
+  koaIntegration,
+  setupKoaErrorHandler,
   graphqlIntegration,
   mongoIntegration,
   mongooseIntegration,
   mysqlIntegration,
   mysql2Integration,
   nestIntegration,
+  setupNestErrorHandler,
   postgresIntegration,
   prismaIntegration,
   hapiIntegration,
   setupHapiErrorHandler,
   spotlightIntegration,
   initOpenTelemetry,
+  spanToJSON,
+  spanToTraceHeader,
+  trpcMiddleware,
 } from '@sentry/node';
 
 export {
@@ -124,9 +129,6 @@ export {
 export type { BunOptions } from './types';
 
 export { BunClient } from './client';
-export {
-  getDefaultIntegrations,
-  init,
-} from './sdk';
+export { getDefaultIntegrations, init } from './sdk';
 export { bunServerIntegration } from './integrations/bunserver';
 export { makeFetchTransport } from './transports';

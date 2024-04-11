@@ -21,6 +21,15 @@ const EXPECTED_ANR_EVENT = {
       timezone: expect.any(String),
     },
   },
+  user: {
+    email: 'person@home.com',
+  },
+  breadcrumbs: [
+    {
+      timestamp: expect.any(Number),
+      message: 'important message!',
+    },
+  ],
   // and an exception that is our ANR
   exception: {
     values: [
@@ -57,15 +66,19 @@ conditionalTest({ min: 16 })('should report ANR when event loop blocked', () => 
   });
 
   test('CJS', done => {
-    createRunner(__dirname, 'basic.js').expect({ event: EXPECTED_ANR_EVENT }).start(done);
+    createRunner(__dirname, 'basic.js').withMockSentryServer().expect({ event: EXPECTED_ANR_EVENT }).start(done);
   });
 
   test('ESM', done => {
-    createRunner(__dirname, 'basic.mjs').expect({ event: EXPECTED_ANR_EVENT }).start(done);
+    createRunner(__dirname, 'basic.mjs').withMockSentryServer().expect({ event: EXPECTED_ANR_EVENT }).start(done);
   });
 
   test('With --inspect', done => {
-    createRunner(__dirname, 'basic.mjs').withFlags('--inspect').expect({ event: EXPECTED_ANR_EVENT }).start(done);
+    createRunner(__dirname, 'basic.mjs')
+      .withMockSentryServer()
+      .withFlags('--inspect')
+      .expect({ event: EXPECTED_ANR_EVENT })
+      .start(done);
   });
 
   test('should exit', done => {
@@ -88,6 +101,7 @@ conditionalTest({ min: 16 })('should report ANR when event loop blocked', () => 
 
   test('With session', done => {
     createRunner(__dirname, 'basic-session.js')
+      .withMockSentryServer()
       .expect({
         session: {
           status: 'abnormal',
@@ -104,5 +118,38 @@ conditionalTest({ min: 16 })('should report ANR when event loop blocked', () => 
 
   test('worker can be stopped and restarted', done => {
     createRunner(__dirname, 'stop-and-start.js').expect({ event: EXPECTED_ANR_EVENT }).start(done);
+  });
+
+  const EXPECTED_ISOLATED_EVENT = {
+    user: {
+      id: 5,
+    },
+    exception: {
+      values: [
+        {
+          type: 'ApplicationNotResponding',
+          value: 'Application Not Responding for at least 100 ms',
+          mechanism: { type: 'ANR' },
+          stacktrace: {
+            frames: expect.arrayContaining([
+              {
+                colno: expect.any(Number),
+                lineno: expect.any(Number),
+                filename: expect.stringMatching(/isolated.mjs$/),
+                function: 'longWork',
+                in_app: true,
+              },
+            ]),
+          },
+        },
+      ],
+    },
+  };
+
+  test('fetches correct isolated scope', done => {
+    createRunner(__dirname, 'isolated.mjs')
+      .withMockSentryServer()
+      .expect({ event: EXPECTED_ISOLATED_EVENT })
+      .start(done);
   });
 });

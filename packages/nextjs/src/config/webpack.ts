@@ -3,7 +3,7 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { getSentryRelease } from '@sentry/node-experimental';
+import { getSentryRelease } from '@sentry/node';
 import { arrayify, escapeStringForRegex, loadModule, logger } from '@sentry/utils';
 import * as chalk from 'chalk';
 import { sync as resolveSync } from 'resolve';
@@ -23,12 +23,6 @@ import type {
   WebpackModuleRule,
 } from './types';
 import { getWebpackPluginOptions } from './webpackPluginOptions';
-
-const RUNTIME_TO_SDK_ENTRYPOINT_MAP = {
-  client: './client',
-  server: './server',
-  edge: './edge',
-} as const;
 
 // Next.js runs webpack 3 times, once for the client, the server, and for edge. Because we don't want to print certain
 // warnings 3 times, we keep track of them here.
@@ -60,6 +54,10 @@ export function constructWebpackConfigFunction(
     const { isServer, dev: isDev, dir: projectDir } = buildContext;
     const runtime = isServer ? (buildContext.nextRuntime === 'edge' ? 'edge' : 'server') : 'client';
 
+    if (runtime !== 'client') {
+      warnAboutDeprecatedConfigFiles(projectDir, runtime);
+    }
+
     let rawNewConfig = { ...incomingConfig };
 
     // if user has custom webpack config (which always takes the form of a function), run it so we have actual values to
@@ -74,18 +72,6 @@ export function constructWebpackConfigFunction(
 
     // Add a loader which will inject code that sets global values
     addValueInjectionLoader(newConfig, userNextConfig, userSentryOptions, buildContext);
-
-    newConfig.module.rules.push({
-      test: /node_modules[/\\]@sentry[/\\]nextjs/,
-      use: [
-        {
-          loader: path.resolve(__dirname, 'loaders', 'sdkMultiplexerLoader.js'),
-          options: {
-            importTarget: RUNTIME_TO_SDK_ENTRYPOINT_MAP[runtime],
-          },
-        },
-      ],
-    });
 
     let pagesDirPath: string | undefined;
     const maybePagesDirPath = path.join(projectDir, 'pages');
@@ -508,25 +494,23 @@ async function addSentryToClientEntryProperty(
  * Searches for old `sentry.(server|edge).config.ts` files and warns if it finds any.
  *
  * @param projectDir The root directory of the project, where config files would be located
- * @param platform Either "server", "client" or "edge", so that we know which file to look for
+ * @param platform Either "server" or "edge", so that we know which file to look for
  */
-export function warnAboutDeprecatedConfigFiles(projectDir: string, platform: 'server' | 'client' | 'edge'): void {
+function warnAboutDeprecatedConfigFiles(projectDir: string, platform: 'server' | 'edge'): void {
   const possibilities = [`sentry.${platform}.config.ts`, `sentry.${platform}.config.js`];
 
   for (const filename of possibilities) {
     if (fs.existsSync(path.resolve(projectDir, filename))) {
-      if (platform === 'server' || platform === 'edge') {
-        // eslint-disable-next-line no-console
-        console.warn(
-          `[@sentry/nextjs] It seems you have configured a \`${filename}\` file. You need to put this file's content into a Next.js instrumentation hook instead! Read more: https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation`,
-        );
-      }
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[@sentry/nextjs] It appears you've configured a \`${filename}\` file. Please ensure to put this file's content into the \`register()\` function of a Next.js instrumentation hook instead. To ensure correct functionality of the SDK, \`Sentry.init\` must be called inside \`instrumentation.ts\`. Learn more about setting up an instrumentation hook in Next.js: https://nextjs.org/docs/app/building-your-application/optimizing/instrumentation. You can safely delete the \`${filename}\` file afterward.`,
+      );
     }
   }
 }
 
 /**
- * Searches for a `sentry.client.config.ts|js` file and returns it's file name if it finds one. (ts being prioritized)
+ * Searches for a `sentry.client.config.ts|js` file and returns its file name if it finds one. (ts being prioritized)
  *
  * @param projectDir The root directory of the project, where config files would be located
  */

@@ -10,7 +10,6 @@ export type {
   StackFrame,
   Stacktrace,
   Thread,
-  Transaction,
   User,
   Session,
 } from '@sentry/types';
@@ -20,8 +19,6 @@ export type { BrowserOptions } from './client';
 export type { ReportDialogOptions } from './sdk';
 
 export {
-  // eslint-disable-next-line deprecation/deprecation
-  addGlobalEventProcessor,
   addEventProcessor,
   addBreadcrumb,
   addIntegration,
@@ -39,8 +36,6 @@ export {
   getIsolationScope,
   getGlobalScope,
   Hub,
-  // eslint-disable-next-line deprecation/deprecation
-  makeMain,
   setCurrentClient,
   Scope,
   continueTrace,
@@ -61,6 +56,7 @@ export {
   captureSession,
   endSession,
   spanToJSON,
+  spanToTraceHeader,
 } from '@sentry/core';
 
 export {
@@ -100,3 +96,5 @@ export { globalHandlersIntegration } from './integrations/globalhandlers';
 export { httpContextIntegration } from './integrations/httpcontext';
 export { linkedErrorsIntegration } from './integrations/linkederrors';
 export { browserApiErrorsIntegration } from './integrations/browserapierrors';
+
+export { lazyLoadIntegration } from './utils/lazyLoadIntegration';

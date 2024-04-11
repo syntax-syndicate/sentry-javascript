@@ -76,6 +76,8 @@ export {
   expressIntegration,
   expressErrorHandler,
   setupExpressErrorHandler,
+  koaIntegration,
+  setupKoaErrorHandler,
   fastifyIntegration,
   graphqlIntegration,
   mongoIntegration,
@@ -83,12 +85,16 @@ export {
   mysqlIntegration,
   mysql2Integration,
   nestIntegration,
+  setupNestErrorHandler,
   postgresIntegration,
   prismaIntegration,
   hapiIntegration,
   setupHapiErrorHandler,
   spotlightIntegration,
   initOpenTelemetry,
+  spanToJSON,
+  spanToTraceHeader,
+  trpcMiddleware,
 } from '@sentry/node';
 
 export {
