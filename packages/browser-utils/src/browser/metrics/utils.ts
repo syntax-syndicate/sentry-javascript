@@ -1,6 +1,7 @@
 import type { SentrySpan } from '@sentry/core';
 import { spanToJSON, startInactiveSpan, withActiveSpan } from '@sentry/core';
 import type { Span, SpanTimeInput, StartSpanOptions } from '@sentry/types';
+import { WINDOW } from '../types';
 
 /**
  * Checks if a given value is a valid measurement value.
@@ -44,4 +45,18 @@ export function startAndEndSpan(
 
     return span;
   });
+}
+
+/** Get the browser performance API. */
+export function getBrowserPerformanceAPI(): Performance | undefined {
+  // @ts-expect-error we want to make sure all of these are available, even if TS is sure they are
+  return WINDOW && WINDOW.addEventListener && WINDOW.performance;
+}
+
+/**
+ * Converts from milliseconds to seconds
+ * @param time time in ms
+ */
+export function msToSec(time: number): number {
+  return time / 1000;
 }

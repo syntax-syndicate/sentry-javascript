@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import {
   SEMANTIC_ATTRIBUTE_SENTRY_IDLE_SPAN_FINISH_REASON,
   SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN,
@@ -14,20 +15,23 @@ import {
   startIdleSpan,
   withScope,
 } from '@sentry/core';
-import type { Client, IntegrationFn, StartSpanOptions, TransactionSource } from '@sentry/types';
+import type { Client, Integration, IntegrationFn, StartSpanOptions, TransactionSource } from '@sentry/types';
 import type { Span } from '@sentry/types';
 import { browserPerformanceTimeOrigin, getDomElement, logger, uuid4 } from '@sentry/utils';
 
 import { DEBUG_BUILD } from '../debug-build';
 import { addHistoryInstrumentationHandler } from '../instrument/history';
 import { registerBackgroundTabDetection } from './backgroundtab';
+import { addPerformanceInstrumentationHandler } from './instrument';
 import {
   addPerformanceEntries,
+  startTrackingINP,
   startTrackingInteractions,
   startTrackingLongTasks,
   startTrackingWebVitals,
 } from './metrics';
 import { defaultRequestInstrumentationOptions, instrumentOutgoingRequests } from './request';
+import type { InteractionRouteNameMapping} from './types';
 import { WINDOW } from './types';
 
 export const BROWSER_TRACING_INTEGRATION_ID = 'BrowserTracing';
@@ -89,6 +93,13 @@ export interface BrowserTracingOptions {
   enableLongTask: boolean;
 
   /**
+   * If true, Sentry will capture first input delay and add it to the corresponding transaction.
+   *
+   * Default: true
+   */
+  enableInp: boolean;
+
+  /**
    * Flag to disable patching all together for fetch requests.
    *
    * Default: true
@@ -139,6 +150,7 @@ const DEFAULT_BROWSER_TRACING_OPTIONS: BrowserTracingOptions = {
   instrumentPageLoad: true,
   markBackgroundSpan: true,
   enableLongTask: true,
+  enableInp: true,
   _experiments: {},
   ...defaultRequestInstrumentationOptions,
 };
@@ -161,6 +173,12 @@ export const browserTracingIntegration = ((_options: Partial<BrowserTracingOptio
   };
 
   const _collectWebVitals = startTrackingWebVitals();
+
+  const inpMap: InteractionRouteNameMapping = {};
+
+  if (options.enableInp) {
+    startTrackingINP(inpMap);
+  }
 
   if (options.enableLongTask) {
     startTrackingLongTasks();
@@ -222,8 +240,6 @@ export const browserTracingIntegration = ((_options: Partial<BrowserTracingOptio
 
   return {
     name: BROWSER_TRACING_INTEGRATION_ID,
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    setupOnce: () => {},
     afterAllSetup(client) {
       const { markBackgroundSpan, traceFetch, traceXHR, shouldCreateSpanForRequest, enableHTTPTimings, _experiments } =
         options;
@@ -334,6 +350,10 @@ export const browserTracingIntegration = ((_options: Partial<BrowserTracingOptio
 
       if (_experiments.enableInteractions) {
         registerInteractionListener(options, latestRouteName, latestRouteSource);
+      }
+
+      if (options.enableInp) {
+        registerInpInteractionListener(inpMap, { name: latestRouteName, source: latestRouteSource });
       }
 
       instrumentOutgoingRequests({
@@ -452,5 +472,67 @@ function registerInteractionListener(
 
   ['click'].forEach(type => {
     addEventListener(type, registerInteractionTransaction, { once: false, capture: true });
+  });
+}
+
+function isPerformanceEventTiming(entry: PerformanceEntry): entry is PerformanceEventTiming {
+  return 'duration' in entry;
+}
+
+/** We store up to 10 interaction candidates max to cap memory usage. This is the same cap as getINP from web-vitals */
+const MAX_INTERACTIONS = 10;
+
+/** Creates a listener on interaction entries, and maps interactionIds to the origin path of the interaction */
+function registerInpInteractionListener(
+  interactionIdtoRouteNameMapping: InteractionRouteNameMapping,
+  latestRoute: {
+    name: string | undefined;
+    source: TransactionSource | undefined;
+  },
+): void {
+  addPerformanceInstrumentationHandler('event', ({ entries }) => {
+    const client = getClient();
+    // We need to get the replay, user, and activeTransaction from the current scope
+    // so that we can associate replay id, profile id, and a user display to the span
+    const replay = client && client.getIntegrationByName<Integration & { getReplayId: () => string }>('Replay');
+
+    const replayId = replay && replay.getReplayId();
+
+    const activeSpan = getActiveSpan();
+    const currentScope = getCurrentScope();
+    const user = currentScope !== undefined ? currentScope.getUser() : undefined;
+
+    for (const entry of entries) {
+      if (isPerformanceEventTiming(entry)) {
+        const duration = entry.duration;
+        const keys = Object.keys(interactionIdtoRouteNameMapping);
+        const minInteractionId =
+          keys.length > 0
+            ? keys.reduce((a, b) => {
+                return interactionIdtoRouteNameMapping[a].duration < interactionIdtoRouteNameMapping[b].duration
+                  ? a
+                  : b;
+              })
+            : undefined;
+        if (minInteractionId === undefined || duration > interactionIdtoRouteNameMapping[minInteractionId].duration) {
+          const interactionId = entry.interactionId;
+          const routeName = latestRoute.name;
+          if (interactionId && routeName) {
+            if (minInteractionId && Object.keys(interactionIdtoRouteNameMapping).length >= MAX_INTERACTIONS) {
+              // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+              delete interactionIdtoRouteNameMapping[minInteractionId];
+            }
+            interactionIdtoRouteNameMapping[interactionId] = {
+              routeName,
+              duration,
+              activeSpan,
+              currentScope,
+              user,
+              replayId,
+            };
+          }
+        }
+      }
+    }
   });
 }
