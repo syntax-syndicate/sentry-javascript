@@ -10,6 +10,14 @@
 
 - "You miss 100 percent of the chances you don't take. — Wayne Gretzky" — Michael Scott
 
+## 8.36.0-alpha.2
+
+This is considered an internal release and the following commit will never be released to production tag:
+
+- Log when we add events >= 1MB and add to compression buffer to track total events in buffer
+- Change replay logger calls to be debug level by default and do not create replay breadcrumbs for them. This is so that
+  we can log inside of addEvent without triggering false positives for exceeding buffer size errors.
+
 ## 8.36.0-alpha.1
 
 This is considered an internal release and the following commit will never be released to production tag:
