@@ -19,11 +19,13 @@ export class EventBufferCompressionWorker implements EventBuffer {
   private _worker: WorkerHandler;
   private _earliestTimestamp: number | null;
   private _totalSize;
+  private _totalEvents: number;
 
   public constructor(worker: Worker) {
     this._worker = new WorkerHandler(worker);
     this._earliestTimestamp = null;
     this._totalSize = 0;
+    this._totalEvents = 0;
     this.hasCheckout = false;
   }
 
@@ -70,6 +72,17 @@ export class EventBufferCompressionWorker implements EventBuffer {
       return Promise.reject(new EventBufferSizeExceededError());
     }
 
+    if (data.length > 1_000_000) {
+      DEBUG_BUILD &&
+        logger.info(
+          `Adding large event to buffer - type: ${event.type}, size: ${Number(data.length).toLocaleString()}, events: ${
+            this._totalEvents
+          }`,
+        );
+    }
+
+    this._totalEvents++;
+
     return this._sendEventToWorker(data);
   }
 
@@ -82,9 +95,13 @@ export class EventBufferCompressionWorker implements EventBuffer {
 
   /** @inheritdoc */
   public clear(): void {
-    DEBUG_BUILD && logger.info(`Clearing event buffer (${this._totalSize})`);
+    DEBUG_BUILD &&
+      logger.info(
+        `Clearing event buffer (size: ${Number(this._totalSize).toLocaleString()}, events: ${this._totalEvents})`,
+      );
     this._earliestTimestamp = null;
     this._totalSize = 0;
+    this._totalEvents = 0;
     this.hasCheckout = false;
 
     // We do not wait on this, as we assume the order of messages is consistent for the worker
@@ -118,6 +135,8 @@ export class EventBufferCompressionWorker implements EventBuffer {
 
     this._earliestTimestamp = null;
     this._totalSize = 0;
+    this._totalEvents = 0;
+    this.hasCheckout = false;
 
     return response;
   }
