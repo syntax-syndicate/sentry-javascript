@@ -53,6 +53,12 @@ export function normalizeBreadcrumb(breadcrumb: Breadcrumb): Breadcrumb | null {
   }
 
   if (breadcrumb.category === 'console') {
+    if (breadcrumb.data.logger === 'replay' && breadcrumb.level === 'debug') {
+      // Temp: do not log these to replay as I want to add logging to addEvent
+      // and if buffer is full, will cause additional strain to the buffer
+      return null;
+    }
+
     return normalizeConsoleBreadcrumb(breadcrumb);
   }
 

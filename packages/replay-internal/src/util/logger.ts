@@ -32,7 +32,7 @@ interface ReplayLogger extends LoggerConsoleMethods {
   setConfig(config: LoggerConfig): void;
 }
 
-function _addBreadcrumb(message: unknown, level: SeverityLevel = 'info'): void {
+function _addBreadcrumb(message: unknown, level: SeverityLevel = 'debug'): void {
   addBreadcrumb(
     {
       category: 'console',
