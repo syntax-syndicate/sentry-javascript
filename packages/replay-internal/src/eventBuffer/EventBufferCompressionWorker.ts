@@ -136,7 +136,6 @@ export class EventBufferCompressionWorker implements EventBuffer {
     this._earliestTimestamp = null;
     this._totalSize = 0;
     this._totalEvents = 0;
-    this.hasCheckout = false;
 
     return response;
   }
