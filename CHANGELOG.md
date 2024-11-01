@@ -10,6 +10,10 @@
 
 - "You miss 100 percent of the chances you don't take. — Wayne Gretzky" — Michael Scott
 
+## 8.37.0-alpha.0
+
+- debug statement for large events (>1MB)
+
 ## 8.36.0
 
 ### Important Changes
