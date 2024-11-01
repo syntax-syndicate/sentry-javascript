@@ -67,6 +67,10 @@ async function _addEvent(
       replay.eventBuffer.hasCheckout = true;
     }
 
+    if (event.type === 2) {
+      DEBUG_BUILD && logger.info(`Fullsnapshot size: ${JSON.stringify(event).length}`);
+    }
+
     const replayOptions = replay.getOptions();
 
     const eventAfterPossibleCallback = maybeApplyCallback(event, replayOptions.beforeAddRecordingEvent);
