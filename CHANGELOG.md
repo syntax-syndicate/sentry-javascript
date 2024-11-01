@@ -10,33 +10,41 @@
 
 - "You miss 100 percent of the chances you don't take. — Wayne Gretzky" — Michael Scott
 
-## 8.36.0-alpha.2
+## 8.36.0
 
-This is considered an internal release and the following commit will never be released to production tag:
+### Important Changes
 
-- Log when we add events >= 1MB and add to compression buffer to track total events in buffer
-- Change replay logger calls to be debug level by default and do not create replay breadcrumbs for them. This is so that
-  we can log inside of addEvent without triggering false positives for exceeding buffer size errors.
+- **feat(nextjs/vercel-edge/cloudflare): Switch to OTEL for performance monitoring ([#13889](https://github.com/getsentry/sentry-javascript/pull/13889))**
 
-## 8.36.0-alpha.1
+With this release, the Sentry Next.js, and Cloudflare SDKs will now capture performance data based on OpenTelemetry.
+Some exceptions apply in cases where Next.js captures inaccurate data itself.
 
-This is considered an internal release and the following commit will never be released to production tag:
+NOTE: You may experience minor differences in transaction names in Sentry.
+Most importantly transactions for serverside pages router invocations will now be named `GET /[param]/my/route` instead of `/[param]/my/route`.
+This means that those transactions are now better aligned with the OpenTelemetry semantic conventions.
 
-- debug(replay): Remove noisy log that is causing event buffer overflow as well
-  ([#14069](https://github.com/getsentry/sentry-javascript/pull/14069))
+### Other Changes
 
-## 8.36.0-alpha.0
-
-This is considered an internal release and the following commit will never be released to production tag:
-
-- **debug(replay): Add debugging statements around event buffer**
-  ([#14014](https://github.com/getsentry/sentry-javascript/pull/14014))
-
-Also includes the following unreleased changes:
-
+- deps: Bump bundler plugins and CLI to 2.22.6 and 2.37.0 respectively ([#14050](https://github.com/getsentry/sentry-javascript/pull/14050))
+- feat(deps): bump @opentelemetry/instrumentation-aws-sdk from 0.44.0 to 0.45.0 ([#14099](https://github.com/getsentry/sentry-javascript/pull/14099))
+- feat(deps): bump @opentelemetry/instrumentation-connect from 0.39.0 to 0.40.0 ([#14101](https://github.com/getsentry/sentry-javascript/pull/14101))
+- feat(deps): bump @opentelemetry/instrumentation-express from 0.43.0 to 0.44.0 ([#14102](https://github.com/getsentry/sentry-javascript/pull/14102))
+- feat(deps): bump @opentelemetry/instrumentation-fs from 0.15.0 to 0.16.0 ([#14098](https://github.com/getsentry/sentry-javascript/pull/14098))
+- feat(deps): bump @opentelemetry/instrumentation-kafkajs from 0.3.0 to 0.4.0 ([#14100](https://github.com/getsentry/sentry-javascript/pull/14100))
+- feat(nextjs): Add method and url to route handler request data ([#14084](https://github.com/getsentry/sentry-javascript/pull/14084))
+- feat(node): Add breadcrumbs for `child_process` and `worker_thread` ([#13896](https://github.com/getsentry/sentry-javascript/pull/13896))
+- fix(core): Ensure standalone spans are not sent if SDK is disabled ([#14088](https://github.com/getsentry/sentry-javascript/pull/14088))
 - fix(nextjs): Await flush in api handlers ([#14023](https://github.com/getsentry/sentry-javascript/pull/14023))
-- fix(solidstart): Use production server for e2e tests
-  ([#14033](https://github.com/getsentry/sentry-javascript/pull/14033))
+- fix(nextjs): Don't leak webpack types into exports ([#14116](https://github.com/getsentry/sentry-javascript/pull/14116))
+- fix(nextjs): Fix matching logic for file convention type for root level components ([#14038](https://github.com/getsentry/sentry-javascript/pull/14038))
+- fix(nextjs): Respect directives in value injection loader ([#14083](https://github.com/getsentry/sentry-javascript/pull/14083))
+- fix(nuxt): Only wrap `.mjs` entry files in rollup ([#14060](https://github.com/getsentry/sentry-javascript/pull/14060))
+- fix(nuxt): Re-export all exported bindings ([#14086](https://github.com/getsentry/sentry-javascript/pull/14086))
+- fix(nuxt): Server-side setup in readme ([#14049](https://github.com/getsentry/sentry-javascript/pull/14049))
+- fix(profiling-node): Always warn when running on incompatible major version of Node.js ([#14043](https://github.com/getsentry/sentry-javascript/pull/14043))
+- fix(replay): Fix `onError` callback ([#14002](https://github.com/getsentry/sentry-javascript/pull/14002))
+- perf(otel): Only calculate current timestamp once ([#14094](https://github.com/getsentry/sentry-javascript/pull/14094))
+- test(browser-integration): Add sentry DSN route handler by default ([#14095](https://github.com/getsentry/sentry-javascript/pull/14095))
 
 ## 8.35.0
 
