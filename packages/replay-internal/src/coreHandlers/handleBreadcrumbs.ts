@@ -8,7 +8,7 @@ import type { ReplayFrame } from '../types/replayFrame';
 import { createBreadcrumb } from '../util/createBreadcrumb';
 import { addBreadcrumbEvent } from './util/addBreadcrumbEvent';
 
-type BreadcrumbWithCategory = Required<Pick<Breadcrumb, 'category'>>;
+type BreadcrumbWithCategory = Omit<Breadcrumb, 'category'> & Required<Pick<Breadcrumb, 'category'>>;
 
 /**
  * Handle breadcrumbs that Sentry captures, and make sure to capture relevant breadcrumbs to Replay as well.
@@ -53,7 +53,7 @@ export function normalizeBreadcrumb(breadcrumb: Breadcrumb): Breadcrumb | null {
   }
 
   if (breadcrumb.category === 'console') {
-    if (breadcrumb.data.logger === 'replay' && breadcrumb.level === 'debug') {
+    if (breadcrumb.data && breadcrumb.data.logger === 'replay' && breadcrumb.level === 'debug') {
       // Temp: do not log these to replay as I want to add logging to addEvent
       // and if buffer is full, will cause additional strain to the buffer
       return null;
