@@ -1,3 +1,5 @@
+import * as path from 'path';
+import * as url from 'url';
 import type { Nitro } from 'nitropack';
 import { addSentryPluginToVite } from '../vite';
 import type { SentrySolidStartPluginOptions } from '../vite/types';
@@ -28,11 +30,20 @@ export const withSentry = (
       ? (...args: unknown[]) => addSentryPluginToVite(solidStartConfig.vite(...args), sentrySolidStartPluginOptions)
       : addSentryPluginToVite(solidStartConfig.vite, sentrySolidStartPluginOptions);
 
+  let base = import.meta.url;
+  if (base.startsWith('file://')) {
+    base = path.dirname(url.fileURLToPath(base));
+  }
+  const pluginPath = path.normalize(path.resolve(base, '../nitro/sentryNitroInstrumentationPlugin'));
+  console.log({ pluginPath });
+  console.log({ server });
+
   return {
     ...solidStartConfig,
     vite,
     server: {
       ...server,
+      plugins: [...(Array.isArray(server.plugins) ? server.plugins : []), pluginPath],
       hooks: {
         ...hooks,
         async 'rollup:before'(nitro: Nitro, config: RollupConfig) {

@@ -15,5 +15,6 @@
     "src/solidrouter.server.ts",
     "src/server/solidrouter.ts",
     "src/solidrouter.ts",
+    "src/nitroInstrumentationPlugin.ts",
   ]
 }
