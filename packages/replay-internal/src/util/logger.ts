@@ -90,7 +90,7 @@ function makeReplayLogger(): ReplayLogger {
       if (_trace) {
         // Wait a tick here to avoid race conditions for some initial logs
         // which may be added before replay is initialized
-        setTimeout(() => _addBreadcrumb(args[0]), 0);
+        setTimeout(() => _addBreadcrumb(args[0], 'info'), 0);
       }
     };
   } else {
