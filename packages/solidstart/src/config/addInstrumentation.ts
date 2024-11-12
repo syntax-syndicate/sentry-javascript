@@ -95,18 +95,18 @@ export async function addAutoInstrumentation(nitro: Nitro, config: RollupConfig)
         // The enclosing `if` already checks for the suffix in `source`, but a check in `resolution.id` is needed as well to prevent multiple attachment of the suffix
         return resolution.id.includes(`.mjs${SENTRY_WRAPPED_ENTRY}`)
           ? resolution.id
-          : resolution.id
+          : `\0${resolution.id
               // Concatenates the query params to mark the file (also attaches names of re-exports - this is needed for serverless functions to re-export the handler)
               .concat(SENTRY_WRAPPED_ENTRY)
               .concat(functionsToExport?.length ? SENTRY_FUNCTIONS_REEXPORT.concat(functionsToExport.join(',')) : '')
-              .concat(QUERY_END_INDICATOR);
+              .concat(QUERY_END_INDICATOR)}`;
       }
 
       return null;
     },
     load(id: string) {
       if (id.includes(`.mjs${SENTRY_WRAPPED_ENTRY}`)) {
-        const entryId = removeSentryQueryFromPath(id);
+        const entryId = removeSentryQueryFromPath(id).slice(1);
 
         // Mostly useful for serverless `handler` functions
         const reExportedFunctions = id.includes(SENTRY_FUNCTIONS_REEXPORT)
