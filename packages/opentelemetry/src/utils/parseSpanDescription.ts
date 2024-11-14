@@ -16,7 +16,11 @@ import {
 import type { SpanAttributes, TransactionSource } from '@sentry/types';
 import { getSanitizedUrlString, parseUrl, stripUrlQueryAndFragment } from '@sentry/utils';
 
-import { SEMANTIC_ATTRIBUTE_SENTRY_OP, SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN } from '@sentry/core';
+import {
+  SEMANTIC_ATTRIBUTE_SENTRY_OP,
+  SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN,
+  SEMANTIC_ATTRIBUTE_SENTRY_SOURCE,
+} from '@sentry/core';
 import { SEMANTIC_ATTRIBUTE_SENTRY_GRAPHQL_OPERATION } from '../semanticAttributes';
 import type { AbstractSpan } from '../types';
 import { getSpanKind } from './getSpanKind';
@@ -32,12 +36,12 @@ interface SpanDescription {
 /**
  * Infer the op & description for a set of name, attributes and kind of a span.
  */
-export function inferSpanData(name: string, attributes: SpanAttributes, kind: SpanKind): SpanDescription {
+export function inferSpanData(originalName: string, attributes: SpanAttributes, kind: SpanKind): SpanDescription {
   // if http.method exists, this is an http request span
   // eslint-disable-next-line deprecation/deprecation
   const httpMethod = attributes[ATTR_HTTP_REQUEST_METHOD] || attributes[SEMATTRS_HTTP_METHOD];
   if (httpMethod) {
-    return descriptionForHttpMethod({ attributes, name, kind }, httpMethod);
+    return descriptionForHttpMethod({ attributes, name: originalName, kind }, httpMethod);
   }
 
   // eslint-disable-next-line deprecation/deprecation
@@ -49,8 +53,10 @@ export function inferSpanData(name: string, attributes: SpanAttributes, kind: Sp
   // If db.type exists then this is a database call span
   // If the Redis DB is used as a cache, the span description should not be changed
   if (dbSystem && !opIsCache) {
-    return descriptionForDbSystem({ attributes, name });
+    return descriptionForDbSystem({ attributes, name: originalName });
   }
+
+  const customSourceOrRoute = attributes[SEMANTIC_ATTRIBUTE_SENTRY_SOURCE] === 'custom' ? 'custom' : 'route';
 
   // If rpc.service exists then this is a rpc call span.
   // eslint-disable-next-line deprecation/deprecation
@@ -58,8 +64,8 @@ export function inferSpanData(name: string, attributes: SpanAttributes, kind: Sp
   if (rpcService) {
     return {
       op: 'rpc',
-      description: name,
-      source: 'route',
+      description: originalName,
+      source: customSourceOrRoute,
     };
   }
 
@@ -69,8 +75,8 @@ export function inferSpanData(name: string, attributes: SpanAttributes, kind: Sp
   if (messagingSystem) {
     return {
       op: 'message',
-      description: name,
-      source: 'route',
+      description: originalName,
+      source: customSourceOrRoute,
     };
   }
 
@@ -78,14 +84,18 @@ export function inferSpanData(name: string, attributes: SpanAttributes, kind: Sp
   // eslint-disable-next-line deprecation/deprecation
   const faasTrigger = attributes[SEMATTRS_FAAS_TRIGGER];
   if (faasTrigger) {
-    return { op: faasTrigger.toString(), description: name, source: 'route' };
+    return { op: faasTrigger.toString(), description: originalName, source: customSourceOrRoute };
   }
 
-  return { op: undefined, description: name, source: 'custom' };
+  return { op: undefined, description: originalName, source: 'custom' };
 }
 
 /**
  * Extract better op/description from an otel span.
+ *
+ * Does not overwrite the span name if the source is already set to custom to ensure
+ * that user-updated span names are preserved. In this case, we only adjust the op but
+ * leave span description and source unchanged.
  *
  * Based on https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/7422ce2a06337f68a59b552b8c5a2ac125d6bae5/exporter/sentryexporter/sentry_exporter.go#L306
  */
@@ -98,6 +108,11 @@ export function parseSpanDescription(span: AbstractSpan): SpanDescription {
 }
 
 function descriptionForDbSystem({ attributes, name }: { attributes: Attributes; name: string }): SpanDescription {
+  // if we already set the source to custom, we don't overwrite the span description but just adjust the op
+  if (attributes[SEMANTIC_ATTRIBUTE_SENTRY_SOURCE] === 'custom') {
+    return { op: 'db', description: name, source: 'custom' };
+  }
+
   // Use DB statement (Ex "SELECT * FROM table") if possible as description.
   // eslint-disable-next-line deprecation/deprecation
   const statement = attributes[SEMATTRS_DB_STATEMENT];
@@ -170,7 +185,10 @@ export function descriptionForHttpMethod(
   const origin = attributes[SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN] || 'manual';
   const isManualSpan = !`${origin}`.startsWith('auto');
 
-  const useInferredDescription = isClientOrServerKind || !isManualSpan;
+  // If users (or in very rare occasions we) set the source to custom, we don't overwrite it
+  const alreadyHasCustomSource = attributes[SEMANTIC_ATTRIBUTE_SENTRY_SOURCE] === 'custom';
+
+  const useInferredDescription = !alreadyHasCustomSource && (isClientOrServerKind || !isManualSpan);
 
   return {
     op: opParts.join('.'),
