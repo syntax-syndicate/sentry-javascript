@@ -15,13 +15,13 @@ import {
   SEMATTRS_RPC_SERVICE,
 } from '@opentelemetry/semantic-conventions';
 
+import { SEMANTIC_ATTRIBUTE_SENTRY_SOURCE } from '@sentry/core';
 import {
   descriptionForHttpMethod,
   getOriginalName,
   getSanitizedUrl,
   parseSpanDescription,
 } from '../../src/utils/parseSpanDescription';
-import { SEMANTIC_ATTRIBUTE_SENTRY_SOURCE } from '@sentry/core';
 
 describe('parseSpanDescription', () => {
   it.each([
