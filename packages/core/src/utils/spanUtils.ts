@@ -306,6 +306,8 @@ export function updateMetricSummaryOnActiveSpan(
  */
 export function updateSpanName(span: Span, name: string): void {
   span.updateName(name);
-  span.setAttribute(SEMANTIC_ATTRIBUTE_SENTRY_SOURCE, 'custom');
-  span.setAttribute('_sentry_span_name_set_by_user', name);
+  span.setAttributes({
+    [SEMANTIC_ATTRIBUTE_SENTRY_SOURCE]: 'custom',
+    ['_sentry_span_name_set_by_user']: name,
+  });
 }
