@@ -19,7 +19,7 @@ sentryTest('should log error correctly', async ({ getLocalTestUrl, page }) => {
     messages.push(message.text());
   });
 
-  const url = await getLocalTestUrl({ testDir: __dirname });
+  const url = await getLocalTestUrl({ testDir: __dirname, handleLazyLoadedFeedback: true });
 
   await page.goto(url);
 
