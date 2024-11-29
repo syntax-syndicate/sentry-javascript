@@ -4,6 +4,8 @@ import {
   SPAN_STATUS_OK,
   Scope,
   captureException,
+  generateSpanId,
+  generateTraceId,
   getActiveSpan,
   getCapturedScopesOnSpan,
   getClient,
@@ -87,8 +89,8 @@ export function wrapGenerationFunctionWithSentry<F extends (...args: any[]) => a
             headersDict?.['sentry-trace']
               ? propagationContextFromHeaders(headersDict['sentry-trace'], headersDict['baggage'])
               : {
-                  traceId: requestTraceId || uuid4(),
-                  spanId: uuid4().substring(16),
+                  traceId: requestTraceId || generateTraceId(),
+                  spanId: generateSpanId(),
                 },
           );
           scope.setPropagationContext(propagationContext);
