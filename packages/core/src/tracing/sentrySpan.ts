@@ -25,9 +25,9 @@ import {
   SEMANTIC_ATTRIBUTE_SENTRY_ORIGIN,
   SEMANTIC_ATTRIBUTE_SENTRY_SOURCE,
 } from '../semanticAttributes';
-import { generateSpanId, generateTraceId } from '../utils-hoist/propagationContext';
 import { logger } from '../utils-hoist/logger';
 import { dropUndefinedKeys } from '../utils-hoist/object';
+import { generateSpanId, generateTraceId } from '../utils-hoist/propagationContext';
 import { timestampInSeconds } from '../utils-hoist/time';
 import {
   TRACE_FLAG_NONE,
